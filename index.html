@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPERATION: DESIGN ENGINEER — 14-Week Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E0E0E;
+    --paper:#F2EFE9;
+    --orange:#D26601;
+    --steel:#8C8880;
+    --line:#0E0E0E;
+    --ok:#1F6E43;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--paper)}
+  body{
+    font-family:'Archivo',sans-serif;color:var(--ink);background:var(--paper);
+    padding:0 0 80px 0;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+
+  /* ============ HEADER / HUD ============ */
+  header{
+    border-bottom:3px solid var(--ink);
+    background:var(--ink);color:var(--paper);
+    padding:28px 0 22px;
+  }
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,5vw,44px);line-height:1.02;text-transform:uppercase;letter-spacing:.01em;margin:6px 0 4px}
+  h1 .accent{color:var(--orange)}
+  .subline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#B9B4AA}
+  .subrow{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  button.jump{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    background:transparent;color:var(--orange);border:2px solid var(--orange);padding:5px 12px;cursor:pointer;
+  }
+  button.jump:hover{background:var(--orange);color:var(--ink)}
+  button.jump:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
+
+  .hud{display:grid;grid-template-columns:1fr auto auto auto auto;gap:18px;align-items:end}
+  @media(max-width:640px){.hud{grid-template-columns:1fr 1fr;gap:14px}}
+  .stat .label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#B9B4AA;margin-bottom:4px}
+  .stat .value{font-family:'Archivo Black',sans-serif;font-size:26px;color:var(--paper);font-variant-numeric:tabular-nums}
+  .stat .value small{font-size:13px;color:var(--steel)}
+  #levelName{color:var(--orange)}
+
+  .xpbar{grid-column:1/-1;height:14px;border:2px solid var(--paper);position:relative;background:transparent}
+  .xpbar .fill{
+    height:100%;background:var(--orange);width:0%;
+    transition:width .5s cubic-bezier(.22,1.4,.36,1);
+  }
+  .xpbar .ghost{position:absolute;inset:0;height:100%;background:var(--paper);opacity:.25;width:0%;transition:width 1.2s ease .3s}
+
+  /* ============ BRIEF STRIP ============ */
+  .brief{
+    border-bottom:3px solid var(--ink);padding:14px 0;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.7;
+  }
+  .brief b{color:var(--orange)}
+  .brief .wrap{display:flex;gap:24px;flex-wrap:wrap}
+  .brief .cell{flex:1;min-width:220px}
+
+  /* ============ COURSE SHELF ============ */
+  .shelf{
+    border-bottom:3px solid var(--ink);padding:10px 0;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;
+  }
+  .shelf .wrap{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap}
+  .shelf .shelf-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
+  .shelf a{
+    color:var(--ink);text-decoration:none;border:2px solid var(--ink);padding:4px 10px;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .shelf a:hover{background:var(--ink);color:var(--paper)}
+  .shelf a:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+  .shelf a .ext{color:var(--orange);font-weight:700}
+
+  /* ============ WEEK CARDS ============ */
+  main{padding-top:26px}
+  .phase-label{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:13px;
+    letter-spacing:.14em;margin:34px 0 12px;display:flex;align-items:center;gap:12px;
+  }
+  .phase-label::after{content:"";flex:1;height:3px;background:var(--ink)}
+  .phase-label span{color:var(--orange)}
+
+  details.week{border:3px solid var(--ink);margin-bottom:16px;background:var(--paper);position:relative}
+  details.week[open]{background:#FBF9F4}
+  summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;
+    padding:14px 16px;user-select:none;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+  .wk-num{
+    font-family:'Archivo Black',sans-serif;font-size:22px;min-width:58px;
+    border-right:3px solid var(--ink);padding-right:14px;line-height:1;
+  }
+  .wk-num small{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;font-weight:400;color:var(--steel);margin-top:3px}
+  .wk-head{flex:1;min-width:0}
+  .wk-title{font-family:'Archivo Black',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.02em}
+  .wk-dates{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);margin-top:2px}
+  .wk-meter{display:flex;align-items:center;gap:10px}
+  .wk-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);white-space:nowrap}
+  .wk-prog{width:70px;height:10px;border:2px solid var(--ink);overflow:hidden}
+  .wk-prog .f{height:100%;background:var(--orange);width:0%;transition:width .4s cubic-bezier(.22,1.4,.36,1)}
+  .chev{font-family:'IBM Plex Mono',monospace;font-size:14px;transition:transform .2s}
+  details[open] .chev{transform:rotate(90deg)}
+
+  .active-badge{
+    font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;
+    background:var(--orange);color:var(--paper);padding:3px 7px;text-transform:uppercase;
+  }
+
+  /* mission complete stamp */
+  .stamp{
+    display:none;position:absolute;top:-3px;right:-3px;bottom:auto;
+    font-family:'Archivo Black',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--paper);padding:5px 12px 5px 22px;
+    background:repeating-linear-gradient(45deg,var(--ink),var(--ink) 8px,var(--orange) 8px,var(--orange) 16px);
+  }
+  .stamp b{background:var(--ink);padding:2px 6px}
+  details.week.done .stamp{display:block;animation:stampIn .35s cubic-bezier(.22,1.6,.36,1)}
+  details.week.done{border-color:var(--orange)}
+  @keyframes stampIn{0%{transform:scale(1.6);opacity:0}100%{transform:scale(1);opacity:1}}
+
+  .wk-body{border-top:3px solid var(--ink);padding:16px}
+  .focus{
+    font-size:13.5px;line-height:1.6;margin-bottom:14px;max-width:64ch;
+  }
+  .sessions{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.8;color:#4a463f;
+    border-left:3px solid var(--orange);padding-left:12px;margin-bottom:16px;white-space:pre-line;
+  }
+
+  /* ============ TASKS ============ */
+  ul.tasks{list-style:none}
+  .task{border-top:1px solid #d8d3c8}
+  .task:first-child{border-top:none}
+  .task label{
+    display:flex;align-items:flex-start;gap:12px;padding:9px 4px;cursor:pointer;
+  }
+  .task input{position:absolute;opacity:0;width:0;height:0}
+  .box{
+    width:20px;height:20px;border:2.5px solid var(--ink);flex:none;margin-top:1px;
+    display:grid;place-items:center;background:var(--paper);
+    transition:background .12s;
+  }
+  .box::after{
+    content:"";width:10px;height:10px;background:var(--orange);transform:scale(0);
+    transition:transform .18s cubic-bezier(.22,1.8,.36,1);
+  }
+  .task input:checked + .box{background:var(--ink)}
+  .task input:checked + .box::after{transform:scale(1)}
+  .task input:focus-visible + .box{outline:3px solid var(--orange);outline-offset:2px}
+  .task-text{flex:1;font-size:13.5px;line-height:1.5}
+  .task input:checked ~ .task-text{color:var(--steel);text-decoration:line-through;text-decoration-color:var(--orange);text-decoration-thickness:2px}
+  .task-xp{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--steel);flex:none;margin-top:3px}
+  .task-link{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--orange);
+    text-decoration:none;border-bottom:2px solid var(--orange);white-space:nowrap;
+  }
+  .task-link:hover{background:var(--orange);color:var(--paper)}
+  .task-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+  .task input:checked ~ .task-text .task-link{text-decoration:none;color:var(--orange)}
+  .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 6px;flex:none;margin-top:3px;border:1.5px solid var(--ink);
+  }
+  .tag.build{background:var(--ink);color:var(--paper)}
+  .tag.learn{background:transparent}
+  .tag.ai{background:var(--orange);color:var(--paper);border-color:var(--orange)}
+  .tag.tweet{background:transparent;color:var(--orange);border-color:var(--orange)}
+  .tag.ship{background:var(--ok);color:var(--paper);border-color:var(--ok)}
+
+  /* ============ XP TOAST ============ */
+  #toast{
+    position:fixed;bottom:22px;left:50%;transform:translate(-50%,80px);opacity:0;
+    background:var(--ink);color:var(--paper);border:3px solid var(--orange);
+    font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.08em;
+    padding:10px 20px;pointer-events:none;z-index:50;
+    transition:transform .25s cubic-bezier(.22,1.6,.36,1),opacity .25s;
+  }
+  #toast.show{transform:translate(-50%,0);opacity:1}
+  #toast .plus{color:var(--orange)}
+
+  /* ============ FOOTER / TARGETS ============ */
+  .targets{border:3px solid var(--ink);margin-top:36px;padding:16px;background:#FBF9F4}
+  .targets h2{font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+  .assets summary{font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;padding:0}
+  .assets summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+  .assets .asset{margin-top:14px}
+  .assets h3{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .assets pre{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.75;white-space:pre-wrap;
+    border-left:3px solid var(--ink);padding:10px 14px;background:var(--paper);
+  }
+  .assets .note{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--steel);margin-top:6px}
+  .targets p{font-size:13px;line-height:1.7;max-width:70ch;margin-bottom:8px}
+  .targets b{color:var(--orange)}
+  .reset-row{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .hint{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--steel)}
+  button.reset{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    background:transparent;border:2px solid var(--ink);padding:8px 14px;cursor:pointer;color:var(--ink);
+  }
+  button.reset:hover{background:var(--ink);color:var(--paper)}
+  button.reset:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">// 14-week campaign · Jul 13 – Oct 18, 2026</div>
+    <h1>Operation: <span class="accent">Design Engineer</span></h1>
+    <div class="subrow">
+      <div class="subline">game UI director → design engineer · 10–15 hrs/wk · build in public</div>
+      <button class="jump" id="jumpBtn">▸ This week</button>
+    </div>
+    <div class="hud">
+      <div class="stat"><div class="label">Rank</div><div class="value" id="levelName">Recruit</div></div>
+      <div class="stat"><div class="label">XP</div><div class="value"><span id="xpNow">0</span><small> / <span id="xpMax">0</span></small></div></div>
+      <div class="stat"><div class="label">Tasks</div><div class="value"><span id="taskNow">0</span><small> / <span id="taskMax">0</span></small></div></div>
+      <div class="stat"><div class="label">Post streak</div><div class="value"><span id="streak">0</span><small> wk</small></div></div>
+      <div class="stat"><div class="label">Check-in</div><div class="value"><span id="dayStreak">0</span><small> day</small></div></div>
+      <div class="xpbar"><div class="fill" id="xpFill"></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="brief">
+  <div class="wrap">
+    <div class="cell"><b>WEEKLY RHYTHM.</b> Session A (Tue eve, 2h) · Session B (Thu eve, 2h) · Session C (Sat, 4h) · Session D (Sun, 3h) + ~1h publishing. Protect Session C — it's where projects actually move.</div>
+    <div class="cell"><b>TWO RULES.</b> 1) Commit to GitHub every session. 2) AI can scaffold, but you must be able to explain every line — interviews include code walkthroughs.</div>
+  </div>
+</div>
+
+<div class="shelf">
+  <div class="wrap">
+    <span class="shelf-label">Course shelf //</span>
+    <a href="https://www.udemy.com/course/understanding-typescript/" target="_blank" rel="noopener">Udemy · Understanding TypeScript <span class="ext">↗</span></a>
+    <a href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/" target="_blank" rel="noopener">Udemy · React — The Complete Guide <span class="ext">↗</span></a>
+  </div>
+</div>
+
+<main class="wrap" id="main"></main>
+
+<div class="wrap">
+  <div class="targets">
+    <h2>Target list · NYC / Remote / Seattle</h2>
+    <p><b>Tier 1 (best geo + fit):</b> Runway (NYC HQ + Seattle office), The Browser Company (NYC), Hume AI (NYC), ElevenLabs (remote-friendly), Notion (NYC office), Figma (NYC office).</p>
+    <p><b>Tier 2 (design-engineer-culture, largely remote):</b> Vercel, Linear, Raycast, Framer, Family, Ramp (NYC).</p>
+    <p><b>Tier 3 (volume):</b> a16z / General Catalyst / Index job boards — filter "design engineer" + "founding designer," NYC/remote.</p>
+    <p><b>Deprioritized:</b> Cursor &amp; Krea (SF in-person), Mistral (Paris).</p>
+    <p><b>Phase 5 contingency:</b> by Week 10, verify the ElevenLabs Product Designer role is still open. If closed, Voice Director retargets in ~1 week of rework: <b>Hume AI</b> (NYC — swap voice settings for their emotion/expression API) or <b>Runway</b> (NYC/Seattle — reframe as shot direction on their video API). The pattern is the asset: build on their API → find their gaps → arrive with proposals.</p>
+  </div>
+
+  <details class="targets assets">
+    <summary>Field assets — pre-drafted, ready when you are</summary>
+
+    <div class="asset">
+      <h3>Asset 01 · The pinned announcement post (Week 1, Session A — post before you code)</h3>
+      <pre>Week 1 of 14.
+
+10 years shipping game UI — HUDs, skill trees, the exact
+spring curve that makes a level-up feel earned.
+
+Now I'm becoming a design engineer, in public:
+4 shipped projects. React/TS from near-zero.
+~15 hrs/wk around a full-time job.
+
+Everything — wins and faceplants — documented here.
+Day one starts now.</pre>
+      <div class="note">Pin it. Reply to it with every weekly post so the whole journey threads from one URL.</div>
+    </div>
+
+    <div class="asset">
+      <h3>Asset 02 · "Dead Air" — original 12-line scene for Voice Director (Week 13)</h3>
+      <pre>COLD EXTRACT — Scene 4: "DEAD AIR"
+Cast: HAVOC (squad lead) · RIGGS (breacher) · VESPER (ops AI)
+
+01  HAVOC   (calm, procedural)   "Vesper, give me eyes on the extract point."
+02  VESPER  (flat, synthetic)    "Negative feed. The relay's been dark for six minutes."
+03  RIGGS   (dry, low)           "Six minutes. That's not weather."
+04  HAVOC   (clipped)            "Copy. We move like it's compromised."
+05  VESPER  (neutral urgency)    "Advisory: thermal bloom, two hundred meters north."
+06  RIGGS   (gallows humor)      "Tell me that's a campfire."
+07  HAVOC   (whisper, command)   "Weapons tight. Nobody breathes without my say."
+08  VESPER  (measured)           "Bloom is spreading. Pattern suggests a burn team."
+09  RIGGS   (quiet realization)  "They're erasing the site. We were never supposed to see it."
+10  HAVOC   (resolve)            "Change of mission. We document, then we ghost."
+11  VESPER  (dry)                "Recording. For the record — I advised against this."
+12  HAVOC   (faint smile)        "Noted, Vesper. Everyone does."</pre>
+      <div class="note">Deliberately a TTS test matrix: 3 voice archetypes × calm / urgent / whisper / dry / humor — exactly the range your direction controls need to prove.</div>
+    </div>
+  </details>
+  <div class="reset-row">
+    <div class="hint" id="saveHint">Progress saves automatically to this device.</div>
+    <button class="reset" id="resetBtn">Reset all progress</button>
+  </div>
+</div>
+
+<div id="toast"><span class="plus">+0 XP</span> <span id="toastMsg"></span></div>
+
+<script>
+/* ================= DATA ================= */
+const PHASES = [
+  {label:"Phase 1", title:"Fundamentals through building — Project: JUICE", weeks:[1,2,3]},
+  {label:"Phase 2", title:"The AI interface — Project: AGENT HUD", weeks:[4,5,6,7]},
+  {label:"Phase 3", title:"Ship real software — Project: SPRINGBOARD (Figma plugin)", weeks:[8,9,10,11]},
+  {label:"Phase 4", title:"Portfolio + applications", weeks:[12]},
+  {label:"Phase 5", title:"Targeted strike — Project: VOICE DIRECTOR (built for ElevenLabs)", weeks:[13,14]},
+];
+
+const WEEKS = [
+{
+  n:1, dates:"Jul 13 – Jul 19", title:"Rewire: Blueprint brain → React brain",
+  focus:"Stop vibe-coding. Set up a professional environment and learn TypeScript + React fundamentals by hand-building boring things. Your MVVM instincts map directly: ViewModel ≈ state + derived values, UMG bindings ≈ props down, delegates ≈ callbacks up.",
+  sessions:`A — Env setup: Cursor (or VS Code), Node, pnpm, Vite+React+TS template, Tailwind. New GitHub repo, first commit.
+B — Udemy "Understanding TypeScript" (Schwarzmüller): types, interfaces, unions, narrowing.
+C — TS generics + React course: components, props, useState. Hand-build: counter, toggle, controlled input.
+D — Hand-build a todo list (add/remove/filter) with zero AI. Then rebuild it with AI and diff the two.`,
+  tasks:[
+    {t:"Set up Vite + React + TypeScript + Tailwind project, push to a public GitHub repo",k:"build",xp:15},
+    {t:"Udemy · Understanding TypeScript — types, interfaces, unions, narrowing (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/understanding-typescript/"},
+    {t:"Udemy · Understanding TypeScript — generics + utility types (~1.5h)",k:"learn",xp:10,link:"https://www.udemy.com/course/understanding-typescript/"},
+    {t:"Hand-build (NO AI): counter, toggle, controlled input, list w/ add & remove",k:"build",xp:20},
+    {t:"Write a CLAUDE.md / .cursorrules for your repo: your stack, conventions, design principles — your first AI-first workflow artifact",k:"ai",xp:15},
+    {t:"Rebuild the todo app WITH AI assistance, then diff both versions and write 5 things the AI did differently",k:"ai",xp:15},
+    {t:"POST · announce the journey: 'Game UI director, 10 yrs shipping HUDs in Unreal. Next 12 weeks: becoming a design engineer, in public.' Pin it.",k:"tweet",xp:15},
+    {t:"Commit every session this week (4+ commits)",k:"build",xp:10},
+  ]
+},
+{
+  n:2, dates:"Jul 20 – Jul 26", title:"Hooks + motion — start JUICE",
+  focus:"Learn hooks properly, then start Project 1: 'Juice', a game-feel interaction library for the web. First components: the XP count-up ticker (you literally shipped this in UMG) and a physics-driven toast stack. Framer Motion is your native language in new syntax.",
+  sessions:`A — Udemy React course: useEffect, useRef, custom hooks. Build a useInterval hook.
+B — Framer Motion docs: springs, variants, orchestration. Recreate one CPH-style banner as a sandbox.
+C — Build the XP count-up ticker: spring-driven number, overshoot, settle tick. Knobs for stiffness/damping.
+D — Build the toast/notification stack: stagger in, physics exit, queue logic in a custom hook.`,
+  tasks:[
+    {t:"Udemy · React Complete Guide — useEffect, useRef, custom hooks (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/"},
+    {t:"Framer Motion docs — springs, variants, gestures, layout animations (read + sandbox)",k:"learn",xp:10},
+    {t:"JUICE · XP count-up ticker component with overshoot + adjustable spring knobs",k:"build",xp:25},
+    {t:"JUICE · toast stack with stagger, physics exit, and a useToastQueue() custom hook",k:"build",xp:25},
+    {t:"AI-first rep: prompt Claude for 3 different spring implementations, critique each in writing, keep the best — save the critique as repo notes",k:"ai",xp:15},
+    {t:"POST · 15-sec clip of the XP ticker: 'Porting 10 years of game juice to the web, component 1.'",k:"tweet",xp:15},
+  ]
+},
+{
+  n:3, dates:"Jul 27 – Aug 2", title:"Finish + ship JUICE",
+  focus:"Round out 6–8 components, refactor once with proper types, deploy, and write the README as a design essay: what game UI knows about feedback that web UI forgot. Then market it for a week — distribution is half the job.",
+  sessions:`A — Build: hold-to-confirm charge button (state-driven color) + health bar w/ chip-damage ghost trail.
+B — Build: radial menu w/ keyboard (gamepad-style) focus navigation + useImpact() screen-shake hook.
+C — Refactor pass: shared hooks, strict types (no any), knobs panel on every demo page. Deploy to Vercel.
+D — Write the README essay + record clips of every component.`,
+  tasks:[
+    {t:"JUICE · hold-to-confirm charge button + chip-damage health bar",k:"build",xp:25},
+    {t:"JUICE · radial menu with arrow-key/gamepad-style focus nav + useImpact() feedback hook",k:"build",xp:25},
+    {t:"Refactor: extract shared hooks, eliminate every `any`, add a knobs panel per demo",k:"build",xp:15},
+    {t:"Deploy Juice to Vercel with a landing page",k:"ship",xp:20},
+    {t:"Write README as design essay: 'What game UI knows about feedback that web UI forgot'",k:"build",xp:15},
+    {t:"POST · launch thread: one clip per component, essay linked. Then one component clip per day for 5 days.",k:"tweet",xp:20},
+    {t:"AI-first rep: use Claude to red-team your components (a11y, reduced-motion, perf) and fix 3 findings",k:"ai",xp:15},
+  ]
+},
+{
+  n:4, dates:"Aug 3 – Aug 9", title:"AGENT HUD — foundation + teardown",
+  focus:"Start Project 2: an AI chat interface where agent state (tool calls, thinking, background work) is visualized with game-HUD clarity — cast bars, status effects, a kill-feed activity log. This week: Next.js foundation, streaming hello-world, and a serious interaction teardown of Claude, Cursor, and Perplexity.",
+  sessions:`A — Udemy React course Next.js sections: App Router, server vs client components, API routes.
+B — Vercel AI SDK docs. Scaffold Next.js + Tailwind + shadcn. Wire basic streaming chat (Anthropic/OpenAI API).
+C — Interaction teardown: 90 min each in Claude, Cursor, Perplexity. Note streaming affordances, interruption, tool visibility, error recovery.
+D — Write the Agent HUD design spec: HUD metaphors mapped to agent states (cast bar = long tool run, status chips = active context, feed = actions).`,
+  tasks:[
+    {t:"Udemy · Next.js sections — App Router, server/client components, API routes (~3h)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/"},
+    {t:"Scaffold Next.js + TS + Tailwind + shadcn/ui project, deploy skeleton to Vercel",k:"build",xp:15},
+    {t:"Wire basic streaming chat with the Vercel AI SDK (ugly is fine)",k:"build",xp:25},
+    {t:"Interaction teardown of Claude / Cursor / Perplexity — written notes with screenshots",k:"learn",xp:15},
+    {t:"Write the Agent HUD spec: map game-HUD patterns to agent states (this doc goes in the case study later)",k:"ai",xp:20},
+    {t:"POST · teardown thread: '3 AI interfaces through a game-UI lens — what they get wrong about state visibility'",k:"tweet",xp:20},
+  ]
+},
+{
+  n:5, dates:"Aug 10 – Aug 16", title:"AGENT HUD — streaming done right",
+  focus:"The unglamorous details that separate design engineers from designers-who-code: streaming markdown rendering, autoscroll that respects the user's scroll position, and the full tool-call lifecycle (pending → running → success/error) with motion.",
+  sessions:`A — Streaming text rendering: cadence, markdown-as-it-streams, token buffering.
+B — Autoscroll: pin-to-bottom that releases when user scrolls up, returns on new message. (Famously fiddly — nail it.)
+C — Tool-call lifecycle UI: state machine for pending/running/success/error, cast-bar treatment for long runs.
+D — Interruption: stop generation, edit-and-resend, regenerate. Wire to real API behavior.`,
+  tasks:[
+    {t:"Streaming markdown rendering with clean cadence (no layout jank while tokens arrive)",k:"build",xp:25},
+    {t:"Autoscroll that respects user scroll position — document the logic in a code comment essay",k:"build",xp:20},
+    {t:"Tool-call lifecycle UI: cast bar for long-running tools, distinct error/success states",k:"build",xp:25},
+    {t:"Interruption controls: stop, edit-and-resend, regenerate",k:"build",xp:15},
+    {t:"AI-first rep: use AI to generate 5 edge-case conversation scripts (huge code blocks, rapid tool calls, errors mid-stream) and harden against them",k:"ai",xp:15},
+    {t:"POST · detail post on the autoscroll problem — before/after clip",k:"tweet",xp:15},
+  ]
+},
+{
+  n:6, dates:"Aug 17 – Aug 23", title:"AGENT HUD — the signature layer",
+  focus:"Add the layer nobody else's portfolio has: game feel. Impact ticks when tools complete, status-effect chips for active context, an activity feed with kill-feed readability. Plus the craft that hiring managers actually probe: empty states, error states, keyboard-first navigation.",
+  sessions:`A — Status-effect chips (files attached, memory on, tools armed) + impact feedback on tool completion (from Juice).
+B — Kill-feed activity log: compact, scannable, timestamped, filterable.
+C — Edge states: empty, error, loading skeletons, offline. Every state designed, not defaulted.
+D — Keyboard-first pass: full app navigable without a mouse (your gamepad-nav expertise, translated).`,
+  tasks:[
+    {t:"Status-effect chips for active context + impact feedback on tool completion (dogfood Juice)",k:"build",xp:25},
+    {t:"Kill-feed style activity log with filtering",k:"build",xp:20},
+    {t:"Design every edge state: empty, error, loading, offline",k:"build",xp:20},
+    {t:"Keyboard-first navigation across the whole app",k:"build",xp:15},
+    {t:"AI-first rep: build one small feature entirely by prompting (spec → AI code → your review pass) and log the workflow honestly",k:"ai",xp:15},
+    {t:"POST · clip of the HUD layer: 'What if your AI agent had a real HUD?'",k:"tweet",xp:15},
+  ]
+},
+{
+  n:7, dates:"Aug 24 – Aug 30", title:"AGENT HUD — polish, ship, write",
+  focus:"Performance pass, a demo mode with canned responses so visitors don't need API keys, deployment, and the case study. The case study is what gets interviews — budget real hours: problem → principles → three hard details you solved → what's next.",
+  sessions:`A — Perf: React DevTools profiler, memoize what matters, kill streaming jank.
+B — Demo mode (canned responses) + production deploy on Vercel.
+C — Write the case study (draft).
+D — Edit case study, record the hero demo video, launch thread.`,
+  tasks:[
+    {t:"Performance pass with React DevTools profiler — before/after numbers in notes",k:"build",xp:20},
+    {t:"Demo mode with canned responses; deploy production build to Vercel",k:"ship",xp:20},
+    {t:"Write full case study: problem → interaction principles → 3 hard details → next",k:"build",xp:25},
+    {t:"Record a 60–90 sec hero demo video",k:"build",xp:10},
+    {t:"POST · Agent HUD launch thread with demo video + case study link",k:"tweet",xp:20},
+    {t:"Milestone check: rebuild a Juice component from memory, no AI, under 1 hour. If you can't, schedule 2h/wk fundamentals drills.",k:"learn",xp:15},
+  ]
+},
+{
+  n:8, dates:"Aug 31 – Sep 6", title:"SPRINGBOARD — plugin architecture",
+  focus:"Start Project 3: Springboard, a motion-handoff plugin for Figma. Designers pick frames or prototype transitions, dial real spring physics with live preview, and export production Framer Motion + CSS — with an AI mode that generates and explains the code. Learn the plugin sandbox model from Figma's official docs (skip Udemy here).",
+  sessions:`A — Figma plugin docs: sandbox vs UI iframe, message passing, manifest. Run 2 official samples.
+B — Skeleton: plugin reads current selection, displays node names + prototype transition data in the UI panel.
+C — Live preview pane: a proxy element animating with adjustable spring params (stiffness, damping, mass).
+D — Spec the export format: what a Framer Motion snippet and a CSS snippet should look like per transition type.`,
+  tasks:[
+    {t:"Read Figma plugin docs + run 2 official samples; notes on sandbox/iframe message passing",k:"learn",xp:15},
+    {t:"SPRINGBOARD · skeleton: read selection + prototype transitions, render in plugin UI",k:"build",xp:25},
+    {t:"SPRINGBOARD · live spring preview with stiffness/damping/mass knobs",k:"build",xp:25},
+    {t:"Write export-format spec for Framer Motion + CSS output",k:"build",xp:10},
+    {t:"POST · announce Springboard: 'I'm building the motion handoff tool I always wished my engineers had.'",k:"tweet",xp:15},
+  ]
+},
+{
+  n:9, dates:"Sep 7 – Sep 13", title:"SPRINGBOARD — code generation core",
+  focus:"The core value: turn a dialed-in motion spec into clean, copy-pasteable Framer Motion and CSS code. This is a compiler for your motion taste — and a fantastic code-walkthrough artifact for interviews.",
+  sessions:`A — Code generator v1: spring spec → Framer Motion transition snippet.
+B — Code generator v2: CSS keyframes/transition fallback output + copy-to-clipboard UX.
+C — Multi-element choreography: stagger + sequence support across selected layers.
+D — Dogfood: spec 3 real animations (use CPH-style patterns, abstracted) end-to-end; fix what hurts.`,
+  tasks:[
+    {t:"Generator: motion spec → Framer Motion snippet (typed, formatted, copy-ready)",k:"build",xp:30},
+    {t:"Generator: CSS output path + one-click copy with confirmation feedback",k:"build",xp:20},
+    {t:"Stagger + sequence choreography across multiple selected layers",k:"build",xp:25},
+    {t:"Dogfood 3 real animations end-to-end and fix the top 3 friction points",k:"build",xp:15},
+    {t:"POST · clip: dial a spring in Figma → paste working code in a sandbox. The money shot.",k:"tweet",xp:15},
+  ]
+},
+{
+  n:10, dates:"Sep 14 – Sep 20", title:"SPRINGBOARD — AI mode + beta",
+  focus:"Add the AI-assist mode: Claude API takes the motion spec + node context and generates adapted code with a plain-language explanation of the choices ('critically damped so it settles without bounce'). Then harden and run a private beta with 5–10 designer friends.",
+  sessions:`A — Claude API integration: spec + context → generated code + explanation. Prompt-engineer the system prompt carefully.
+B — Settings persistence (figma.clientStorage), error handling, empty states, perf on large selections.
+C — Private beta: recruit 5–10 designers (SDS colleagues count). Watch 2 of them use it live.
+D — Fix top beta findings. Prepare listing assets: cover art, description, demo GIF.`,
+  tasks:[
+    {t:"AI mode: Claude API generates adapted code + plain-language rationale",k:"ai",xp:30},
+    {t:"clientStorage settings, error handling, empty states, large-selection perf",k:"build",xp:20},
+    {t:"Run private beta with 5–10 designers; watch 2 sessions live; log findings",k:"ship",xp:20},
+    {t:"Fix top 5 beta findings",k:"build",xp:15},
+    {t:"POST · beta learnings post: 3 things designers did that you didn't expect",k:"tweet",xp:15},
+  ]
+},
+{
+  n:11, dates:"Sep 21 – Sep 27", title:"Ship SPRINGBOARD + start the machine",
+  focus:"Submit to Figma Community early in the week (review takes days). While it's in review, start the application machine: shortlist 20 NYC/remote/Seattle companies, identify the actual design engineers and design leads at each, and start engaging genuinely. Warm beats cold, always.",
+  sessions:`A — Final QA + submit to Figma Community with cover art, listing copy, demo GIF.
+B — Write the Springboard case study: concept → generator architecture → sandbox constraints you fought → beta learnings.
+C — Build the target sheet: 20 companies (Tier 1: Runway, Browser Co, Hume, ElevenLabs, Notion, Figma…), names of design engineers/leads, links.
+D — Engage: follow, reply substantively to 10 people's work. Zero asks. Just be visibly good.`,
+  tasks:[
+    {t:"Submit Springboard to Figma Community (cover art, copy, demo GIF)",k:"ship",xp:30},
+    {t:"Write Springboard case study",k:"build",xp:20},
+    {t:"Target sheet: 20 companies + named design engineers/leads (NYC / remote / Seattle weighted)",k:"build",xp:15},
+    {t:"Engage substantively with 10 target-company designers' public work — no asks",k:"tweet",xp:15},
+    {t:"POST · Springboard launch thread the moment it's approved",k:"tweet",xp:20},
+  ]
+},
+{
+  n:12, dates:"Sep 28 – Oct 4", title:"Portfolio + first applications",
+  focus:"Build the portfolio site in Next.js as a craft object — small, obsessively detailed, dogfooding your own Juice components. Positioning: 'Design engineer. 10 years directing and building game UI — now applying real-time interaction craft to AI interfaces.' You are a senior design leader who codes. Price and pitch accordingly. Then send the first 5 tailored applications.",
+  sessions:`A — Portfolio site: structure + the three project pages (live demo, case study, code link each).
+B — Detail pass: type, motion touches from Juice, reduced-motion respected, fast.
+C — Resume rewrite in design-engineer language (design systems, MVVM state architecture, motion systems, shipped software). Deploy portfolio.
+D — 5 tailored applications: short note referencing something specific in their product + one relevant project link. No cover letters.`,
+  tasks:[
+    {t:"Build portfolio site in Next.js using your own Juice components",k:"build",xp:25},
+    {t:"Detail pass: typography, motion, reduced-motion support, performance",k:"build",xp:15},
+    {t:"Rewrite resume in design-engineer language; deploy portfolio",k:"ship",xp:20},
+    {t:"Send 5 tailored applications (Tier 1 first — HOLD ElevenLabs until Voice Director ships)",k:"ship",xp:25},
+    {t:"POST · portfolio launch + '12 weeks in public' retrospective thread — your best-performing post, guaranteed",k:"tweet",xp:20},
+    {t:"Set the ongoing rhythm: 2h/wk fundamentals drills + 5h/wk applications & take-homes + keep posting",k:"learn",xp:10},
+  ]
+},
+{
+  n:13, dates:"Oct 5 – Oct 11", title:"VOICE DIRECTOR — built for ElevenLabs, pt. 1",
+  focus:"The targeted strike. Build a voice-direction studio for game dialogue on the ElevenLabs API — the workflow a VO director runs in a booth (cast, direct, take, review), translated to their product. You've sat in these sessions; nobody else applying can build this. This week: API foundation, script model, and casting.",
+  sessions:`A — ElevenLabs docs deep-read: TTS endpoints, voice library, voice settings (stability/similarity/style), streaming. Get a key, generate your first lines.
+B — Script model: paste/import a scene → parsed into characters + lines with per-line direction notes. Use a short original scene (military-toned — you write this flavor daily).
+C — Casting UI: browse/search their voice library per character, audition voices on a sample line, lock the cast.
+D — Per-line direction controls: their voice settings exposed as director language ('flatter read', 'more urgency') mapped to API params.`,
+  tasks:[
+    {t:"Read ElevenLabs API docs end-to-end; working TTS call with streaming playback in a sandbox",k:"learn",xp:15},
+    {t:"Script import: scene → characters + lines data model (write an original 12-line scene)",k:"build",xp:20},
+    {t:"Casting UI: voice library browse + audition per character",k:"build",xp:25},
+    {t:"Direction controls: director-language presets mapped to voice settings params",k:"ai",xp:25},
+    {t:"POST · 'Building a VO direction booth on the ElevenLabs API' — clip of casting auditions",k:"tweet",xp:15},
+  ]
+},
+{
+  n:14, dates:"Oct 12 – Oct 18", title:"VOICE DIRECTOR — ship it + the targeted application",
+  focus:"Batch generation, the review room (waveform timeline, approve/retake per line, take history), polish, deploy — then the payload: apply to ElevenLabs with the live project and a one-page '90 days at ElevenLabs' memo. This is what 'productive on day one' looks like as evidence instead of a claim.",
+  sessions:`A — Batch generate the scene: queue UI with per-line progress (cast-bar treatment from Agent HUD), error/retry handling.
+B — Review room: waveform per take, play-through of the full scene, approve/retake, take history per line.
+C — Polish + deploy with demo mode (pre-generated audio so visitors burn no credits). Case study write-up.
+D — The payload: 1-page memo 'What I'd build in my first 90 days at ElevenLabs' (game-studio workflows, gaps you hit in their API/UX, 3 concrete proposals). Send the application with project + memo. Launch thread.`,
+  tasks:[
+    {t:"Batch generation queue with per-line progress, cancel, and retry",k:"build",xp:25},
+    {t:"Review room: waveform timeline, scene play-through, approve/retake, take history",k:"build",xp:30},
+    {t:"Deploy with demo mode (pre-generated audio); write the case study",k:"ship",xp:20},
+    {t:"Write the '90 days at ElevenLabs' memo — honest API/UX gaps + 3 proposals",k:"ai",xp:20},
+    {t:"Send the ElevenLabs application: role + project link + memo. Also DM/email it to a designer or PM there.",k:"ship",xp:30},
+    {t:"POST · Voice Director launch thread; tag it so their team sees it",k:"tweet",xp:20},
+  ]
+},
+];
+
+/* ================= LEVELS ================= */
+const LEVELS = [
+  {at:0,   name:"Recruit"},
+  {at:120, name:"Operator"},
+  {at:300, name:"Component Smith"},
+  {at:520, name:"Motion Specialist"},
+  {at:760, name:"Interface Veteran"},
+  {at:1000,name:"Ship Captain"},
+  {at:1200,name:"Design Engineer"},
+  {at:1450,name:"Day-One Hire"},
+];
+
+/* ================= STATE ================= */
+const KEY = "de-roadmap-v2";
+let state = { checked:{} };
+let TOTAL_XP = 0, TOTAL_TASKS = 0;
+
+function taskId(w,i){ return "w"+w+"t"+i; }
+
+async function loadState(){
+  try{
+    if(window.storage && window.storage.get){
+      const res = await window.storage.get(KEY);
+      if(res && res.value) state = JSON.parse(res.value);
+    }else{
+      const raw = localStorage.getItem(KEY);
+      if(raw) state = JSON.parse(raw);
+    }
+  }catch(e){ /* first run — defaults */ }
+}
+let saveTimer=null;
+function saveState(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async ()=>{
+    try{
+      if(window.storage && window.storage.set){
+        await window.storage.set(KEY, JSON.stringify(state));
+      }else{
+        localStorage.setItem(KEY, JSON.stringify(state));
+      }
+      setHint("Progress saved.");
+    }
+    catch(e){ setHint("Couldn't save — progress is session-only right now."); }
+  },300);
+}
+function setHint(msg){ document.getElementById("saveHint").textContent = msg; }
+
+/* ================= RENDER ================= */
+function currentWeekIndex(){
+  const start = new Date("2026-07-13T00:00:00");
+  const now = new Date();
+  const diff = Math.floor((now-start)/(7*24*3600*1000));
+  return Math.min(Math.max(diff,0),13);
+}
+
+function render(){
+  const main = document.getElementById("main");
+  const curW = currentWeekIndex()+1;
+  let html = "";
+  for(const ph of PHASES){
+    html += `<div class="phase-label"><span>${ph.label}</span> ${ph.title}</div>`;
+    for(const wn of ph.weeks){
+      const w = WEEKS[wn-1];
+      const isCur = wn===curW;
+      html += `<details class="week" id="week${wn}" ${isCur?"open":""}>
+        <div class="stamp"><b>MISSION COMPLETE</b></div>
+        <summary>
+          <div class="wk-num">W${String(wn).padStart(2,"0")}<small>WEEK</small></div>
+          <div class="wk-head">
+            <div class="wk-title">${w.title} ${isCur?'<span class="active-badge">Active</span>':""}</div>
+            <div class="wk-dates">${w.dates} · 2026</div>
+          </div>
+          <div class="wk-meter">
+            <span class="wk-count" id="count${wn}"></span>
+            <div class="wk-prog"><div class="f" id="prog${wn}"></div></div>
+            <span class="chev">›</span>
+          </div>
+        </summary>
+        <div class="wk-body">
+          <p class="focus">${w.focus}</p>
+          <div class="sessions">${w.sessions}</div>
+          <ul class="tasks">
+            ${w.tasks.map((t,i)=>{
+              const id = taskId(wn,i);
+              const kLabel = {build:"Build",learn:"Learn",ai:"AI-First",tweet:"Post",ship:"Ship"}[t.k];
+              return `<li class="task"><label>
+                <input type="checkbox" data-id="${id}" data-xp="${t.xp}" data-week="${wn}">
+                <span class="box"></span>
+                <span class="tag ${t.k}">${kLabel}</span>
+                <span class="task-text">${t.t}${t.link?` <a class="task-link" href="${t.link}" target="_blank" rel="noopener" title="Open course">course&nbsp;↗</a>`:""}</span>
+                <span class="task-xp">+${t.xp}</span>
+              </label></li>`;
+            }).join("")}
+          </ul>
+        </div>
+      </details>`;
+    }
+  }
+  main.innerHTML = html;
+
+  TOTAL_XP = WEEKS.reduce((s,w)=>s+w.tasks.reduce((a,t)=>a+t.xp,0),0);
+  TOTAL_TASKS = WEEKS.reduce((s,w)=>s+w.tasks.length,0);
+  document.getElementById("xpMax").textContent = TOTAL_XP;
+  document.getElementById("taskMax").textContent = TOTAL_TASKS;
+
+  // hydrate
+  document.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.checked = !!state.checked[cb.dataset.id];
+    cb.addEventListener("change", onToggle);
+  });
+  updateHUD(false);
+}
+
+/* ================= LOGIC ================= */
+function onToggle(e){
+  const cb = e.target;
+  state.checked[cb.dataset.id] = cb.checked;
+  if(!cb.checked) delete state.checked[cb.dataset.id];
+  saveState();
+  updateHUD(true, cb.checked ? +cb.dataset.xp : 0, cb.dataset.week);
+}
+
+function updateHUD(animate, gained=0, weekN=null){
+  let xp=0, tasks=0;
+  const weekDone={}, weekTotal={}, weekChecked={};
+  WEEKS.forEach(w=>{ weekTotal[w.n]=w.tasks.length; weekChecked[w.n]=0; });
+  WEEKS.forEach(w=>w.tasks.forEach((t,i)=>{
+    if(state.checked[taskId(w.n,i)]){ xp+=t.xp; tasks++; weekChecked[w.n]++; }
+  }));
+
+  document.getElementById("xpNow").textContent = xp;
+  document.getElementById("taskNow").textContent = tasks;
+  document.getElementById("xpFill").style.width = (xp/TOTAL_XP*100)+"%";
+
+  // rank
+  let lvl = LEVELS[0];
+  for(const L of LEVELS) if(xp>=L.at) lvl=L;
+  document.getElementById("levelName").textContent = lvl.name;
+
+  // post streak: consecutive weeks from W1 with ALL tweet tasks done
+  let streak=0;
+  for(const w of WEEKS){
+    const tweetIdx = w.tasks.map((t,i)=>t.k==="tweet"?i:-1).filter(i=>i>=0);
+    const allDone = tweetIdx.length>0 && tweetIdx.every(i=>state.checked[taskId(w.n,i)]);
+    if(allDone) streak++; else break;
+  }
+  document.getElementById("streak").textContent = streak;
+
+  // week progress + stamps
+  WEEKS.forEach(w=>{
+    const pct = weekChecked[w.n]/weekTotal[w.n]*100;
+    const prog = document.getElementById("prog"+w.n);
+    const count = document.getElementById("count"+w.n);
+    if(prog) prog.style.width = pct+"%";
+    if(count) count.textContent = weekChecked[w.n]+"/"+weekTotal[w.n];
+    const card = document.getElementById("week"+w.n);
+    if(card) card.classList.toggle("done", weekChecked[w.n]===weekTotal[w.n]);
+  });
+
+  if(animate && gained>0){
+    const done = weekN && weekChecked[weekN]===weekTotal[weekN];
+    showToast(gained, done ? "MISSION COMPLETE — WEEK "+weekN : pickMsg());
+    if(done) confetti();
+  }
+}
+
+/* ================= DAILY CHECK-IN STREAK ================= */
+function dateKey(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function tickDayStreak(){
+  const today = new Date();
+  const todayKey = dateKey(today);
+  if(state.lastVisit !== todayKey){
+    const yest = new Date(today); yest.setDate(yest.getDate()-1);
+    state.dayStreak = (state.lastVisit === dateKey(yest)) ? (state.dayStreak||0)+1 : 1;
+    state.lastVisit = todayKey;
+    saveState();
+  }
+  document.getElementById("dayStreak").textContent = state.dayStreak||0;
+}
+
+/* ================= CONFETTI ================= */
+function confetti(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = document.createElement("canvas");
+  c.style.cssText = "position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:60";
+  c.width = innerWidth; c.height = innerHeight;
+  document.body.appendChild(c);
+  const ctx = c.getContext("2d");
+  const colors = ["#D26601","#0E0E0E","#1F6E43","#F2EFE9"];
+  const parts = Array.from({length:130},()=>({
+    x: c.width/2 + (Math.random()-.5)*c.width*.4,
+    y: c.height*.35,
+    vx:(Math.random()-.5)*14, vy:-(Math.random()*13+5),
+    w: Math.random()*8+4, h: Math.random()*5+3,
+    rot: Math.random()*Math.PI, vr:(Math.random()-.5)*.3,
+    col: colors[Math.floor(Math.random()*colors.length)],
+  }));
+  const t0 = performance.now();
+  (function frame(t){
+    const dt = (t-t0)/1000;
+    ctx.clearRect(0,0,c.width,c.height);
+    for(const p of parts){
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.45; p.rot+=p.vr;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle=p.col; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    }
+    if(dt < 2.2) requestAnimationFrame(frame); else c.remove();
+  })(t0);
+}
+
+const MSGS = ["Shipped.","Momentum.","Commit it.","Frame-perfect.","Juice acquired.","Clean input.","On track.","Post it."];
+function pickMsg(){ return MSGS[Math.floor(Math.random()*MSGS.length)]; }
+
+let toastTimer=null;
+function showToast(xp,msg){
+  const t = document.getElementById("toast");
+  t.querySelector(".plus").textContent = "+"+xp+" XP";
+  document.getElementById("toastMsg").textContent = " · "+msg;
+  t.classList.remove("show"); void t.offsetWidth;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),1800);
+}
+
+document.getElementById("jumpBtn").addEventListener("click", ()=>{
+  const el = document.getElementById("week"+(currentWeekIndex()+1));
+  if(el){ el.open = true; el.scrollIntoView({behavior:"smooth", block:"start"}); }
+});
+
+document.getElementById("resetBtn").addEventListener("click", async ()=>{
+  if(!confirm("Reset all progress? This clears every checkbox.")) return;
+  state = {checked:{}, lastVisit:state.lastVisit, dayStreak:state.dayStreak};
+  try{
+    if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(state)); }
+    else{ localStorage.removeItem(KEY); }
+  }catch(e){}
+  document.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false);
+  updateHUD(false);
+});
+
+/* ================= INIT ================= */
+(async ()=>{
+  await loadState();
+  render();
+  tickDayStreak();
+})();
+</script>
+</body>
+</html>
