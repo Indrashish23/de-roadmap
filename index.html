@@ -14,6 +14,23 @@
     --steel:#8C8880;
     --line:#0E0E0E;
     --ok:#1F6E43;
+    /* header stays dark in both themes */
+    --hbg:#0E0E0E;
+    --hfg:#F2EFE9;
+    --dim:#B9B4AA;
+    /* surfaces that flip between themes */
+    --card:#FBF9F4;
+    --muted:#4a463f;
+    --hair:#d8d3c8;
+  }
+  :root[data-theme="dark"]{
+    --ink:#ECEAE4;      /* foreground + borders become light */
+    --paper:#131313;    /* page background becomes dark */
+    --steel:#9a958c;
+    --ok:#37946a;
+    --card:#1e1e1e;
+    --muted:#c7c1b6;
+    --hair:#333030;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--paper)}
@@ -25,24 +42,32 @@
 
   /* ============ HEADER / HUD ============ */
   header{
-    border-bottom:3px solid var(--ink);
-    background:var(--ink);color:var(--paper);
+    border-bottom:3px solid var(--orange);
+    background:var(--hbg);color:var(--hfg);
     padding:28px 0 22px;
   }
-  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
   .top-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .top-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .theme-btn{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    background:transparent;color:var(--hfg);border:2px solid var(--hfg);
+    padding:5px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  }
+  .theme-btn:hover{background:var(--hfg);color:var(--hbg)}
+  .theme-btn:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
   .faction-pick{display:flex;align-items:center;gap:8px}
   .faction-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
   #factionSel{
     font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-    background:transparent;color:var(--paper);border:2px solid var(--orange);
+    background:transparent;color:var(--hfg);border:2px solid var(--orange);
     padding:5px 8px;cursor:pointer;
   }
-  #factionSel:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
-  #factionSel option{background:var(--ink);color:var(--paper)}
+  #factionSel:focus-visible{outline:3px solid var(--hfg);outline-offset:2px}
+  #factionSel option{background:var(--hbg);color:var(--hfg)}
   h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,5vw,44px);line-height:1.02;text-transform:uppercase;letter-spacing:.01em;margin:6px 0 4px}
   h1 .accent{color:var(--orange)}
-  .subline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#B9B4AA;margin-bottom:16px}
+  .subline{font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--dim);margin-bottom:16px}
 
   /* ---- current step banner ---- */
   .now-banner{
@@ -60,36 +85,36 @@
   }
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.6)}}
   .now-step{
-    font-family:'Archivo Black',sans-serif;font-size:16px;text-transform:uppercase;
-    letter-spacing:.01em;color:var(--paper);line-height:1.15;
+    font-family:'Archivo Black',sans-serif;font-size:18px;text-transform:uppercase;
+    letter-spacing:.01em;color:var(--hfg);line-height:1.15;
   }
   .now-step span:first-child{color:var(--orange)}
-  .now-sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#B9B4AA;margin-top:5px}
+  .now-sub{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--dim);margin-top:5px}
   .now-jump{
-    font-family:'Archivo Black',sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
-    background:var(--orange);color:var(--ink);border:none;padding:11px 18px;cursor:pointer;white-space:nowrap;
+    font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--orange);color:#0E0E0E;border:none;padding:11px 18px;cursor:pointer;white-space:nowrap;
   }
-  .now-jump:hover{background:var(--paper)}
-  .now-jump:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
+  .now-jump:hover{background:var(--hfg)}
+  .now-jump:focus-visible{outline:3px solid var(--hfg);outline-offset:2px}
 
   .hud{display:grid;grid-template-columns:1fr auto auto auto auto;gap:18px;align-items:end}
   @media(max-width:640px){.hud{grid-template-columns:1fr 1fr;gap:14px}}
-  .stat .label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#B9B4AA;margin-bottom:4px}
-  .stat .value{font-family:'Archivo Black',sans-serif;font-size:26px;color:var(--paper);font-variant-numeric:tabular-nums}
-  .stat .value small{font-size:13px;color:var(--steel)}
+  .stat .label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+  .stat .value{font-family:'Archivo Black',sans-serif;font-size:29px;color:var(--hfg);font-variant-numeric:tabular-nums}
+  .stat .value small{font-size:14px;color:#8C8880}
   #levelName{color:var(--orange)}
 
-  .xpbar{grid-column:1/-1;height:14px;border:2px solid var(--paper);position:relative;background:transparent}
+  .xpbar{grid-column:1/-1;height:14px;border:2px solid var(--hfg);position:relative;background:transparent}
   .xpbar .fill{
     height:100%;background:var(--orange);width:0%;
     transition:width .5s cubic-bezier(.22,1.4,.36,1);
   }
-  .xpbar .ghost{position:absolute;inset:0;height:100%;background:var(--paper);opacity:.25;width:0%;transition:width 1.2s ease .3s}
+  .xpbar .ghost{position:absolute;inset:0;height:100%;background:var(--hfg);opacity:.25;width:0%;transition:width 1.2s ease .3s}
 
   /* ============ BRIEF STRIP ============ */
   .brief{
     border-bottom:3px solid var(--ink);padding:14px 0;
-    font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.7;
+    font-family:'IBM Plex Mono',monospace;font-size:13.5px;line-height:1.7;
   }
   .brief b{color:var(--orange)}
   .brief .wrap{display:flex;gap:24px;flex-wrap:wrap}
@@ -98,10 +123,10 @@
   /* ============ COURSE SHELF ============ */
   .shelf{
     border-bottom:3px solid var(--ink);padding:10px 0;
-    font-family:'IBM Plex Mono',monospace;font-size:11px;
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;
   }
   .shelf .wrap{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap}
-  .shelf .shelf-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
+  .shelf .shelf-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
   .shelf a{
     color:var(--ink);text-decoration:none;border:2px solid var(--ink);padding:4px 10px;
     display:inline-flex;align-items:center;gap:6px;
@@ -113,14 +138,14 @@
   /* ============ WEEK CARDS ============ */
   main{padding-top:26px}
   .phase-label{
-    font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:13px;
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:14px;
     letter-spacing:.14em;margin:34px 0 12px;display:flex;align-items:center;gap:12px;
   }
   .phase-label::after{content:"";flex:1;height:3px;background:var(--ink)}
   .phase-label span{color:var(--orange)}
 
   details.week{border:3px solid var(--ink);margin-bottom:16px;background:var(--paper);position:relative}
-  details.week[open]{background:#FBF9F4}
+  details.week[open]{background:var(--card)}
   summary{
     list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;
     padding:14px 16px;user-select:none;
@@ -128,15 +153,15 @@
   summary::-webkit-details-marker{display:none}
   summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
   .wk-num{
-    font-family:'Archivo Black',sans-serif;font-size:22px;min-width:58px;
+    font-family:'Archivo Black',sans-serif;font-size:24px;min-width:60px;
     border-right:3px solid var(--ink);padding-right:14px;line-height:1;
   }
   .wk-num small{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;font-weight:400;color:var(--steel);margin-top:3px}
   .wk-head{flex:1;min-width:0}
-  .wk-title{font-family:'Archivo Black',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.02em}
-  .wk-dates{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);margin-top:2px}
+  .wk-title{font-family:'Archivo Black',sans-serif;font-size:17px;text-transform:uppercase;letter-spacing:.02em}
+  .wk-dates{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel);margin-top:2px}
   .wk-meter{display:flex;align-items:center;gap:10px}
-  .wk-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);white-space:nowrap}
+  .wk-count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel);white-space:nowrap}
   .wk-prog{width:70px;height:10px;border:2px solid var(--ink);overflow:hidden}
   .wk-prog .f{height:100%;background:var(--orange);width:0%;transition:width .4s cubic-bezier(.22,1.4,.36,1)}
   .chev{font-family:'IBM Plex Mono',monospace;font-size:14px;transition:transform .2s}
@@ -161,16 +186,16 @@
 
   .wk-body{border-top:3px solid var(--ink);padding:16px}
   .focus{
-    font-size:13.5px;line-height:1.6;margin-bottom:14px;max-width:64ch;
+    font-size:15.5px;line-height:1.6;margin-bottom:14px;max-width:64ch;
   }
   .sessions{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.8;color:#4a463f;
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.8;color:var(--muted);
     border-left:3px solid var(--orange);padding-left:12px;margin-bottom:16px;white-space:pre-line;
   }
 
   /* ============ TASKS ============ */
   ul.tasks{list-style:none}
-  .task{border-top:1px solid #d8d3c8}
+  .task{border-top:1px solid var(--hair)}
   .task:first-child{border-top:none}
   .task-row{
     display:flex;align-items:flex-start;gap:12px;padding:9px 4px;
@@ -190,7 +215,7 @@
   .task input:checked + .box::after{transform:scale(1)}
   .task input:focus-visible + .box{outline:3px solid var(--orange);outline-offset:2px}
   .task-text{
-    flex:1;font-size:13.5px;line-height:1.5;cursor:pointer;
+    flex:1;font-size:15.5px;line-height:1.5;cursor:pointer;
     display:flex;align-items:flex-start;gap:10px;background:none;border:none;
     text-align:left;color:var(--ink);padding:0;font-family:inherit;
   }
@@ -202,9 +227,9 @@
     color:var(--steel);width:14px;text-align:center;user-select:none;
   }
   .task.open .task-caret{color:var(--orange)}
-  .task-xp{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--steel);flex:none;margin-top:3px}
+  .task-xp{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);flex:none;margin-top:3px}
   .task-link{
-    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--orange);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--orange);
     text-decoration:none;border-bottom:2px solid var(--orange);white-space:nowrap;
   }
   .task-link:hover{background:var(--orange);color:var(--paper)}
@@ -216,11 +241,11 @@
   .task.open .task-desc{grid-template-rows:1fr}
   .task-desc-inner{overflow:hidden;min-height:0}
   .task-desc-inner p{
-    font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.7;color:#4a463f;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:var(--muted);
     border-left:3px solid var(--orange);padding:2px 0 2px 12px;margin:2px 0 12px 32px;max-width:70ch;
   }
   .tag{
-    font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
     padding:2px 6px;flex:none;margin-top:3px;border:1.5px solid var(--ink);
   }
   .tag.build{background:var(--ink);color:var(--paper)}
@@ -233,7 +258,7 @@
   #toast{
     position:fixed;bottom:22px;left:50%;transform:translate(-50%,80px);opacity:0;
     background:var(--ink);color:var(--paper);border:3px solid var(--orange);
-    font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.08em;
+    font-family:'Archivo Black',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.08em;
     padding:10px 20px;pointer-events:none;z-index:50;
     transition:transform .25s cubic-bezier(.22,1.6,.36,1),opacity .25s;
   }
@@ -241,23 +266,23 @@
   #toast .plus{color:var(--orange)}
 
   /* ============ FOOTER / TARGETS ============ */
-  .targets{border:3px solid var(--ink);margin-top:36px;padding:16px;background:#FBF9F4}
-  .targets h2{font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
-  .assets summary{font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;padding:0}
+  .targets{border:3px solid var(--ink);margin-top:36px;padding:16px;background:var(--card)}
+  .targets h2{font-family:'Archivo Black',sans-serif;font-size:15.5px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+  .assets summary{font-family:'Archivo Black',sans-serif;font-size:15.5px;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;padding:0}
   .assets summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
   .assets .asset{margin-top:14px}
-  .assets h3{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .assets h3{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
   .assets pre{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.75;white-space:pre-wrap;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.75;white-space:pre-wrap;
     border-left:3px solid var(--ink);padding:10px 14px;background:var(--paper);
   }
-  .assets .note{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--steel);margin-top:6px}
-  .targets p{font-size:13px;line-height:1.7;max-width:70ch;margin-bottom:8px}
+  .assets .note{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);margin-top:6px}
+  .targets p{font-size:14.5px;line-height:1.7;max-width:70ch;margin-bottom:8px}
   .targets b{color:var(--orange)}
   .reset-row{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-  .hint{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--steel)}
+  .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel)}
   button.reset{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
     background:transparent;border:2px solid var(--ink);padding:8px 14px;cursor:pointer;color:var(--ink);
   }
   button.reset:hover{background:var(--ink);color:var(--paper)}
@@ -267,6 +292,17 @@
     *{transition:none!important;animation:none!important}
   }
 </style>
+<script>
+  /* set theme before paint to avoid flash */
+  try{
+    var raw = localStorage.getItem("de-roadmap-v2");
+    var t = raw && JSON.parse(raw).theme;
+    if(t!=="dark" && t!=="light"){
+      t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    document.documentElement.dataset.theme = t;
+  }catch(e){}
+</script>
 </head>
 <body>
 
@@ -274,10 +310,13 @@
   <div class="wrap">
     <div class="top-row">
       <div class="eyebrow">// 14-week campaign · Jul 13 – Oct 18, 2026</div>
-      <label class="faction-pick">
-        <span class="faction-lbl">Faction</span>
-        <select id="factionSel" aria-label="Select faction"></select>
-      </label>
+      <div class="top-right">
+        <button id="themeBtn" class="theme-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode"><span id="themeIcon">☾</span> <span id="themeLbl">Dark</span></button>
+        <label class="faction-pick">
+          <span class="faction-lbl">Faction</span>
+          <select id="factionSel" aria-label="Select faction"></select>
+        </label>
+      </div>
     </div>
     <h1>Operation: <span class="accent">Design Engineer</span></h1>
     <div class="subline">game UI director → design engineer · 10–15 hrs/wk · build in public</div>
@@ -905,6 +944,27 @@ document.getElementById("jumpBtn").addEventListener("click", ()=>{
   if(el){ el.open = true; el.scrollIntoView({behavior:"smooth", block:"start"}); }
 });
 
+/* ================= THEME (DARK MODE) ================= */
+function applyTheme(){
+  const dark = state.theme === "dark";
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  const icon = document.getElementById("themeIcon");
+  const lbl = document.getElementById("themeLbl");
+  if(icon) icon.textContent = dark ? "☀" : "☾";
+  if(lbl) lbl.textContent = dark ? "Light" : "Dark";
+}
+function setupTheme(){
+  if(state.theme !== "dark" && state.theme !== "light"){
+    state.theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  applyTheme();
+  document.getElementById("themeBtn").addEventListener("click", ()=>{
+    state.theme = state.theme === "dark" ? "light" : "dark";
+    applyTheme();
+    saveState();
+  });
+}
+
 /* ================= FACTION SELECTOR ================= */
 function setupFaction(){
   const sel = document.getElementById("factionSel");
@@ -922,7 +982,7 @@ function setupFaction(){
 
 document.getElementById("resetBtn").addEventListener("click", async ()=>{
   if(!confirm("Reset all progress? This clears every checkbox.")) return;
-  state = {checked:{}, lastVisit:state.lastVisit, dayStreak:state.dayStreak, faction:state.faction};
+  state = {checked:{}, lastVisit:state.lastVisit, dayStreak:state.dayStreak, faction:state.faction, theme:state.theme};
   try{
     if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(state)); }
     else{ localStorage.removeItem(KEY); }
@@ -937,6 +997,7 @@ document.getElementById("resetBtn").addEventListener("click", async ()=>{
 /* ================= INIT ================= */
 (async ()=>{
   await loadState();
+  setupTheme();
   setupFaction();
   render();
   tickDayStreak();
