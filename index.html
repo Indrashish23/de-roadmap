@@ -32,14 +32,35 @@
   .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
   h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,5vw,44px);line-height:1.02;text-transform:uppercase;letter-spacing:.01em;margin:6px 0 4px}
   h1 .accent{color:var(--orange)}
-  .subline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#B9B4AA}
-  .subrow{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px}
-  button.jump{
-    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-    background:transparent;color:var(--orange);border:2px solid var(--orange);padding:5px 12px;cursor:pointer;
+  .subline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#B9B4AA;margin-bottom:16px}
+
+  /* ---- current step banner ---- */
+  .now-banner{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    margin-bottom:20px;padding:12px 16px;border:2px solid var(--orange);
+    background:rgba(210,102,1,.10);
   }
-  button.jump:hover{background:var(--orange);color:var(--ink)}
-  button.jump:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
+  .now-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--orange);margin-bottom:5px;display:flex;align-items:center;
+  }
+  .now-dot{
+    display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);
+    margin-right:7px;animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.6)}}
+  .now-step{
+    font-family:'Archivo Black',sans-serif;font-size:16px;text-transform:uppercase;
+    letter-spacing:.01em;color:var(--paper);line-height:1.15;
+  }
+  .now-step span:first-child{color:var(--orange)}
+  .now-sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#B9B4AA;margin-top:5px}
+  .now-jump{
+    font-family:'Archivo Black',sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--orange);color:var(--ink);border:none;padding:11px 18px;cursor:pointer;white-space:nowrap;
+  }
+  .now-jump:hover{background:var(--paper)}
+  .now-jump:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
 
   .hud{display:grid;grid-template-columns:1fr auto auto auto auto;gap:18px;align-items:end}
   @media(max-width:640px){.hud{grid-template-columns:1fr 1fr;gap:14px}}
@@ -222,9 +243,14 @@
   <div class="wrap">
     <div class="eyebrow">// 14-week campaign · Jul 13 – Oct 18, 2026</div>
     <h1>Operation: <span class="accent">Design Engineer</span></h1>
-    <div class="subrow">
-      <div class="subline">game UI director → design engineer · 10–15 hrs/wk · build in public</div>
-      <button class="jump" id="jumpBtn">▸ This week</button>
+    <div class="subline">game UI director → design engineer · 10–15 hrs/wk · build in public</div>
+    <div class="now-banner" id="nowBanner">
+      <div class="now-left">
+        <div class="now-tag"><span class="now-dot"></span>Currently on</div>
+        <div class="now-step"><span id="nowWeek">Week 01</span> — <span id="nowTitle">…</span></div>
+        <div class="now-sub"><span id="nowDates"></span> · <span id="nowCount">0/0 tasks done</span></div>
+      </div>
+      <button class="now-jump" id="jumpBtn">Jump to current step ↓</button>
     </div>
     <div class="hud">
       <div class="stat"><div class="label">Rank</div><div class="value" id="levelName">Recruit</div></div>
@@ -604,6 +630,10 @@ function currentWeekIndex(){
 function render(){
   const main = document.getElementById("main");
   const curW = currentWeekIndex()+1;
+  const cw = WEEKS[curW-1];
+  document.getElementById("nowWeek").textContent = "Week "+String(curW).padStart(2,"0");
+  document.getElementById("nowTitle").textContent = cw.title;
+  document.getElementById("nowDates").textContent = cw.dates+" · 2026";
   let html = "";
   for(const ph of PHASES){
     html += `<div class="phase-label"><span>${ph.label}</span> ${ph.title}</div>`;
@@ -704,6 +734,10 @@ function updateHUD(animate, gained=0, weekN=null){
     const card = document.getElementById("week"+w.n);
     if(card) card.classList.toggle("done", weekChecked[w.n]===weekTotal[w.n]);
   });
+
+  const cn = currentWeekIndex()+1;
+  const nc = document.getElementById("nowCount");
+  if(nc) nc.textContent = weekChecked[cn]+"/"+weekTotal[cn]+" tasks done";
 
   if(animate && gained>0){
     const done = weekN && weekChecked[weekN]===weekTotal[weekN];
