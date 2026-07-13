@@ -30,6 +30,16 @@
     padding:28px 0 22px;
   }
   .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+  .top-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .faction-pick{display:flex;align-items:center;gap:8px}
+  .faction-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
+  #factionSel{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    background:transparent;color:var(--paper);border:2px solid var(--orange);
+    padding:5px 8px;cursor:pointer;
+  }
+  #factionSel:focus-visible{outline:3px solid var(--paper);outline-offset:2px}
+  #factionSel option{background:var(--ink);color:var(--paper)}
   h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,5vw,44px);line-height:1.02;text-transform:uppercase;letter-spacing:.01em;margin:6px 0 4px}
   h1 .accent{color:var(--orange)}
   .subline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#B9B4AA;margin-bottom:16px}
@@ -241,7 +251,13 @@
 
 <header>
   <div class="wrap">
-    <div class="eyebrow">// 14-week campaign · Jul 13 – Oct 18, 2026</div>
+    <div class="top-row">
+      <div class="eyebrow">// 14-week campaign · Jul 13 – Oct 18, 2026</div>
+      <label class="faction-pick">
+        <span class="faction-lbl">Faction</span>
+        <select id="factionSel" aria-label="Select faction"></select>
+      </label>
+    </div>
     <h1>Operation: <span class="accent">Design Engineer</span></h1>
     <div class="subline">game UI director → design engineer · 10–15 hrs/wk · build in public</div>
     <div class="now-banner" id="nowBanner">
@@ -572,21 +588,47 @@ D — The payload: 1-page memo 'What I'd build in my first 90 days at ElevenLabs
 },
 ];
 
-/* ================= LEVELS ================= */
-const LEVELS = [
-  {at:0,   name:"Recruit"},
-  {at:120, name:"Operator"},
-  {at:300, name:"Component Smith"},
-  {at:520, name:"Motion Specialist"},
-  {at:760, name:"Interface Veteran"},
-  {at:1000,name:"Ship Captain"},
-  {at:1200,name:"Design Engineer"},
-  {at:1450,name:"Day-One Hire"},
-];
+/* ================= LEVELS + FACTIONS ================= */
+const RANK_AT = [0, 120, 300, 520, 760, 1000, 1200, 1450];
+
+const FACTIONS = {
+  corps:{
+    name:"Design Corps",
+    ranks:["Recruit","Operator","Component Smith","Motion Specialist","Interface Veteran","Ship Captain","Design Engineer","Day-One Hire"],
+    msgs:["Shipped.","Momentum.","Commit it.","Frame-perfect.","Juice acquired.","Clean input.","On track.","Post it."]
+  },
+  mechanicus:{
+    name:"Adeptus Mechanicus",
+    ranks:["Servitor","Lexmechanic","Tech-Adept","Enginseer","Magos","Magos Dominus","Tech-Priest Ascendant","Fabricator-General"],
+    msgs:["The Omnissiah provides.","Flesh is weak.","Knowledge is power.","Praise the Machine God.","The litany compiles.","Blessed be the code.","The Motive Force flows.","01001000."]
+  },
+  astartes:{
+    name:"Adeptus Astartes",
+    ranks:["Aspirant","Neophyte","Scout","Battle-Brother","Sergeant","Veteran","Captain","Chapter Master"],
+    msgs:["For the Emperor.","Knowledge is power.","Suffer not the unclean.","The Codex guides you.","Purge the weakness.","Duty eternal.","No mercy, no respite.","Ship it in His name."]
+  },
+  orks:{
+    name:"Da Orkz",
+    ranks:["Grot","Boy","Nob","Boss","Warboss","Big Mek","Warlord","Da Big Boss"],
+    msgs:["WAAAGH!","Bigger iz better.","Needs more dakka.","It works 'cos we sez so.","Red wunz go fasta.","Krump it!","Zoggin' brilliant.","MORE DAKKA."]
+  },
+  aeldari:{
+    name:"Aeldari",
+    ranks:["Youngling","Guardian","Dire Avenger","Exarch","Warlock","Farseer","Autarch","Phoenix Lord"],
+    msgs:["Walk the Path.","The skein reveals all.","Elegance over force.","Foreseen and fulfilled.","Swift as the wind.","Mind over matter.","The webway opens.","Perfection, at last."]
+  },
+  chaos:{
+    name:"Chaos Undivided",
+    ranks:["Cultist","Renegade","Chaos Marine","Aspiring Champion","Chosen","Dark Lord","Daemon Prince","Warmaster"],
+    msgs:["Blood for the Blood God!","Death to the False Emperor.","Chaos rewards the bold.","Skulls for the throne.","The gods are watching.","Ascension awaits.","Burn it all down.","Glory to Chaos."]
+  },
+};
+
+function currentFaction(){ return FACTIONS[state.faction] || FACTIONS.corps; }
 
 /* ================= STATE ================= */
 const KEY = "de-roadmap-v2";
-let state = { checked:{} };
+let state = { checked:{}, faction:"mechanicus" };
 let TOTAL_XP = 0, TOTAL_TASKS = 0;
 
 function taskId(w,i){ return "w"+w+"t"+i; }
@@ -710,10 +752,10 @@ function updateHUD(animate, gained=0, weekN=null){
   document.getElementById("taskNow").textContent = tasks;
   document.getElementById("xpFill").style.width = (xp/TOTAL_XP*100)+"%";
 
-  // rank
-  let lvl = LEVELS[0];
-  for(const L of LEVELS) if(xp>=L.at) lvl=L;
-  document.getElementById("levelName").textContent = lvl.name;
+  // rank (faction-flavored)
+  let rankIdx = 0;
+  for(let i=0;i<RANK_AT.length;i++) if(xp>=RANK_AT[i]) rankIdx=i;
+  document.getElementById("levelName").textContent = currentFaction().ranks[rankIdx];
 
   // post streak: consecutive weeks from W1 with ALL tweet tasks done
   let streak=0;
@@ -790,14 +832,15 @@ function confetti(){
   })(t0);
 }
 
-const MSGS = ["Shipped.","Momentum.","Commit it.","Frame-perfect.","Juice acquired.","Clean input.","On track.","Post it."];
-function pickMsg(){ return MSGS[Math.floor(Math.random()*MSGS.length)]; }
+function pickMsg(){ const m = currentFaction().msgs; return m[Math.floor(Math.random()*m.length)]; }
 
 let toastTimer=null;
 function showToast(xp,msg){
   const t = document.getElementById("toast");
-  t.querySelector(".plus").textContent = "+"+xp+" XP";
-  document.getElementById("toastMsg").textContent = " · "+msg;
+  const plus = t.querySelector(".plus");
+  if(xp>0){ plus.textContent = "+"+xp+" XP"; plus.style.display=""; }
+  else{ plus.style.display="none"; }
+  document.getElementById("toastMsg").textContent = xp>0 ? " · "+msg : msg;
   t.classList.remove("show"); void t.offsetWidth;
   t.classList.add("show");
   clearTimeout(toastTimer);
@@ -809,9 +852,24 @@ document.getElementById("jumpBtn").addEventListener("click", ()=>{
   if(el){ el.open = true; el.scrollIntoView({behavior:"smooth", block:"start"}); }
 });
 
+/* ================= FACTION SELECTOR ================= */
+function setupFaction(){
+  const sel = document.getElementById("factionSel");
+  sel.innerHTML = Object.entries(FACTIONS)
+    .map(([id,f])=>`<option value="${id}">${f.name}</option>`).join("");
+  if(!FACTIONS[state.faction]) state.faction = "corps";
+  sel.value = state.faction;
+  sel.addEventListener("change", ()=>{
+    state.faction = sel.value;
+    saveState();
+    updateHUD(false);
+    showToast(0, currentFaction().name.toUpperCase()+" — flavor updated");
+  });
+}
+
 document.getElementById("resetBtn").addEventListener("click", async ()=>{
   if(!confirm("Reset all progress? This clears every checkbox.")) return;
-  state = {checked:{}, lastVisit:state.lastVisit, dayStreak:state.dayStreak};
+  state = {checked:{}, lastVisit:state.lastVisit, dayStreak:state.dayStreak, faction:state.faction};
   try{
     if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(state)); }
     else{ localStorage.removeItem(KEY); }
@@ -823,6 +881,7 @@ document.getElementById("resetBtn").addEventListener("click", async ()=>{
 /* ================= INIT ================= */
 (async ()=>{
   await loadState();
+  setupFaction();
   render();
   tickDayStreak();
 })();
