@@ -172,12 +172,13 @@
   ul.tasks{list-style:none}
   .task{border-top:1px solid #d8d3c8}
   .task:first-child{border-top:none}
-  .task label{
-    display:flex;align-items:flex-start;gap:12px;padding:9px 4px;cursor:pointer;
+  .task-row{
+    display:flex;align-items:flex-start;gap:12px;padding:9px 4px;
   }
+  .cbx{flex:none;margin-top:1px;cursor:pointer;display:block;line-height:0}
   .task input{position:absolute;opacity:0;width:0;height:0}
   .box{
-    width:20px;height:20px;border:2.5px solid var(--ink);flex:none;margin-top:1px;
+    width:20px;height:20px;border:2.5px solid var(--ink);flex:none;
     display:grid;place-items:center;background:var(--paper);
     transition:background .12s;
   }
@@ -188,8 +189,19 @@
   .task input:checked + .box{background:var(--ink)}
   .task input:checked + .box::after{transform:scale(1)}
   .task input:focus-visible + .box{outline:3px solid var(--orange);outline-offset:2px}
-  .task-text{flex:1;font-size:13.5px;line-height:1.5}
-  .task input:checked ~ .task-text{color:var(--steel);text-decoration:line-through;text-decoration-color:var(--orange);text-decoration-thickness:2px}
+  .task-text{
+    flex:1;font-size:13.5px;line-height:1.5;cursor:pointer;
+    display:flex;align-items:flex-start;gap:10px;background:none;border:none;
+    text-align:left;color:var(--ink);padding:0;font-family:inherit;
+  }
+  .tt-label{flex:1}
+  .task-text:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+  .task.done .tt-label{color:var(--steel);text-decoration:line-through;text-decoration-color:var(--orange);text-decoration-thickness:2px}
+  .task-caret{
+    flex:none;font-family:'IBM Plex Mono',monospace;font-size:15px;line-height:1;
+    color:var(--steel);width:14px;text-align:center;user-select:none;
+  }
+  .task.open .task-caret{color:var(--orange)}
   .task-xp{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--steel);flex:none;margin-top:3px}
   .task-link{
     font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--orange);
@@ -197,7 +209,16 @@
   }
   .task-link:hover{background:var(--orange);color:var(--paper)}
   .task-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
-  .task input:checked ~ .task-text .task-link{text-decoration:none;color:var(--orange)}
+  .task.done .task-link{text-decoration:none;color:var(--orange)}
+
+  /* expandable description */
+  .task-desc{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s cubic-bezier(.22,1,.36,1)}
+  .task.open .task-desc{grid-template-rows:1fr}
+  .task-desc-inner{overflow:hidden;min-height:0}
+  .task-desc-inner p{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.7;color:#4a463f;
+    border-left:3px solid var(--orange);padding:2px 0 2px 12px;margin:2px 0 12px 32px;max-width:70ch;
+  }
   .tag{
     font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
     padding:2px 6px;flex:none;margin-top:3px;border:1.5px solid var(--ink);
@@ -372,14 +393,14 @@ B — Udemy "Understanding TypeScript" (Schwarzmüller): types, interfaces, unio
 C — TS generics + React course: components, props, useState. Hand-build: counter, toggle, controlled input.
 D — Hand-build a todo list (add/remove/filter) with zero AI. Then rebuild it with AI and diff the two.`,
   tasks:[
-    {t:"Set up Vite + React + TypeScript + Tailwind project, push to a public GitHub repo",k:"build",xp:15},
-    {t:"Udemy · Understanding TypeScript — types, interfaces, unions, narrowing (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/understanding-typescript/"},
-    {t:"Udemy · Understanding TypeScript — generics + utility types (~1.5h)",k:"learn",xp:10,link:"https://www.udemy.com/course/understanding-typescript/"},
-    {t:"Hand-build (NO AI): counter, toggle, controlled input, list w/ add & remove",k:"build",xp:20},
-    {t:"Write a CLAUDE.md / .cursorrules for your repo: your stack, conventions, design principles — your first AI-first workflow artifact",k:"ai",xp:15},
-    {t:"Rebuild the todo app WITH AI assistance, then diff both versions and write 5 things the AI did differently",k:"ai",xp:15},
-    {t:"POST · announce the journey: 'Game UI director, 10 yrs shipping HUDs in Unreal. Next 12 weeks: becoming a design engineer, in public.' Pin it.",k:"tweet",xp:15},
-    {t:"Commit every session this week (4+ commits)",k:"build",xp:10},
+    {t:"Set up Vite + React + TypeScript + Tailwind project, push to a public GitHub repo",k:"build",xp:15,d:"Stand up the professional toolchain you'll live in for 14 weeks: Vite + React + TS + Tailwind, initialized as a public repo. This is the foundation every project builds on and the first thing a hiring manager clicks. Done = the starter runs locally and the repo is live on GitHub with a real first commit."},
+    {t:"Udemy · Understanding TypeScript — types, interfaces, unions, narrowing (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/understanding-typescript/",d:"Watch selectively — you need working fluency in types, interfaces, unions and narrowing, not a completion certificate. These are the vocabulary you'll use to describe UI state in every interview code walkthrough. Done = you can annotate a component's props and state without reaching for 'any'."},
+    {t:"Udemy · Understanding TypeScript — generics + utility types (~1.5h)",k:"learn",xp:10,link:"https://www.udemy.com/course/understanding-typescript/",d:"Cover generics and utility types (Partial, Pick, Record) — the tools that make reusable hooks and components type-safe. This is what separates 'vibe-coded' TS from code you can defend line by line. Done = you can write a small generic function and explain why the generic beats 'any'."},
+    {t:"Hand-build (NO AI): counter, toggle, controlled input, list w/ add & remove",k:"build",xp:20,d:"Build the four React primitives by hand, no AI: these are the direct equivalents of the UMG widgets and MVVM bindings you already know — state + derived values, callbacks up. Doing it manually builds the muscle memory interviews test live. Done = all four work from memory in your repo, no copy-paste."},
+    {t:"Write a CLAUDE.md / .cursorrules for your repo: your stack, conventions, design principles — your first AI-first workflow artifact",k:"ai",xp:15,d:"Author the config that tells AI tools your stack, conventions, and design language (flat, black/off-white/burnt-orange, IBM Plex Mono + Archivo Black). This is a real design-engineer skill: steering AI to produce code in your voice. Done = a committed CLAUDE.md/.cursorrules that visibly changes how the AI scaffolds for you."},
+    {t:"Rebuild the todo app WITH AI assistance, then diff both versions and write 5 things the AI did differently",k:"ai",xp:15,d:"Rebuild the hand-made todo app with AI, then diff the two and write down 5 concrete differences. This trains the judgment to accept or reject AI output — the exact skill that keeps you able to explain every line. Done = both versions committed plus a short written comparison."},
+    {t:"POST · announce the journey: 'Game UI director, 10 yrs shipping HUDs in Unreal. Next 12 weeks: becoming a design engineer, in public.' Pin it.",k:"tweet",xp:15,d:"Post the pinned announcement (Asset 01 is pre-drafted below) and reply to it with every future weekly update so the whole arc threads from one URL. Building in public is compounding distribution — half the job of getting hired. Done = posted, pinned, and every later post replies to this thread."},
+    {t:"Commit every session this week (4+ commits)",k:"build",xp:10,d:"Hard rule of the program: commit to GitHub at the end of every session. A green contribution graph is passive proof of consistency that recruiters skim. Done = 4+ commits this week, one per work session."},
   ]
 },
 {
@@ -390,12 +411,12 @@ B — Framer Motion docs: springs, variants, orchestration. Recreate one CPH-sty
 C — Build the XP count-up ticker: spring-driven number, overshoot, settle tick. Knobs for stiffness/damping.
 D — Build the toast/notification stack: stagger in, physics exit, queue logic in a custom hook.`,
   tasks:[
-    {t:"Udemy · React Complete Guide — useEffect, useRef, custom hooks (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/"},
-    {t:"Framer Motion docs — springs, variants, gestures, layout animations (read + sandbox)",k:"learn",xp:10},
-    {t:"JUICE · XP count-up ticker component with overshoot + adjustable spring knobs",k:"build",xp:25},
-    {t:"JUICE · toast stack with stagger, physics exit, and a useToastQueue() custom hook",k:"build",xp:25},
-    {t:"AI-first rep: prompt Claude for 3 different spring implementations, critique each in writing, keep the best — save the critique as repo notes",k:"ai",xp:15},
-    {t:"POST · 15-sec clip of the XP ticker: 'Porting 10 years of game juice to the web, component 1.'",k:"tweet",xp:15},
+    {t:"Udemy · React Complete Guide — useEffect, useRef, custom hooks (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/",d:"Learn the hooks that power real interactivity: useEffect for lifecycle, useRef for direct element access, and how to extract custom hooks. Build a useInterval hook as your rep. Done = you understand when effects run and can factor reusable logic into your own hook."},
+    {t:"Framer Motion docs — springs, variants, gestures, layout animations (read + sandbox)",k:"learn",xp:10,d:"Framer Motion is your native motion language in new syntax — map your UMG spring/easing instincts onto springs, variants, and orchestration. Recreate one game-UI banner in a sandbox to prove the transfer. Done = a working sandbox animation you built from the docs, not copied."},
+    {t:"JUICE · XP count-up ticker component with overshoot + adjustable spring knobs",k:"build",xp:25,d:"Build the count-up ticker you've shipped a hundred times in UMG — spring-driven number with overshoot and a settle tick — now in React/TS with exposed stiffness/damping knobs. This is Component 1 of your motion-taste evidence. Done = a reusable, typed component with live-adjustable spring params."},
+    {t:"JUICE · toast stack with stagger, physics exit, and a useToastQueue() custom hook",k:"build",xp:25,d:"Build a notification stack that staggers in, exits with physics, and manages its queue in a custom hook. Queue logic in a hook is exactly the state-architecture thinking interviewers probe. Done = toasts stack/dismiss correctly and the queue lives in a clean useToastQueue()."},
+    {t:"AI-first rep: prompt Claude for 3 different spring implementations, critique each in writing, keep the best — save the critique as repo notes",k:"ai",xp:15,d:"Ask AI for three spring implementations, then critique each in writing and keep the best. This demonstrates taste-driven AI use: you're the director, the AI is the junior. Done = the three attempts plus your written critique committed as repo notes."},
+    {t:"POST · 15-sec clip of the XP ticker: 'Porting 10 years of game juice to the web, component 1.'",k:"tweet",xp:15,d:"Ship a 15-second screen capture of the ticker with the framing that reuses your game background as an asset, not a liability. Short motion clips are your highest-signal content. Done = posted as a reply to your pinned thread with a clean clip."},
   ]
 },
 {
@@ -406,13 +427,13 @@ B — Build: radial menu w/ keyboard (gamepad-style) focus navigation + useImpac
 C — Refactor pass: shared hooks, strict types (no any), knobs panel on every demo page. Deploy to Vercel.
 D — Write the README essay + record clips of every component.`,
   tasks:[
-    {t:"JUICE · hold-to-confirm charge button + chip-damage health bar",k:"build",xp:25},
-    {t:"JUICE · radial menu with arrow-key/gamepad-style focus nav + useImpact() feedback hook",k:"build",xp:25},
-    {t:"Refactor: extract shared hooks, eliminate every `any`, add a knobs panel per demo",k:"build",xp:15},
-    {t:"Deploy Juice to Vercel with a landing page",k:"ship",xp:20},
-    {t:"Write README as design essay: 'What game UI knows about feedback that web UI forgot'",k:"build",xp:15},
-    {t:"POST · launch thread: one clip per component, essay linked. Then one component clip per day for 5 days.",k:"tweet",xp:20},
-    {t:"AI-first rep: use Claude to red-team your components (a11y, reduced-motion, perf) and fix 3 findings",k:"ai",xp:15},
+    {t:"JUICE · hold-to-confirm charge button + chip-damage health bar",k:"build",xp:25,d:"Two more signature game-feel components: a hold-to-confirm button whose color is state-driven, and a health bar with the chip-damage ghost-trail you know from fighting games. These read instantly as 'this person understands feedback'. Done = both components typed, reusable, with knobs."},
+    {t:"JUICE · radial menu with arrow-key/gamepad-style focus nav + useImpact() feedback hook",k:"build",xp:25,d:"Build a radial menu with gamepad-style focus navigation plus a useImpact() hook for screen-shake/impact feedback. Keyboard-first focus nav is your gamepad-UI expertise translating directly to web accessibility. Done = fully navigable by keyboard with tactile impact feedback."},
+    {t:"Refactor: extract shared hooks, eliminate every `any`, add a knobs panel per demo",k:"build",xp:15,d:"One disciplined refactor pass: pull shared logic into hooks, remove every 'any', and put a live knobs panel on each demo. Clean types and self-demoing components are what make this library interview-ready. Done = zero 'any' in the codebase and every component has adjustable knobs."},
+    {t:"Deploy Juice to Vercel with a landing page",k:"ship",xp:20,d:"Ship the library to a live Vercel URL with a landing page that shows every component. A real deployed link is worth more than any screenshot. Done = public URL loads fast and demos all components."},
+    {t:"Write README as design essay: 'What game UI knows about feedback that web UI forgot'",k:"build",xp:15,d:"Write the README as a short design essay arguing your thesis about feedback and game feel. This is where your taste becomes legible to engineers and shows you can think, not just build. Done = a README that reads like a point of view, with embedded clips."},
+    {t:"POST · launch thread: one clip per component, essay linked. Then one component clip per day for 5 days.",k:"tweet",xp:20,d:"Launch with a thread (one clip per component, essay linked), then drip one clip per day for five days to maximize reach. Distribution is half the job; milk your first shipped project. Done = launch thread posted plus five daily follow-ups scheduled."},
+    {t:"AI-first rep: use Claude to red-team your components (a11y, reduced-motion, perf) and fix 3 findings",k:"ai",xp:15,d:"Have AI stress-test your components for accessibility, reduced-motion support, and performance, then fix the three most important findings. This is defensive AI use plus the polish hiring managers check for. Done = 3 real issues found and fixed, respecting prefers-reduced-motion."},
   ]
 },
 {
@@ -423,12 +444,12 @@ B — Vercel AI SDK docs. Scaffold Next.js + Tailwind + shadcn. Wire basic strea
 C — Interaction teardown: 90 min each in Claude, Cursor, Perplexity. Note streaming affordances, interruption, tool visibility, error recovery.
 D — Write the Agent HUD design spec: HUD metaphors mapped to agent states (cast bar = long tool run, status chips = active context, feed = actions).`,
   tasks:[
-    {t:"Udemy · Next.js sections — App Router, server/client components, API routes (~3h)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/"},
-    {t:"Scaffold Next.js + TS + Tailwind + shadcn/ui project, deploy skeleton to Vercel",k:"build",xp:15},
-    {t:"Wire basic streaming chat with the Vercel AI SDK (ugly is fine)",k:"build",xp:25},
-    {t:"Interaction teardown of Claude / Cursor / Perplexity — written notes with screenshots",k:"learn",xp:15},
-    {t:"Write the Agent HUD spec: map game-HUD patterns to agent states (this doc goes in the case study later)",k:"ai",xp:20},
-    {t:"POST · teardown thread: '3 AI interfaces through a game-UI lens — what they get wrong about state visibility'",k:"tweet",xp:20},
+    {t:"Udemy · Next.js sections — App Router, server/client components, API routes (~3h)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/",d:"Learn the Next.js App Router model: server vs client components and API routes — the framework every target company (Vercel, Linear, Notion) expects. This is the production stack, not toy React. Done = you can explain when code runs on the server vs client and stand up an API route."},
+    {t:"Scaffold Next.js + TS + Tailwind + shadcn/ui project, deploy skeleton to Vercel",k:"build",xp:15,d:"Scaffold Project 2's foundation — Next.js + TS + Tailwind + shadcn/ui — and deploy an empty skeleton immediately so deploy is never a last-minute risk. Deploy-early is a professional habit. Done = a live Vercel URL for the skeleton on day one."},
+    {t:"Wire basic streaming chat with the Vercel AI SDK (ugly is fine)",k:"build",xp:25,d:"Get tokens streaming from a real model via the Vercel AI SDK — ugly is fine, working is the point. Streaming is the core primitive of the AI paradigm you're proving you can design for. Done = messages stream token-by-token from a live API call."},
+    {t:"Interaction teardown of Claude / Cursor / Perplexity — written notes with screenshots",k:"learn",xp:15,d:"Spend ~90 min each dissecting Claude, Cursor, and Perplexity: streaming affordances, interruption, tool visibility, error recovery. This is how you build an informed point of view on AI UI — and material for your teardown post. Done = written notes with annotated screenshots per app."},
+    {t:"Write the Agent HUD spec: map game-HUD patterns to agent states (this doc goes in the case study later)",k:"ai",xp:20,d:"Write the spec that maps HUD metaphors to agent states: cast bar = long tool run, status chips = active context, kill feed = actions. This is the strategic core of your pivot — reframing 10 years of real-time state visualization as exactly what agent UIs need. Done = a spec doc you'll later fold into the case study."},
+    {t:"POST · teardown thread: '3 AI interfaces through a game-UI lens — what they get wrong about state visibility'",k:"tweet",xp:20,d:"Publish the teardown as a thread analyzing three AI interfaces through your game-UI lens. Opinionated analysis positions you as a thinker in the space before you've even shipped Project 2. Done = thread posted with screenshots and a clear thesis."},
   ]
 },
 {
@@ -439,12 +460,12 @@ B — Autoscroll: pin-to-bottom that releases when user scrolls up, returns on n
 C — Tool-call lifecycle UI: state machine for pending/running/success/error, cast-bar treatment for long runs.
 D — Interruption: stop generation, edit-and-resend, regenerate. Wire to real API behavior.`,
   tasks:[
-    {t:"Streaming markdown rendering with clean cadence (no layout jank while tokens arrive)",k:"build",xp:25},
-    {t:"Autoscroll that respects user scroll position — document the logic in a code comment essay",k:"build",xp:20},
-    {t:"Tool-call lifecycle UI: cast bar for long-running tools, distinct error/success states",k:"build",xp:25},
-    {t:"Interruption controls: stop, edit-and-resend, regenerate",k:"build",xp:15},
-    {t:"AI-first rep: use AI to generate 5 edge-case conversation scripts (huge code blocks, rapid tool calls, errors mid-stream) and harden against them",k:"ai",xp:15},
-    {t:"POST · detail post on the autoscroll problem — before/after clip",k:"tweet",xp:15},
+    {t:"Streaming markdown rendering with clean cadence (no layout jank while tokens arrive)",k:"build",xp:25,d:"Render markdown as it streams without layout jank — token buffering and stable cadence as content arrives. Smooth streaming is a subtle craft signal that separates design engineers from designers-who-code. Done = long streamed responses render cleanly with no reflow jump."},
+    {t:"Autoscroll that respects user scroll position — document the logic in a code comment essay",k:"build",xp:20,d:"Implement pin-to-bottom that releases when the user scrolls up and returns on a new message. This is a famously fiddly detail that interviewers specifically probe — nailing it is disproportionate signal. Done = the behavior feels right during streaming, with the logic explained in a code-comment essay."},
+    {t:"Tool-call lifecycle UI: cast bar for long-running tools, distinct error/success states",k:"build",xp:25,d:"Build a state machine for the tool-call lifecycle (pending → running → success/error) with a cast-bar treatment for long runs — your literal HUD expertise applied to agents. This is the signature idea of the whole project. Done = every tool state is visually distinct and animated."},
+    {t:"Interruption controls: stop, edit-and-resend, regenerate",k:"build",xp:15,d:"Wire real interruption: stop generation, edit-and-resend, and regenerate, all tied to actual API behavior. Interruptibility is table-stakes UX that most portfolios fake. Done = all three controls work against a live stream."},
+    {t:"AI-first rep: use AI to generate 5 edge-case conversation scripts (huge code blocks, rapid tool calls, errors mid-stream) and harden against them",k:"ai",xp:15,d:"Have AI generate five nasty edge-case conversations (giant code blocks, rapid tool calls, mid-stream errors) and harden your UI against each. Using AI to find your own failure modes is a mature engineering workflow. Done = the UI survives all five scripts gracefully."},
+    {t:"POST · detail post on the autoscroll problem — before/after clip",k:"tweet",xp:15,d:"Post a focused before/after clip on the autoscroll problem. Deep-dives on hard details prove competence better than glossy demos. Done = posted with a clear before/after showing the fix."},
   ]
 },
 {
@@ -455,12 +476,12 @@ B — Kill-feed activity log: compact, scannable, timestamped, filterable.
 C — Edge states: empty, error, loading skeletons, offline. Every state designed, not defaulted.
 D — Keyboard-first pass: full app navigable without a mouse (your gamepad-nav expertise, translated).`,
   tasks:[
-    {t:"Status-effect chips for active context + impact feedback on tool completion (dogfood Juice)",k:"build",xp:25},
-    {t:"Kill-feed style activity log with filtering",k:"build",xp:20},
-    {t:"Design every edge state: empty, error, loading, offline",k:"build",xp:20},
-    {t:"Keyboard-first navigation across the whole app",k:"build",xp:15},
-    {t:"AI-first rep: build one small feature entirely by prompting (spec → AI code → your review pass) and log the workflow honestly",k:"ai",xp:15},
-    {t:"POST · clip of the HUD layer: 'What if your AI agent had a real HUD?'",k:"tweet",xp:15},
+    {t:"Status-effect chips for active context + impact feedback on tool completion (dogfood Juice)",k:"build",xp:25,d:"Add status-effect chips for active context (files attached, memory on, tools armed) and fire impact feedback on tool completion — reusing your own Juice library. Dogfooding your components proves they're real, not demoware. Done = chips reflect live state and completions land with tactile feedback."},
+    {t:"Kill-feed style activity log with filtering",k:"build",xp:20,d:"Build a compact, scannable, timestamped activity log with filtering — the kill-feed pattern from competitive games applied to agent actions. Dense-but-readable information design is a core game-UI strength. Done = the feed is filterable and stays readable under rapid activity."},
+    {t:"Design every edge state: empty, error, loading, offline",k:"build",xp:20,d:"Design every edge state deliberately — empty, error, loading skeletons, offline — none left to the framework default. Hiring managers actively look for whether you handled the unglamorous states. Done = each state is intentionally designed and demonstrable."},
+    {t:"Keyboard-first navigation across the whole app",k:"build",xp:15,d:"Make the entire app navigable without a mouse — your gamepad-navigation expertise translated to web accessibility. Keyboard-first is both an a11y win and a taste signal. Done = you can drive the whole app from the keyboard."},
+    {t:"AI-first rep: build one small feature entirely by prompting (spec → AI code → your review pass) and log the workflow honestly",k:"ai",xp:15,d:"Take one small feature fully through spec → AI-generated code → your review pass, and log the workflow honestly (including where AI failed). This is the AI-first engineering loop companies now hire for. Done = the feature ships and the honest workflow log is committed."},
+    {t:"POST · clip of the HUD layer: 'What if your AI agent had a real HUD?'",k:"tweet",xp:15,d:"Post a clip showing the game-feel HUD layer with a punchy framing. This is the visual hook nobody else's portfolio has. Done = posted with a clip that makes the HUD idea instantly obvious."},
   ]
 },
 {
@@ -471,12 +492,12 @@ B — Demo mode (canned responses) + production deploy on Vercel.
 C — Write the case study (draft).
 D — Edit case study, record the hero demo video, launch thread.`,
   tasks:[
-    {t:"Performance pass with React DevTools profiler — before/after numbers in notes",k:"build",xp:20},
-    {t:"Demo mode with canned responses; deploy production build to Vercel",k:"ship",xp:20},
-    {t:"Write full case study: problem → interaction principles → 3 hard details → next",k:"build",xp:25},
-    {t:"Record a 60–90 sec hero demo video",k:"build",xp:10},
-    {t:"POST · Agent HUD launch thread with demo video + case study link",k:"tweet",xp:20},
-    {t:"Milestone check: rebuild a Juice component from memory, no AI, under 1 hour. If you can't, schedule 2h/wk fundamentals drills.",k:"learn",xp:15},
+    {t:"Performance pass with React DevTools profiler — before/after numbers in notes",k:"build",xp:20,d:"Profile with React DevTools, memoize what actually matters, and kill streaming jank — recording before/after numbers. Being able to talk about measured performance work is strong senior signal. Done = documented before/after metrics showing real improvement."},
+    {t:"Demo mode with canned responses; deploy production build to Vercel",k:"ship",xp:20,d:"Add a demo mode with canned responses so visitors need no API key, then deploy production. A frictionless live demo dramatically raises the odds someone actually experiences your work. Done = anyone can use the deployed app with zero setup."},
+    {t:"Write full case study: problem → interaction principles → 3 hard details → next",k:"build",xp:25,d:"Write the full case study: problem, interaction principles, three hard details you solved, and what's next. Case studies are what actually get interviews — budget real hours here. Done = a published case study a stranger can follow end to end."},
+    {t:"Record a 60–90 sec hero demo video",k:"build",xp:10,d:"Cut a tight 60–90 second hero video that sells the project's best moments. Video travels further than links and anchors your launch. Done = a clean, watchable clip embedded in the case study and launch post."},
+    {t:"POST · Agent HUD launch thread with demo video + case study link",k:"tweet",xp:20,d:"Launch Agent HUD with a thread pairing the hero video and the case study link. This is your strongest strategic artifact — give it a real launch. Done = thread posted, replying to your pinned journey thread."},
+    {t:"Milestone check: rebuild a Juice component from memory, no AI, under 1 hour. If you can't, schedule 2h/wk fundamentals drills.",k:"learn",xp:15,d:"Honest checkpoint: rebuild a Juice component from memory, no AI, in under an hour. This verifies you can back up your work in a live coding interview. Done = you succeed, or you book 2h/wk fundamentals drills to close the gap."},
   ]
 },
 {
@@ -487,11 +508,11 @@ B — Skeleton: plugin reads current selection, displays node names + prototype 
 C — Live preview pane: a proxy element animating with adjustable spring params (stiffness, damping, mass).
 D — Spec the export format: what a Framer Motion snippet and a CSS snippet should look like per transition type.`,
   tasks:[
-    {t:"Read Figma plugin docs + run 2 official samples; notes on sandbox/iframe message passing",k:"learn",xp:15},
-    {t:"SPRINGBOARD · skeleton: read selection + prototype transitions, render in plugin UI",k:"build",xp:25},
-    {t:"SPRINGBOARD · live spring preview with stiffness/damping/mass knobs",k:"build",xp:25},
-    {t:"Write export-format spec for Framer Motion + CSS output",k:"build",xp:10},
-    {t:"POST · announce Springboard: 'I'm building the motion handoff tool I always wished my engineers had.'",k:"tweet",xp:15},
+    {t:"Read Figma plugin docs + run 2 official samples; notes on sandbox/iframe message passing",k:"learn",xp:15,d:"Learn the Figma plugin architecture — sandbox vs UI iframe and the message-passing between them — by reading the docs and running two official samples. Understanding the constraint model up front prevents dead ends later. Done = two samples running locally plus notes on how sandbox/iframe messaging works."},
+    {t:"SPRINGBOARD · skeleton: read selection + prototype transitions, render in plugin UI",k:"build",xp:25,d:"Build the skeleton: read the current selection and its prototype transition data, and render it in your plugin panel. This proves you can operate inside a real third-party platform's API, not just a blank canvas. Done = selecting nodes in Figma reflects live in your plugin UI."},
+    {t:"SPRINGBOARD · live spring preview with stiffness/damping/mass knobs",k:"build",xp:25,d:"Build a live preview pane where a proxy element animates with adjustable stiffness, damping, and mass. This is the plugin's heart and a direct showcase of your motion taste. Done = dragging knobs updates a real-time spring preview."},
+    {t:"Write export-format spec for Framer Motion + CSS output",k:"build",xp:10,d:"Spec exactly what a Framer Motion snippet and a CSS snippet should look like for each transition type before you build the generator. A clear target spec makes the code-gen work far cleaner. Done = a written spec defining the output shape per transition."},
+    {t:"POST · announce Springboard: 'I'm building the motion handoff tool I always wished my engineers had.'",k:"tweet",xp:15,d:"Announce Springboard with framing rooted in your lived experience as a director who fought the designer-engineer handoff. Authentic origin stories land. Done = announcement posted to your thread."},
   ]
 },
 {
@@ -502,11 +523,11 @@ B — Code generator v2: CSS keyframes/transition fallback output + copy-to-clip
 C — Multi-element choreography: stagger + sequence support across selected layers.
 D — Dogfood: spec 3 real animations (use CPH-style patterns, abstracted) end-to-end; fix what hurts.`,
   tasks:[
-    {t:"Generator: motion spec → Framer Motion snippet (typed, formatted, copy-ready)",k:"build",xp:30},
-    {t:"Generator: CSS output path + one-click copy with confirmation feedback",k:"build",xp:20},
-    {t:"Stagger + sequence choreography across multiple selected layers",k:"build",xp:25},
-    {t:"Dogfood 3 real animations end-to-end and fix the top 3 friction points",k:"build",xp:15},
-    {t:"POST · clip: dial a spring in Figma → paste working code in a sandbox. The money shot.",k:"tweet",xp:15},
+    {t:"Generator: motion spec → Framer Motion snippet (typed, formatted, copy-ready)",k:"build",xp:30,d:"Build the core: turn a dialed-in motion spec into clean, typed, copy-ready Framer Motion code. This is a compiler for your motion taste and a fantastic code-walkthrough artifact for interviews. Done = adjusting the spring produces correct, formatted, paste-ready code."},
+    {t:"Generator: CSS output path + one-click copy with confirmation feedback",k:"build",xp:20,d:"Add a CSS keyframes/transition fallback output plus one-click copy with confirmation feedback. Supporting both targets shows you understand real handoff needs. Done = CSS output is correct and copy gives satisfying confirmation."},
+    {t:"Stagger + sequence choreography across multiple selected layers",k:"build",xp:25,d:"Support multi-element choreography — stagger and sequence across selected layers. Orchestration is where motion taste really shows and where the tool earns its keep. Done = you can choreograph several layers and export the combined code."},
+    {t:"Dogfood 3 real animations end-to-end and fix the top 3 friction points",k:"build",xp:15,d:"Use your own tool to spec three real animations end-to-end, then fix the top three friction points you hit. Dogfooding surfaces the issues a demo never will. Done = three animations shipped through the tool and the worst friction removed."},
+    {t:"POST · clip: dial a spring in Figma → paste working code in a sandbox. The money shot.",k:"tweet",xp:15,d:"Post the money-shot clip: dial a spring in Figma, paste the generated code into a sandbox, watch it just work. This single loop makes the value undeniable. Done = posted with a seamless dial-to-working-code clip."},
   ]
 },
 {
@@ -517,11 +538,11 @@ B — Settings persistence (figma.clientStorage), error handling, empty states, 
 C — Private beta: recruit 5–10 designers (SDS colleagues count). Watch 2 of them use it live.
 D — Fix top beta findings. Prepare listing assets: cover art, description, demo GIF.`,
   tasks:[
-    {t:"AI mode: Claude API generates adapted code + plain-language rationale",k:"ai",xp:30},
-    {t:"clientStorage settings, error handling, empty states, large-selection perf",k:"build",xp:20},
-    {t:"Run private beta with 5–10 designers; watch 2 sessions live; log findings",k:"ship",xp:20},
-    {t:"Fix top 5 beta findings",k:"build",xp:15},
-    {t:"POST · beta learnings post: 3 things designers did that you didn't expect",k:"tweet",xp:15},
+    {t:"AI mode: Claude API generates adapted code + plain-language rationale",k:"ai",xp:30,d:"Integrate the Claude API so it takes the motion spec plus node context and returns adapted code with a plain-language rationale ('critically damped so it settles without bounce'). Shipping a real AI feature — not just calling an API — is the #3 hiring bar made concrete. Done = AI mode produces usable code and an explanation, driven by a carefully engineered system prompt."},
+    {t:"clientStorage settings, error handling, empty states, large-selection perf",k:"build",xp:20,d:"Harden the plugin: persist settings via figma.clientStorage, handle errors, design empty states, and keep it fast on large selections. Robustness is what makes a plugin survive real use. Done = it degrades gracefully and stays responsive on big selections."},
+    {t:"Run private beta with 5–10 designers; watch 2 sessions live; log findings",k:"ship",xp:20,d:"Recruit 5–10 designers (SDS colleagues count) and watch at least two use it live without your help. Watching real users is the fastest way to find what's actually broken. Done = beta running and a findings log from live sessions."},
+    {t:"Fix top 5 beta findings",k:"build",xp:15,d:"Fix the five highest-impact issues from the beta. Acting on user feedback quickly is exactly what product teams want to see. Done = the top 5 findings resolved and verified."},
+    {t:"POST · beta learnings post: 3 things designers did that you didn't expect",k:"tweet",xp:15,d:"Post three surprising things real designers did with your tool. Beta-learning posts show humility and a product mindset. Done = posted with three concrete, specific observations."},
   ]
 },
 {
@@ -532,11 +553,11 @@ B — Write the Springboard case study: concept → generator architecture → s
 C — Build the target sheet: 20 companies (Tier 1: Runway, Browser Co, Hume, ElevenLabs, Notion, Figma…), names of design engineers/leads, links.
 D — Engage: follow, reply substantively to 10 people's work. Zero asks. Just be visibly good.`,
   tasks:[
-    {t:"Submit Springboard to Figma Community (cover art, copy, demo GIF)",k:"ship",xp:30},
-    {t:"Write Springboard case study",k:"build",xp:20},
-    {t:"Target sheet: 20 companies + named design engineers/leads (NYC / remote / Seattle weighted)",k:"build",xp:15},
-    {t:"Engage substantively with 10 target-company designers' public work — no asks",k:"tweet",xp:15},
-    {t:"POST · Springboard launch thread the moment it's approved",k:"tweet",xp:20},
+    {t:"Submit Springboard to Figma Community (cover art, copy, demo GIF)",k:"ship",xp:30,d:"Submit to the Figma Community early in the week — review takes days — with cover art, listing copy, and a demo GIF. A published plugin with install counts is rare, credible proof you ship real software. Done = submitted and in review with polished listing assets."},
+    {t:"Write Springboard case study",k:"build",xp:20,d:"Write the case study: concept → generator architecture → the sandbox constraints you fought → beta learnings. The architecture section doubles as interview code-walkthrough prep. Done = a published case study covering the technical story."},
+    {t:"Target sheet: 20 companies + named design engineers/leads (NYC / remote / Seattle weighted)",k:"build",xp:15,d:"Build a sheet of 20 target companies (Tier 1: Runway, Browser Co, Hume, ElevenLabs, Notion, Figma…) with the actual design engineers and leads named and linked. Specific humans beat a generic job board. Done = 20 companies with named people and links, weighted to NYC/remote/Seattle."},
+    {t:"Engage substantively with 10 target-company designers' public work — no asks",k:"tweet",xp:15,d:"Reply substantively to 10 target-company designers' public work with zero asks — just be visibly good. Warm familiarity before applying beats cold applications every time. Done = 10 genuine, substantive interactions logged."},
+    {t:"POST · Springboard launch thread the moment it's approved",k:"tweet",xp:20,d:"The instant Figma approves it, launch with a thread and the live install link. Riding the approval moment maximizes reach. Done = launch thread posted with the Community link."},
   ]
 },
 {
@@ -547,12 +568,12 @@ B — Detail pass: type, motion touches from Juice, reduced-motion respected, fa
 C — Resume rewrite in design-engineer language (design systems, MVVM state architecture, motion systems, shipped software). Deploy portfolio.
 D — 5 tailored applications: short note referencing something specific in their product + one relevant project link. No cover letters.`,
   tasks:[
-    {t:"Build portfolio site in Next.js using your own Juice components",k:"build",xp:25},
-    {t:"Detail pass: typography, motion, reduced-motion support, performance",k:"build",xp:15},
-    {t:"Rewrite resume in design-engineer language; deploy portfolio",k:"ship",xp:20},
-    {t:"Send 5 tailored applications (Tier 1 first — HOLD ElevenLabs until Voice Director ships)",k:"ship",xp:25},
-    {t:"POST · portfolio launch + '12 weeks in public' retrospective thread — your best-performing post, guaranteed",k:"tweet",xp:20},
-    {t:"Set the ongoing rhythm: 2h/wk fundamentals drills + 5h/wk applications & take-homes + keep posting",k:"learn",xp:10},
+    {t:"Build portfolio site in Next.js using your own Juice components",k:"build",xp:25,d:"Build the portfolio in Next.js as a small, obsessively detailed craft object that dogfoods your own Juice components. The site itself is a work sample — it must embody your taste, not just describe it. Done = a live site whose polish speaks before the copy does."},
+    {t:"Detail pass: typography, motion, reduced-motion support, performance",k:"build",xp:15,d:"One detail pass on type, motion touches from Juice, reduced-motion support, and speed. Sweating these details is the whole positioning. Done = the site feels fast and considered on every device, motion respected."},
+    {t:"Rewrite resume in design-engineer language; deploy portfolio",k:"ship",xp:20,d:"Rewrite the resume in design-engineer language — design systems, MVVM state architecture, motion systems, shipped software — and deploy the portfolio. You're a senior design leader who codes; the words must say so. Done = portfolio live and resume reframed for the target role."},
+    {t:"Send 5 tailored applications (Tier 1 first — HOLD ElevenLabs until Voice Director ships)",k:"ship",xp:25,d:"Send five tailored applications — Tier 1 first, each a short note referencing something specific in their product plus one relevant project link, no cover letters. Hold ElevenLabs until Voice Director ships in Week 14. Done = 5 specific, personalized applications out the door."},
+    {t:"POST · portfolio launch + '12 weeks in public' retrospective thread — your best-performing post, guaranteed",k:"tweet",xp:20,d:"Launch the portfolio with a '12 weeks in public' retrospective thread telling the whole arc. Retrospectives with receipts are almost always the best-performing content. Done = retrospective thread posted linking every shipped project."},
+    {t:"Set the ongoing rhythm: 2h/wk fundamentals drills + 5h/wk applications & take-homes + keep posting",k:"learn",xp:10,d:"Lock in the post-program rhythm: ~2h/wk fundamentals drills, ~5h/wk applications and take-homes, and keep posting. Time-to-offer is realistically 4–5 months, so the machine has to keep running. Done = a written weekly schedule you'll actually follow."},
   ]
 },
 {
@@ -563,11 +584,11 @@ B — Script model: paste/import a scene → parsed into characters + lines with
 C — Casting UI: browse/search their voice library per character, audition voices on a sample line, lock the cast.
 D — Per-line direction controls: their voice settings exposed as director language ('flatter read', 'more urgency') mapped to API params.`,
   tasks:[
-    {t:"Read ElevenLabs API docs end-to-end; working TTS call with streaming playback in a sandbox",k:"learn",xp:15},
-    {t:"Script import: scene → characters + lines data model (write an original 12-line scene)",k:"build",xp:20},
-    {t:"Casting UI: voice library browse + audition per character",k:"build",xp:25},
-    {t:"Direction controls: director-language presets mapped to voice settings params",k:"ai",xp:25},
-    {t:"POST · 'Building a VO direction booth on the ElevenLabs API' — clip of casting auditions",k:"tweet",xp:15},
+    {t:"Read ElevenLabs API docs end-to-end; working TTS call with streaming playback in a sandbox",k:"learn",xp:15,d:"Read the ElevenLabs docs end-to-end — TTS endpoints, voice library, voice settings (stability/similarity/style), streaming — and get a real streaming TTS call playing in a sandbox. Building on their actual API is the entire targeted-strike bet. Done = your first lines generate and play from a live call."},
+    {t:"Script import: scene → characters + lines data model (write an original 12-line scene)",k:"build",xp:20,d:"Model a scene: parse an imported script into characters and lines with per-line direction notes, using your own original 12-line military-toned scene (Asset 02 is pre-written below). This is content you write daily — lean on it. Done = a scene parses cleanly into a structured characters+lines model."},
+    {t:"Casting UI: voice library browse + audition per character",k:"build",xp:25,d:"Build casting: browse/search their voice library per character, audition voices on a sample line, and lock the cast. This is the VO-director booth workflow nobody else applying has sat through. Done = you can audition and assign a voice to each character."},
+    {t:"Direction controls: director-language presets mapped to voice settings params",k:"ai",xp:25,d:"Expose their voice settings as director language — 'flatter read', 'more urgency' — mapped to API params. Translating raw parameters into domain language is exactly the product insight they'd want on day one. Done = director-language presets audibly change delivery per line."},
+    {t:"POST · 'Building a VO direction booth on the ElevenLabs API' — clip of casting auditions",k:"tweet",xp:15,d:"Post a clip of the casting/audition flow with framing that signals you're building on ElevenLabs specifically. Public building on their platform gets noticed by their team. Done = posted with an auditions clip."},
   ]
 },
 {
@@ -578,12 +599,12 @@ B — Review room: waveform per take, play-through of the full scene, approve/re
 C — Polish + deploy with demo mode (pre-generated audio so visitors burn no credits). Case study write-up.
 D — The payload: 1-page memo 'What I'd build in my first 90 days at ElevenLabs' (game-studio workflows, gaps you hit in their API/UX, 3 concrete proposals). Send the application with project + memo. Launch thread.`,
   tasks:[
-    {t:"Batch generation queue with per-line progress, cancel, and retry",k:"build",xp:25},
-    {t:"Review room: waveform timeline, scene play-through, approve/retake, take history",k:"build",xp:30},
-    {t:"Deploy with demo mode (pre-generated audio); write the case study",k:"ship",xp:20},
-    {t:"Write the '90 days at ElevenLabs' memo — honest API/UX gaps + 3 proposals",k:"ai",xp:20},
-    {t:"Send the ElevenLabs application: role + project link + memo. Also DM/email it to a designer or PM there.",k:"ship",xp:30},
-    {t:"POST · Voice Director launch thread; tag it so their team sees it",k:"tweet",xp:20},
+    {t:"Batch generation queue with per-line progress, cancel, and retry",k:"build",xp:25,d:"Build the batch-generate queue with per-line progress (reuse the cast-bar treatment from Agent HUD), plus cancel and retry. Reusing your own patterns across projects shows a coherent system. Done = a full scene generates as a queue with progress, cancel, and retry."},
+    {t:"Review room: waveform timeline, scene play-through, approve/retake, take history",k:"build",xp:30,d:"Build the review room: waveform per take, full-scene play-through, approve/retake per line, and take history — the actual booth review loop. This is the deepest proof you understand the domain. Done = you can review, approve/retake, and browse take history for every line."},
+    {t:"Deploy with demo mode (pre-generated audio); write the case study",k:"ship",xp:20,d:"Deploy with a demo mode using pre-generated audio so visitors burn no credits, and write the case study. Frictionless demo plus a written story is the package that converts. Done = live demo runs credit-free and the case study is published."},
+    {t:"Write the '90 days at ElevenLabs' memo — honest API/UX gaps + 3 proposals",k:"ai",xp:20,d:"Write a one-page memo on what you'd build in your first 90 days there: game-studio workflows, honest gaps you hit in their API/UX, and three concrete proposals. This converts the project from 'I could help' into day-one-value evidence. Done = a tight one-pager with real gaps and three actionable proposals."},
+    {t:"Send the ElevenLabs application: role + project link + memo. Also DM/email it to a designer or PM there.",k:"ship",xp:30,d:"Send the application — role + live project link + memo — and also get it directly to a designer or PM there. The payload is undeniable; make sure a human actually sees it. Done = application submitted and a warm direct message/email sent."},
+    {t:"POST · Voice Director launch thread; tag it so their team sees it",k:"tweet",xp:20,d:"Launch Voice Director with a thread tagged so ElevenLabs' team encounters it. Public proof of building on their product is the loudest possible signal. Done = launch thread posted and visible to their team."},
   ]
 },
 ];
@@ -703,13 +724,23 @@ function render(){
             ${w.tasks.map((t,i)=>{
               const id = taskId(wn,i);
               const kLabel = {build:"Build",learn:"Learn",ai:"AI-First",tweet:"Post",ship:"Ship"}[t.k];
-              return `<li class="task"><label>
-                <input type="checkbox" data-id="${id}" data-xp="${t.xp}" data-week="${wn}">
-                <span class="box"></span>
-                <span class="tag ${t.k}">${kLabel}</span>
-                <span class="task-text">${t.t}${t.link?` <a class="task-link" href="${t.link}" target="_blank" rel="noopener" title="Open course">course&nbsp;↗</a>`:""}</span>
-                <span class="task-xp">+${t.xp}</span>
-              </label></li>`;
+              const link = t.link?` <a class="task-link" href="${t.link}" target="_blank" rel="noopener" title="Open course">course&nbsp;↗</a>`:"";
+              const done = state.checked[id] ? " done" : "";
+              return `<li class="task${done}">
+                <div class="task-row">
+                  <label class="cbx" title="Mark complete">
+                    <input type="checkbox" data-id="${id}" data-xp="${t.xp}" data-week="${wn}">
+                    <span class="box"></span>
+                  </label>
+                  <span class="tag ${t.k}">${kLabel}</span>
+                  <div class="task-text" role="button" tabindex="0" aria-expanded="false" aria-controls="desc-${id}" title="Show details">
+                    <span class="tt-label">${t.t}${link}</span>
+                    <span class="task-caret" aria-hidden="true">+</span>
+                  </div>
+                  <span class="task-xp">+${t.xp}</span>
+                </div>
+                <div class="task-desc" id="desc-${id}"><div class="task-desc-inner"><p>${t.d||"Details coming soon."}</p></div></div>
+              </li>`;
             }).join("")}
           </ul>
         </div>
@@ -726,9 +757,30 @@ function render(){
   // hydrate
   document.querySelectorAll('input[type=checkbox]').forEach(cb=>{
     cb.checked = !!state.checked[cb.dataset.id];
+    cb.closest(".task").classList.toggle("done", cb.checked);
     cb.addEventListener("change", onToggle);
   });
+
+  // expandable descriptions
+  document.querySelectorAll(".task-text").forEach(tt=>{
+    tt.addEventListener("click", e=>{
+      if(e.target.closest(".task-link")) return; // let course links open
+      toggleDesc(tt);
+    });
+    tt.addEventListener("keydown", e=>{
+      if(e.key==="Enter" || e.key===" "){ e.preventDefault(); toggleDesc(tt); }
+    });
+  });
+
   updateHUD(false);
+}
+
+function toggleDesc(tt){
+  const task = tt.closest(".task");
+  const open = task.classList.toggle("open");
+  tt.setAttribute("aria-expanded", open ? "true" : "false");
+  const caret = tt.querySelector(".task-caret");
+  if(caret) caret.textContent = open ? "−" : "+";
 }
 
 /* ================= LOGIC ================= */
@@ -736,6 +788,7 @@ function onToggle(e){
   const cb = e.target;
   state.checked[cb.dataset.id] = cb.checked;
   if(!cb.checked) delete state.checked[cb.dataset.id];
+  cb.closest(".task").classList.toggle("done", cb.checked);
   saveState();
   updateHUD(true, cb.checked ? +cb.dataset.xp : 0, cb.dataset.week);
 }
@@ -874,7 +927,10 @@ document.getElementById("resetBtn").addEventListener("click", async ()=>{
     if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(state)); }
     else{ localStorage.removeItem(KEY); }
   }catch(e){}
-  document.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false);
+  document.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.checked=false;
+    cb.closest(".task").classList.remove("done");
+  });
   updateHUD(false);
 });
 
