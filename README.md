@@ -2,7 +2,7 @@
 
 Interactive to-do tracker for the 14-week game-UI-director → design-engineer campaign (Jul 13 – Oct 18, 2026).
 
-**Live site:** https://indrashish23.github.io/de-roadmap/
+**Live site:** https://de-roadmap-omega.vercel.app
 
 ## How it works
 
@@ -27,4 +27,4 @@ git commit -m "what you changed"
 git push
 ```
 
-GitHub Pages redeploys automatically — changes are live in under a minute.
+The repo is connected to Vercel, so every push to `main` triggers an automatic production redeploy — changes are live in under a minute.
