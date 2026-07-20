@@ -1,25 +1,28 @@
-# Operation: Design Engineer — 14-Week Tracker
+# Operation: Low Level — 19-Week Tracker
 
-Interactive to-do tracker for the 14-week game-UI-director → design-engineer campaign (Jul 13 – Oct 18, 2026).
+Interactive tracker for the 19-week game-UI-director → systems C++ engineer campaign (Jul 20 – Nov 29, 2026).
 
 **Live site:** https://de-roadmap-omega.vercel.app
 
 ## How it works
 
-- Open the live URL every day — the current week auto-opens and the **This week** button jumps to it.
-- Check off tasks to earn XP, rank up (Recruit → Day-One Hire), and keep your post streak alive.
-- The **Check-in** counter tracks consecutive days you open the page.
-- Progress saves automatically to your browser (localStorage), per device. Reset only clears checkboxes, not your check-in streak.
+- Open the live URL every day — the current week auto-opens and **Jump to current** scrolls to it.
+- Check off tasks to earn XP and rank up (Userland → Ring 0). Click task text to expand details.
+- **Check-in** tracks consecutive days you open the page; **Post** tracks weekly public-post streak.
+- Progress saves to this browser (`opll-v1` localStorage). Reset clears checkboxes only.
+
+## Campaign shape
+
+- Weeks 1–13 — core campaign → October finance applications (Matchbox flagship)
+- Weeks 14–19 — Campaign 2: The Fabric (GPU training-fabric simulator)
 
 ## Updating the site
-
-Edit `index.html`, then either run:
 
 ```powershell
 ./push.ps1 "what you changed"
 ```
 
-or manually:
+or:
 
 ```powershell
 git add .
@@ -27,4 +30,4 @@ git commit -m "what you changed"
 git push
 ```
 
-The repo is connected to Vercel, so every push to `main` triggers an automatic production redeploy — changes are live in under a minute.
+Vercel redeploys from `main` automatically.

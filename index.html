@@ -3,299 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OPERATION: DESIGN ENGINEER — 14-Week Tracker</title>
+<title>OPERATION: LOW LEVEL — 19-Week Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#0E0E0E;
     --paper:#F2EFE9;
     --orange:#D26601;
     --steel:#8C8880;
-    --line:#0E0E0E;
     --ok:#1F6E43;
-    /* header stays dark in both themes */
-    --hbg:#0E0E0E;
-    --hfg:#F2EFE9;
-    --dim:#B9B4AA;
-    /* surfaces that flip between themes */
-    --card:#FBF9F4;
-    --muted:#4a463f;
+    --muted:#5c574f;
     --hair:#d8d3c8;
+    --dim:#B9B4AA;
   }
   :root[data-theme="dark"]{
-    --ink:#ECEAE4;      /* foreground + borders become light */
-    --paper:#131313;    /* page background becomes dark */
+    --ink:#ECEAE4;
+    --paper:#131313;
     --steel:#9a958c;
     --ok:#37946a;
-    --card:#1e1e1e;
-    --muted:#c7c1b6;
-    --hair:#333030;
+    --muted:#b8b2a6;
+    --hair:#2e2c2a;
+    --dim:#8a857c;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--paper)}
   body{
-    font-family:'Archivo',sans-serif;color:var(--ink);background:var(--paper);
-    padding:0 0 80px 0;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;line-height:1.55;
+    color:var(--ink);background:var(--paper);
+    padding:0 0 96px;
+    -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
 
-  /* ============ HEADER / HUD ============ */
-  header{
-    border-bottom:3px solid var(--orange);
-    background:var(--hbg);color:var(--hfg);
-    padding:28px 0 22px;
-  }
-  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
-  .top-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-  .top-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  /* ============ HEADER ============ */
+  header{padding:36px 0 28px;border-bottom:1px solid var(--hair)}
+  .top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+  .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
   .theme-btn{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-    background:transparent;color:var(--hfg);border:2px solid var(--hfg);
-    padding:5px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+    font-family:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    background:transparent;color:var(--steel);border:1px solid var(--hair);
+    padding:6px 10px;cursor:pointer;white-space:nowrap;
   }
-  .theme-btn:hover{background:var(--hfg);color:var(--hbg)}
-  .theme-btn:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
-  .faction-pick{display:flex;align-items:center;gap:8px}
-  .faction-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
-  #factionSel{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-    background:transparent;color:var(--hfg);border:2px solid var(--orange);
-    padding:5px 8px;cursor:pointer;
+  .theme-btn:hover{color:var(--ink);border-color:var(--ink)}
+  .theme-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  h1{
+    font-family:'Archivo Black',sans-serif;font-size:clamp(28px,7vw,42px);
+    line-height:1.05;text-transform:uppercase;letter-spacing:.01em;margin-bottom:10px;
   }
-  #factionSel:focus-visible{outline:3px solid var(--hfg);outline-offset:2px}
-  #factionSel option{background:var(--hbg);color:var(--hfg)}
-  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,5vw,44px);line-height:1.02;text-transform:uppercase;letter-spacing:.01em;margin:6px 0 4px}
   h1 .accent{color:var(--orange)}
-  .subline{font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--dim);margin-bottom:16px}
+  .subline{font-size:13px;color:var(--muted);margin-bottom:28px;max-width:42ch}
 
-  /* ---- current step banner ---- */
   .now-banner{
-    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-    margin-bottom:20px;padding:12px 16px;border:2px solid var(--orange);
-    background:rgba(210,102,1,.10);
+    display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:18px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+    margin-bottom:20px;
   }
-  .now-tag{
-    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--orange);margin-bottom:5px;display:flex;align-items:center;
-  }
-  .now-dot{
-    display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);
-    margin-right:7px;animation:pulse 1.6s ease-in-out infinite;
-  }
-  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.6)}}
-  .now-step{
-    font-family:'Archivo Black',sans-serif;font-size:18px;text-transform:uppercase;
-    letter-spacing:.01em;color:var(--hfg);line-height:1.15;
-  }
-  .now-step span:first-child{color:var(--orange)}
-  .now-sub{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--dim);margin-top:5px}
+  .now-tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .now-step{font-size:14px;line-height:1.35;max-width:48ch}
+  .now-step #nowWeek{color:var(--orange)}
+  .now-sub{font-size:12px;color:var(--steel);margin-top:6px}
   .now-jump{
-    font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
-    background:var(--orange);color:#0E0E0E;border:none;padding:11px 18px;cursor:pointer;white-space:nowrap;
+    font-family:inherit;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--orange);color:#F2EFE9;border:none;padding:12px 16px;cursor:pointer;
+    min-height:44px;
   }
-  .now-jump:hover{background:var(--hfg)}
-  .now-jump:focus-visible{outline:3px solid var(--hfg);outline-offset:2px}
+  .now-jump:hover{opacity:.9}
+  .now-jump:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-  .hud{display:grid;grid-template-columns:1fr auto auto auto auto;gap:18px;align-items:end}
-  @media(max-width:640px){.hud{grid-template-columns:1fr 1fr;gap:14px}}
-  .stat .label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
-  .stat .value{font-family:'Archivo Black',sans-serif;font-size:29px;color:var(--hfg);font-variant-numeric:tabular-nums}
-  .stat .value small{font-size:14px;color:#8C8880}
-  #levelName{color:var(--orange)}
-
-  .xpbar{grid-column:1/-1;height:14px;border:2px solid var(--hfg);position:relative;background:transparent}
-  .xpbar .fill{
-    height:100%;background:var(--orange);width:0%;
-    transition:width .5s cubic-bezier(.22,1.4,.36,1);
+  .hud{
+    display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    font-size:12px;color:var(--steel);padding-top:4px;
   }
-  .xpbar .ghost{position:absolute;inset:0;height:100%;background:var(--hfg);opacity:.25;width:0%;transition:width 1.2s ease .3s}
+  .hud .stat{display:inline-flex;gap:6px;align-items:baseline}
+  .hud .label{text-transform:uppercase;letter-spacing:.1em;font-size:10px}
+  .hud .value{color:var(--ink);font-variant-numeric:tabular-nums}
+  .hud .value small{color:var(--steel);font-size:11px}
+  #levelName{color:var(--ink)}
+  .xpbar{display:none}
 
-  /* ============ BRIEF STRIP ============ */
-  .brief{
-    border-bottom:3px solid var(--ink);padding:14px 0;
-    font-family:'IBM Plex Mono',monospace;font-size:13.5px;line-height:1.7;
-  }
-  .brief b{color:var(--orange)}
-  .brief .wrap{display:flex;gap:24px;flex-wrap:wrap}
-  .brief .cell{flex:1;min-width:220px}
+  /* ============ BRIEF / SHELF ============ */
+  .brief{padding:36px 0;border-bottom:1px solid var(--hair)}
+  .brief .wrap{display:flex;flex-direction:column;gap:20px}
+  .brief .cell{font-size:13px;line-height:1.7;color:var(--muted);max-width:62ch}
+  .brief b{color:var(--ink);font-weight:600}
 
-  /* ============ COURSE SHELF ============ */
-  .shelf{
-    border-bottom:3px solid var(--ink);padding:10px 0;
-    font-family:'IBM Plex Mono',monospace;font-size:12.5px;
+  .shelf{padding:32px 0;border-bottom:1px solid var(--hair)}
+  .shelf-label{
+    font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.08em;
+    text-transform:uppercase;margin-bottom:18px;
   }
-  .shelf .wrap{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap}
-  .shelf .shelf-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
-  .shelf a{
-    color:var(--ink);text-decoration:none;border:2px solid var(--ink);padding:4px 10px;
-    display:inline-flex;align-items:center;gap:6px;
-  }
-  .shelf a:hover{background:var(--ink);color:var(--paper)}
-  .shelf a:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
-  .shelf a .ext{color:var(--orange);font-weight:700}
+  .shelf-list{list-style:none;display:flex;flex-direction:column;gap:16px}
+  .shelf-list li{font-size:13px;line-height:1.55}
+  .shelf-list a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--orange)}
+  .shelf-list a:hover{color:var(--orange)}
+  .shelf-list a:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .stop{display:block;font-size:12px;color:var(--steel);margin-top:4px}
+  .shelf-tools{margin-top:22px;padding-top:18px;border-top:1px solid var(--hair);font-size:12px;color:var(--steel);line-height:1.7}
+  .shelf-tools a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--hair)}
+  .shelf-tools a:hover{border-color:var(--orange)}
 
-  /* ============ WEEK CARDS ============ */
-  main{padding-top:26px}
+  /* ============ WEEKS ============ */
+  main{padding-top:40px}
   .phase-label{
-    font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:14px;
-    letter-spacing:.14em;margin:34px 0 12px;display:flex;align-items:center;gap:12px;
+    font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.1em;
+    text-transform:uppercase;margin:48px 0 8px;color:var(--ink);
   }
-  .phase-label::after{content:"";flex:1;height:3px;background:var(--ink)}
-  .phase-label span{color:var(--orange)}
+  .phase-label:first-child{margin-top:0}
+  .phase-note{font-size:12px;color:var(--steel);line-height:1.6;margin:0 0 20px;max-width:62ch}
 
-  details.week{border:3px solid var(--ink);margin-bottom:16px;background:var(--paper);position:relative}
-  details.week[open]{background:var(--card)}
+  .campaign-divider{
+    margin:64px 0 24px;padding:28px 0;
+    border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+    font-family:'Archivo Black',sans-serif;font-size:14px;letter-spacing:.14em;
+    text-transform:uppercase;text-align:center;
+  }
+  .campaign-divider span{color:var(--orange)}
+
+  details.week{border-top:1px solid var(--hair);padding:4px 0}
+  details.week:last-of-type{border-bottom:1px solid var(--hair)}
+  details.week.done summary .wk-title::after{
+    content:" · done";color:var(--steel);font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.06em;text-transform:none;
+  }
   summary{
-    list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;
-    padding:14px 16px;user-select:none;
+    list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:14px;
+    padding:18px 0;user-select:none;min-height:44px;
   }
   summary::-webkit-details-marker{display:none}
-  summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+  summary:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
   .wk-num{
-    font-family:'Archivo Black',sans-serif;font-size:24px;min-width:60px;
-    border-right:3px solid var(--ink);padding-right:14px;line-height:1;
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);
+    min-width:42px;padding-top:2px;
   }
-  .wk-num small{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;font-weight:400;color:var(--steel);margin-top:3px}
   .wk-head{flex:1;min-width:0}
-  .wk-title{font-family:'Archivo Black',sans-serif;font-size:17px;text-transform:uppercase;letter-spacing:.02em}
-  .wk-dates{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel);margin-top:2px}
-  .wk-meter{display:flex;align-items:center;gap:10px}
-  .wk-count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel);white-space:nowrap}
-  .wk-prog{width:70px;height:10px;border:2px solid var(--ink);overflow:hidden}
-  .wk-prog .f{height:100%;background:var(--orange);width:0%;transition:width .4s cubic-bezier(.22,1.4,.36,1)}
-  .chev{font-family:'IBM Plex Mono',monospace;font-size:14px;transition:transform .2s}
+  .wk-title{font-size:14px;line-height:1.35}
+  .wk-dates{font-size:12px;color:var(--steel);margin-top:4px}
+  .wk-meter{display:flex;align-items:center;gap:10px;padding-top:2px}
+  .wk-count{font-size:12px;color:var(--steel);white-space:nowrap}
+  .wk-prog{width:48px;height:2px;background:var(--hair);overflow:hidden}
+  .wk-prog .f{height:100%;background:var(--ink);width:0%;transition:width .25s ease}
+  details.week.current .wk-title{color:var(--orange)}
+  details.week.current .wk-prog .f{background:var(--orange)}
+  .active-badge{
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--orange);margin-left:6px;
+  }
+  .chev{font-size:14px;color:var(--steel);transition:transform .15s ease}
   details[open] .chev{transform:rotate(90deg)}
 
-  .active-badge{
-    font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;
-    background:var(--orange);color:var(--paper);padding:3px 7px;text-transform:uppercase;
-  }
-
-  /* mission complete stamp */
-  .stamp{
-    display:none;position:absolute;top:-3px;right:-3px;bottom:auto;
-    font-family:'Archivo Black',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--paper);padding:5px 12px 5px 22px;
-    background:repeating-linear-gradient(45deg,var(--ink),var(--ink) 8px,var(--orange) 8px,var(--orange) 16px);
-  }
-  .stamp b{background:var(--ink);padding:2px 6px}
-  details.week.done .stamp{display:block;animation:stampIn .35s cubic-bezier(.22,1.6,.36,1)}
-  details.week.done{border-color:var(--orange)}
-  @keyframes stampIn{0%{transform:scale(1.6);opacity:0}100%{transform:scale(1);opacity:1}}
-
-  .wk-body{border-top:3px solid var(--ink);padding:16px}
-  .focus{
-    font-size:15.5px;line-height:1.6;margin-bottom:14px;max-width:64ch;
-  }
+  .wk-body{padding:0 0 28px 56px}
+  @media(max-width:520px){.wk-body{padding-left:0}}
+  .focus{font-size:13px;line-height:1.7;color:var(--muted);margin-bottom:16px;max-width:58ch}
   .sessions{
-    font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.8;color:var(--muted);
-    border-left:3px solid var(--orange);padding-left:12px;margin-bottom:16px;white-space:pre-line;
+    font-size:12px;line-height:1.75;color:var(--steel);
+    border-left:1px solid var(--hair);padding-left:14px;margin-bottom:20px;white-space:pre-line;
   }
 
   /* ============ TASKS ============ */
   ul.tasks{list-style:none}
   .task{border-top:1px solid var(--hair)}
   .task:first-child{border-top:none}
-  .task-row{
-    display:flex;align-items:flex-start;gap:12px;padding:9px 4px;
-  }
-  .cbx{flex:none;margin-top:1px;cursor:pointer;display:block;line-height:0}
+  .task-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;min-height:44px}
+  .cbx{flex:none;margin-top:2px;cursor:pointer;display:block;line-height:0}
   .task input{position:absolute;opacity:0;width:0;height:0}
   .box{
-    width:20px;height:20px;border:2.5px solid var(--ink);flex:none;
-    display:grid;place-items:center;background:var(--paper);
-    transition:background .12s;
+    width:20px;height:20px;border:1.5px solid var(--ink);
+    display:grid;place-items:center;background:transparent;
   }
   .box::after{
     content:"";width:10px;height:10px;background:var(--orange);transform:scale(0);
-    transition:transform .18s cubic-bezier(.22,1.8,.36,1);
+    transition:transform .12s ease;
   }
-  .task input:checked + .box{background:var(--ink)}
+  .task input:checked + .box{border-color:var(--ink)}
   .task input:checked + .box::after{transform:scale(1)}
-  .task input:focus-visible + .box{outline:3px solid var(--orange);outline-offset:2px}
+  .task input:focus-visible + .box{outline:2px solid var(--orange);outline-offset:2px}
   .task-text{
-    flex:1;font-size:15.5px;line-height:1.5;cursor:pointer;
+    flex:1;font-size:14px;line-height:1.45;cursor:pointer;
     display:flex;align-items:flex-start;gap:10px;background:none;border:none;
     text-align:left;color:var(--ink);padding:0;font-family:inherit;
   }
   .tt-label{flex:1}
-  .task-text:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
-  .task.done .tt-label{color:var(--steel);text-decoration:line-through;text-decoration-color:var(--orange);text-decoration-thickness:2px}
-  .task-caret{
-    flex:none;font-family:'IBM Plex Mono',monospace;font-size:15px;line-height:1;
-    color:var(--steel);width:14px;text-align:center;user-select:none;
-  }
-  .task.open .task-caret{color:var(--orange)}
-  .task-xp{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);flex:none;margin-top:3px}
-  .task-link{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--orange);
-    text-decoration:none;border-bottom:2px solid var(--orange);white-space:nowrap;
-  }
-  .task-link:hover{background:var(--orange);color:var(--paper)}
-  .task-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
-  .task.done .task-link{text-decoration:none;color:var(--orange)}
-
-  /* expandable description */
-  .task-desc{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s cubic-bezier(.22,1,.36,1)}
+  .task-text:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+  .task.done .tt-label{color:var(--steel);text-decoration:line-through;text-decoration-thickness:1px}
+  .task-caret{flex:none;font-size:14px;color:var(--steel);width:14px;text-align:center;user-select:none}
+  .task.open .task-caret{color:var(--ink)}
+  .task-xp{font-size:11px;color:var(--steel);flex:none;margin-top:3px}
+  .task-link{color:var(--orange);text-decoration:none;border-bottom:1px solid var(--orange);white-space:nowrap;font-size:12px}
+  .task-link:hover{opacity:.8}
+  .task-desc{display:grid;grid-template-rows:0fr;transition:grid-template-rows .2s ease}
   .task.open .task-desc{grid-template-rows:1fr}
   .task-desc-inner{overflow:hidden;min-height:0}
   .task-desc-inner p{
-    font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.7;color:var(--muted);
-    border-left:3px solid var(--orange);padding:2px 0 2px 12px;margin:2px 0 12px 32px;max-width:70ch;
+    font-size:12px;line-height:1.7;color:var(--muted);
+    padding:0 0 14px 0;max-width:58ch;
   }
   .tag{
-    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-    padding:2px 6px;flex:none;margin-top:3px;border:1.5px solid var(--ink);
+    font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 0;flex:none;margin-top:3px;color:var(--steel);min-width:52px;
   }
-  .tag.build{background:var(--ink);color:var(--paper)}
-  .tag.learn{background:transparent}
-  .tag.ai{background:var(--orange);color:var(--paper);border-color:var(--orange)}
-  .tag.tweet{background:transparent;color:var(--orange);border-color:var(--orange)}
-  .tag.ship{background:var(--ok);color:var(--paper);border-color:var(--ok)}
+  .tag.build,.tag.learn,.tag.ai,.tag.tweet,.tag.ship{background:transparent;border:none}
 
-  /* ============ XP TOAST ============ */
+  /* ============ TOAST ============ */
   #toast{
-    position:fixed;bottom:22px;left:50%;transform:translate(-50%,80px);opacity:0;
-    background:var(--ink);color:var(--paper);border:3px solid var(--orange);
-    font-family:'Archivo Black',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.08em;
-    padding:10px 20px;pointer-events:none;z-index:50;
-    transition:transform .25s cubic-bezier(.22,1.6,.36,1),opacity .25s;
+    position:fixed;bottom:20px;left:50%;transform:translate(-50%,40px);opacity:0;
+    background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+    font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+    padding:10px 16px;pointer-events:none;z-index:50;
+    transition:transform .2s ease,opacity .2s ease;
   }
   #toast.show{transform:translate(-50%,0);opacity:1}
   #toast .plus{color:var(--orange)}
 
-  /* ============ FOOTER / TARGETS ============ */
-  .targets{border:3px solid var(--ink);margin-top:36px;padding:16px;background:var(--card)}
-  .targets h2{font-family:'Archivo Black',sans-serif;font-size:15.5px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
-  .assets summary{font-family:'Archivo Black',sans-serif;font-size:15.5px;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;padding:0}
-  .assets summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
-  .assets .asset{margin-top:14px}
-  .assets h3{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  /* ============ FOOTER ============ */
+  .targets{margin-top:56px;padding-top:36px;border-top:1px solid var(--hair)}
+  .targets h2,.assets summary{
+    font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.1em;
+    text-transform:uppercase;margin-bottom:18px;
+  }
+  .assets summary{cursor:pointer;list-style:none;padding:0}
+  .assets summary::-webkit-details-marker{display:none}
+  .assets summary:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+  .targets p{font-size:13px;line-height:1.7;color:var(--muted);max-width:62ch;margin-bottom:14px}
+  .targets b{color:var(--ink);font-weight:600}
+  .assets{margin-top:40px;padding-top:32px;border-top:1px solid var(--hair)}
+  .assets .asset{margin-top:28px}
+  .assets h3{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);margin-bottom:10px}
   .assets pre{
-    font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.75;white-space:pre-wrap;
-    border-left:3px solid var(--ink);padding:10px 14px;background:var(--paper);
+    font-family:inherit;font-size:12px;line-height:1.7;white-space:pre-wrap;
+    color:var(--muted);padding:0;border:none;background:transparent;
   }
-  .assets .note{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel);margin-top:6px}
-  .targets p{font-size:14.5px;line-height:1.7;max-width:70ch;margin-bottom:8px}
-  .targets b{color:var(--orange)}
-  .reset-row{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-  .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--steel)}
+  .assets .note{font-size:11px;color:var(--steel);margin-top:8px}
+  .reset-row{margin-top:48px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .hint{font-size:11px;color:var(--steel)}
   button.reset{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-    background:transparent;border:2px solid var(--ink);padding:8px 14px;cursor:pointer;color:var(--ink);
+    font-family:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    background:transparent;border:1px solid var(--hair);padding:10px 14px;cursor:pointer;color:var(--steel);
+    min-height:44px;
   }
-  button.reset:hover{background:var(--ink);color:var(--paper)}
-  button.reset:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+  button.reset:hover{border-color:var(--ink);color:var(--ink)}
+  button.reset:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 
   @media (prefers-reduced-motion: reduce){
     *{transition:none!important;animation:none!important}
   }
 </style>
 <script>
-  /* set theme before paint to avoid flash */
   try{
-    var raw = localStorage.getItem("de-roadmap-v2");
+    var raw = localStorage.getItem("opll-v1");
     var t = raw && JSON.parse(raw).theme;
     if(t!=="dark" && t!=="light"){
       t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -309,31 +265,27 @@
 <header>
   <div class="wrap">
     <div class="top-row">
-      <div class="eyebrow">// 14-week campaign · Jul 13 – Oct 18, 2026</div>
-      <div class="top-right">
-        <button id="themeBtn" class="theme-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode"><span id="themeIcon">☾</span> <span id="themeLbl">Dark</span></button>
-        <label class="faction-pick">
-          <span class="faction-lbl">Faction</span>
-          <select id="factionSel" aria-label="Select faction"></select>
-        </label>
-      </div>
+      <div class="eyebrow">// 19-week campaign · Jul 20 – Nov 29, 2026</div>
+      <button id="themeBtn" class="theme-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode"><span id="themeIcon">☾</span> <span id="themeLbl">Dark</span></button>
     </div>
-    <h1>Operation: <span class="accent">Design Engineer</span></h1>
-    <div class="subline">game UI director → design engineer · 10–15 hrs/wk · build in public</div>
+    <h1>Operation: <span class="accent">Low Level</span></h1>
+    <div class="subline">game UI director → systems C++ engineer · 10–15 hrs/wk · benchmark everything</div>
+
     <div class="now-banner" id="nowBanner">
       <div class="now-left">
-        <div class="now-tag"><span class="now-dot"></span>Currently on</div>
+        <div class="now-tag">Currently on</div>
         <div class="now-step"><span id="nowWeek">Week 01</span> — <span id="nowTitle">…</span></div>
         <div class="now-sub"><span id="nowDates"></span> · <span id="nowCount">0/0 tasks done</span></div>
       </div>
-      <button class="now-jump" id="jumpBtn">Jump to current step ↓</button>
+      <button class="now-jump" id="jumpBtn">Jump to current ↓</button>
     </div>
+
     <div class="hud">
-      <div class="stat"><div class="label">Rank</div><div class="value" id="levelName">Recruit</div></div>
-      <div class="stat"><div class="label">XP</div><div class="value"><span id="xpNow">0</span><small> / <span id="xpMax">0</span></small></div></div>
-      <div class="stat"><div class="label">Tasks</div><div class="value"><span id="taskNow">0</span><small> / <span id="taskMax">0</span></small></div></div>
-      <div class="stat"><div class="label">Post streak</div><div class="value"><span id="streak">0</span><small> wk</small></div></div>
-      <div class="stat"><div class="label">Check-in</div><div class="value"><span id="dayStreak">0</span><small> day</small></div></div>
+      <div class="stat"><span class="label">Rank</span> <span class="value" id="levelName">Userland</span></div>
+      <div class="stat"><span class="label">XP</span> <span class="value"><span id="xpNow">0</span><small>/<span id="xpMax">0</span></small></span></div>
+      <div class="stat"><span class="label">Tasks</span> <span class="value"><span id="taskNow">0</span><small>/<span id="taskMax">0</span></small></span></div>
+      <div class="stat"><span class="label">Post</span> <span class="value"><span id="streak">0</span><small>wk</small></span></div>
+      <div class="stat"><span class="label">Check-in</span> <span class="value"><span id="dayStreak">0</span><small>d</small></span></div>
       <div class="xpbar"><div class="fill" id="xpFill"></div></div>
     </div>
   </div>
@@ -342,15 +294,42 @@
 <div class="brief">
   <div class="wrap">
     <div class="cell"><b>WEEKLY RHYTHM.</b> Session A (Tue eve, 2h) · Session B (Thu eve, 2h) · Session C (Sat, 4h) · Session D (Sun, 3h) + ~1h publishing. Protect Session C — it's where projects actually move.</div>
-    <div class="cell"><b>TWO RULES.</b> 1) Commit to GitHub every session. 2) AI can scaffold, but you must be able to explain every line — interviews include code walkthroughs.</div>
+    <div class="cell"><b>THREE RULES.</b> 1) Commit to GitHub every session. 2) AI can scaffold, but you must be able to explain every line — interviews include code walkthroughs. 3) Benchmark or it didn't happen — every project README leads with measured numbers.</div>
   </div>
 </div>
 
 <div class="shelf">
   <div class="wrap">
-    <span class="shelf-label">Course shelf //</span>
-    <a href="https://www.udemy.com/course/understanding-typescript/" target="_blank" rel="noopener">Udemy · Understanding TypeScript <span class="ext">↗</span></a>
-    <a href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/" target="_blank" rel="noopener">Udemy · React — The Complete Guide <span class="ext">↗</span></a>
+    <div class="shelf-label">Course shelf</div>
+    <ul class="shelf-list">
+      <li>
+        <a href="https://www.udemy.com/course/quick-start-to-modern-c-for-programmers/" target="_blank" rel="noopener">Udemy · Quick Start to Modern C++ for Programmers (~8.5h)</a>
+        <span class="stop">Stop early: watch through STL; SKIP the multithreading chapter.</span>
+      </li>
+      <li>
+        <a href="https://www.udemy.com/course/learn-modern-cplusplus-concurrency/" target="_blank" rel="noopener">Udemy · Learn Multithreading with Modern C++ — James Raynard (~9h)</a>
+        <span class="stop">Stop early: watch it all — this is the whole of Phase 2 theory.</span>
+      </li>
+      <li>
+        <a href="https://www.udemy.com/course/modern-cpp-concurrency-in-depth/" target="_blank" rel="noopener">Udemy · Modern C++ Concurrency in Depth (C++17/20) (~10h)</a>
+        <span class="stop">Stop early: optional Week 6 dip only — memory-model + lock-free sections. Do NOT watch linearly.</span>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=NH1Tta7purM" target="_blank" rel="noopener">CppCon · Carl Cook — When a Microsecond Is an Eternity (~1h)</a>
+        <span class="stop">Stop early: one watch in Week 6.</span>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=fHNmRkzxHWs" target="_blank" rel="noopener">CppCon · Chandler Carruth — Efficiency with Algorithms, Performance with Data Structures (~1h)</a>
+        <span class="stop">Stop early: one watch in Week 4.</span>
+      </li>
+    </ul>
+    <div class="shelf-tools">
+      Tools, not courses:
+      <a href="https://godbolt.org" target="_blank" rel="noopener">Compiler Explorer</a> ·
+      <a href="https://github.com/google/benchmark" target="_blank" rel="noopener">Google Benchmark</a> ·
+      <a href="https://en.cppreference.com" target="_blank" rel="noopener">cppreference.com</a>
+      — no book reading assigned.
+    </div>
   </div>
 </div>
 
@@ -358,53 +337,52 @@
 
 <div class="wrap">
   <div class="targets">
-    <h2>Target list · NYC / Remote / Seattle</h2>
-    <p><b>Tier 1 (best geo + fit):</b> Runway (NYC HQ + Seattle office), The Browser Company (NYC), Hume AI (NYC), ElevenLabs (remote-friendly), Notion (NYC office), Figma (NYC office).</p>
-    <p><b>Tier 2 (design-engineer-culture, largely remote):</b> Vercel, Linear, Raycast, Framer, Family, Ramp (NYC).</p>
-    <p><b>Tier 3 (volume):</b> a16z / General Catalyst / Index job boards — filter "design engineer" + "founding designer," NYC/remote.</p>
-    <p><b>Deprioritized:</b> Cursor &amp; Krea (SF in-person), Mistral (Paris).</p>
-    <p><b>Phase 5 contingency:</b> by Week 10, verify the ElevenLabs Product Designer role is still open. If closed, Voice Director retargets in ~1 week of rework: <b>Hume AI</b> (NYC — swap voice settings for their emotion/expression API) or <b>Runway</b> (NYC/Seattle — reframe as shot direction on their video API). The pattern is the asset: build on their API → find their gaps → arrive with proposals.</p>
+    <h2>Target list · Apply from Week 11 (early Oct)</h2>
+    <p><b>Tier 1 — realistic entry, finance infrastructure, stable:</b> Bloomberg (NYC, massive C++ org, hires non-traditional backgrounds), Nasdaq, CME Group, Cboe, MEMX, Databento, Exegy, Trading Technologies, ION.</p>
+    <p><b>Tier 2 — prop/HFT early-career programs (fall cycle, long shots, apply anyway):</b> Optiver, IMC, Akuna Capital, DRW, SIG, CTC, Belvedere, Geneva Trading. Moonshots: HRT, Jump, Citadel Securities.</p>
+    <p><b>Tier 3 — comp/stock-upside systems C++, Seattle-compatible:</b> Zoox (Seattle), SpaceX (Redmond), Coinbase / Kraken (remote), Aurora, Applied Intuition; fallback that leverages 10 yrs of game experience: engine-level C++ at Valve (Bellevue) or Epic (core engine, remote).</p>
+    <p><b>Tier 4 — AI infrastructure networking (November cycle, after Flagship #2 ships):</b> xAI (Colossus networking), NVIDIA (networking/NCCL/DGX systems), CoreWeave, Together AI, Lambda, Crusoe, Anthropic/OpenAI infra teams, Arista, AWS EC2 networking (Seattle-local). These roles want exactly what Flagship #2 demonstrates: high-performance C++, routing/traffic engineering, distributed systems, real-time telemetry. Comp ranges publicly cited around $180K–$440K with meaningful equity at the startups.</p>
+    <p><b>Geo note:</b> Seattle has almost no low-latency finance — Tier 1/2 assume remote, NYC, or Chicago; Tier 3 is the Seattle-local path.</p>
+    <p><b>Week 10 contingency:</b> if the flagship project is behind schedule, cut the stretch goal (TCP gateway), keep the matching engine + benchmarks, and shift Tier 2 applications to November — Tier 1 and Tier 3 proceed on schedule.</p>
   </div>
 
-  <details class="targets assets">
+  <details class="assets">
     <summary>Field assets — pre-drafted, ready when you are</summary>
 
     <div class="asset">
-      <h3>Asset 01 · The pinned announcement post (Week 1, Session A — post before you code)</h3>
-      <pre>Week 1 of 14.
+      <h3>Asset 01 · Pinned announcement post (Week 1 — post before you code)</h3>
+      <pre>Week 1 of 13.
 
-10 years shipping game UI — HUDs, skill trees, the exact
-spring curve that makes a level-up feel earned.
+10 years shipping game UI — HUDs, skill trees,
+frame budgets where 16ms is the law.
 
-Now I'm becoming a design engineer, in public:
-4 shipped projects. React/TS from near-zero.
-~15 hrs/wk around a full-time job.
+Now I'm going lower: systems C++, in public.
+3 repos, each README opens with a benchmark.
+Finish line: a matching engine with p99 latency numbers.
 
-Everything — wins and faceplants — documented here.
-Day one starts now.</pre>
+~15 hrs/wk around a full-time job. Day one starts now.</pre>
       <div class="note">Pin it. Reply to it with every weekly post so the whole journey threads from one URL.</div>
     </div>
 
     <div class="asset">
-      <h3>Asset 02 · "Dead Air" — original 12-line scene for Voice Director (Week 13)</h3>
-      <pre>COLD EXTRACT — Scene 4: "DEAD AIR"
-Cast: HAVOC (squad lead) · RIGGS (breacher) · VESPER (ops AI)
+      <h3>Asset 02 · PROJECT: MATCHBOX — limit order book</h3>
+      <pre>Supported ops: add / cancel / modify / execute · market + limit · partial fills
+Invariants: price-time priority · no allocation on hot path after warmup
+Inputs: ITCH 5.0 replay via Project 1 parser
+README order: baseline numbers → optimization log → final p50/p99 table
+Definition of done: a stranger can clone, run `make bench`, and reproduce the numbers.</pre>
+    </div>
 
-01  HAVOC   (calm, procedural)   "Vesper, give me eyes on the extract point."
-02  VESPER  (flat, synthetic)    "Negative feed. The relay's been dark for six minutes."
-03  RIGGS   (dry, low)           "Six minutes. That's not weather."
-04  HAVOC   (clipped)            "Copy. We move like it's compromised."
-05  VESPER  (neutral urgency)    "Advisory: thermal bloom, two hundred meters north."
-06  RIGGS   (gallows humor)      "Tell me that's a campfire."
-07  HAVOC   (whisper, command)   "Weapons tight. Nobody breathes without my say."
-08  VESPER  (measured)           "Bloom is spreading. Pattern suggests a burn team."
-09  RIGGS   (quiet realization)  "They're erasing the site. We were never supposed to see it."
-10  HAVOC   (resolve)            "Change of mission. We document, then we ghost."
-11  VESPER  (dry)                "Recording. For the record — I advised against this."
-12  HAVOC   (faint smile)        "Noted, Vesper. Everyone does."</pre>
-      <div class="note">Deliberately a TTS test matrix: 3 voice archetypes × calm / urgent / whisper / dry / humor — exactly the range your direction controls need to prove.</div>
+    <div class="asset">
+      <h3>Asset 03 · PROJECT: FABRIC — GPU training-fabric congestion simulator &amp; router</h3>
+      <pre>Scope: C++17/20 discrete-event simulator · Clos/fat-tree topology generator · all-reduce traffic replay · static ECMP baseline · congestion-aware adaptive router · per-link telemetry stream
+Target claim: "congestion-aware router cut p99 flow completion time by X% vs static ECMP on an all-reduce workload"
+Differentiator: live heatmap visualization in the personal design language — hotspots forming and draining in real time
+README order: heatmap GIF → claim with numbers → architecture → optimization log
+Definition of done: a stranger can clone, run `make sim && make bench`, reproduce the comparison table, and open the live heatmap.</pre>
     </div>
   </details>
+
   <div class="reset-row">
     <div class="hint" id="saveHint">Progress saves automatically to this device.</div>
     <button class="reset" id="resetBtn">Reset all progress</button>
@@ -416,282 +394,302 @@ Cast: HAVOC (squad lead) · RIGGS (breacher) · VESPER (ops AI)
 <script>
 /* ================= DATA ================= */
 const PHASES = [
-  {label:"Phase 1", title:"Fundamentals through building — Project: JUICE", weeks:[1,2,3]},
-  {label:"Phase 2", title:"The AI interface — Project: AGENT HUD", weeks:[4,5,6,7]},
-  {label:"Phase 3", title:"Ship real software — Project: SPRINGBOARD (Figma plugin)", weeks:[8,9,10,11]},
-  {label:"Phase 4", title:"Portfolio + applications", weeks:[12]},
-  {label:"Phase 5", title:"Targeted strike — Project: VOICE DIRECTOR (built for ElevenLabs)", weeks:[13,14]},
+  {label:"Phase 1", title:"C++ Core", weeks:[1,2,3]},
+  {label:"Phase 2", title:"Memory & the Machine", weeks:[4,5,6]},
+  {label:"Phase 3", title:"Flagship: Matching Engine", weeks:[7,8,9,10]},
+  {label:"Phase 4", title:"Interview & Apply", weeks:[11,12,13]},
+  {label:"Phase 5", title:"Campaign 2 — GPU Fabric Simulator", weeks:[14,15,16,17,18,19],
+   note:"This project assumes everything from Phases 1–3. By now a discrete-event loop, a benchmark harness, and a hot path are familiar tools — the new material is networking concepts, not C++."},
 ];
+
+const LINK = {
+  qs:"https://www.udemy.com/course/quick-start-to-modern-c-for-programmers/",
+  ray:"https://www.udemy.com/course/learn-modern-cplusplus-concurrency/",
+  depth:"https://www.udemy.com/course/modern-cpp-concurrency-in-depth/",
+  cook:"https://www.youtube.com/watch?v=NH1Tta7purM",
+  carruth:"https://www.youtube.com/watch?v=fHNmRkzxHWs",
+};
 
 const WEEKS = [
 {
-  n:1, dates:"Jul 13 – Jul 19", title:"Rewire: Blueprint brain → React brain",
-  focus:"Stop vibe-coding. Set up a professional environment and learn TypeScript + React fundamentals by hand-building boring things. Your MVVM instincts map directly: ViewModel ≈ state + derived values, UMG bindings ≈ props down, delegates ≈ callbacks up.",
-  sessions:`A — Env setup: Cursor (or VS Code), Node, pnpm, Vite+React+TS template, Tailwind. New GitHub repo, first commit.
-B — Udemy "Understanding TypeScript" (Schwarzmüller): types, interfaces, unions, narrowing.
-C — TS generics + React course: components, props, useState. Hand-build: counter, toggle, controlled input.
-D — Hand-build a todo list (add/remove/filter) with zero AI. Then rebuild it with AI and diff the two.`,
+  n:1, dates:"Jul 20 – Jul 26", title:"Toolchain + Hello, allocator",
+  focus:"Stand up a professional C++ toolchain and prove you understand stack vs heap by printing addresses. Post the pinned announcement before you code.",
+  sessions:`A — Install clang/gcc, CMake, ASan/UBSan, clang-format. Compiler Explorer account. First commit.
+B — Quick Start course: pointers, references, memory (~1.5h).
+C — Quick Start continued (~1.5h). Write "Hello, allocator": print stack vs heap addresses.
+D — README explanation of stack vs heap. Pin Asset 01. Commit every session.`,
   tasks:[
-    {t:"Set up Vite + React + TypeScript + Tailwind project, push to a public GitHub repo",k:"build",xp:15,d:"Stand up the professional toolchain you'll live in for 14 weeks: Vite + React + TS + Tailwind, initialized as a public repo. This is the foundation every project builds on and the first thing a hiring manager clicks. Done = the starter runs locally and the repo is live on GitHub with a real first commit."},
-    {t:"Udemy · Understanding TypeScript — types, interfaces, unions, narrowing (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/understanding-typescript/",d:"Watch selectively — you need working fluency in types, interfaces, unions and narrowing, not a completion certificate. These are the vocabulary you'll use to describe UI state in every interview code walkthrough. Done = you can annotate a component's props and state without reaching for 'any'."},
-    {t:"Udemy · Understanding TypeScript — generics + utility types (~1.5h)",k:"learn",xp:10,link:"https://www.udemy.com/course/understanding-typescript/",d:"Cover generics and utility types (Partial, Pick, Record) — the tools that make reusable hooks and components type-safe. This is what separates 'vibe-coded' TS from code you can defend line by line. Done = you can write a small generic function and explain why the generic beats 'any'."},
-    {t:"Hand-build (NO AI): counter, toggle, controlled input, list w/ add & remove",k:"build",xp:20,d:"Build the four React primitives by hand, no AI: these are the direct equivalents of the UMG widgets and MVVM bindings you already know — state + derived values, callbacks up. Doing it manually builds the muscle memory interviews test live. Done = all four work from memory in your repo, no copy-paste."},
-    {t:"Write a CLAUDE.md / .cursorrules for your repo: your stack, conventions, design principles — your first AI-first workflow artifact",k:"ai",xp:15,d:"Author the config that tells AI tools your stack, conventions, and design language (flat, black/off-white/burnt-orange, IBM Plex Mono + Archivo Black). This is a real design-engineer skill: steering AI to produce code in your voice. Done = a committed CLAUDE.md/.cursorrules that visibly changes how the AI scaffolds for you."},
-    {t:"Rebuild the todo app WITH AI assistance, then diff both versions and write 5 things the AI did differently",k:"ai",xp:15,d:"Rebuild the hand-made todo app with AI, then diff the two and write down 5 concrete differences. This trains the judgment to accept or reject AI output — the exact skill that keeps you able to explain every line. Done = both versions committed plus a short written comparison."},
-    {t:"POST · announce the journey: 'Game UI director, 10 yrs shipping HUDs in Unreal. Next 12 weeks: becoming a design engineer, in public.' Pin it.",k:"tweet",xp:15,d:"Post the pinned announcement (Asset 01 is pre-drafted below) and reply to it with every future weekly update so the whole arc threads from one URL. Building in public is compounding distribution — half the job of getting hired. Done = posted, pinned, and every later post replies to this thread."},
-    {t:"Commit every session this week (4+ commits)",k:"build",xp:10,d:"Hard rule of the program: commit to GitHub at the end of every session. A green contribution graph is passive proof of consistency that recruiters skim. Done = 4+ commits this week, one per work session."},
+    {t:"Toolchain: clang/gcc, CMake, ASan/UBSan, clang-format, Compiler Explorer — public repo",k:"build",xp:15,d:"Install the toolchain you'll live in for 19 weeks and push a public GitHub repo. Sanitizers catch the bugs interviews expect you to know about. Done = project builds with ASan/UBSan wired and a first commit is live."},
+    {t:"Quick Start C++ — pointers, references, memory sections (~3h selective)",k:"learn",xp:15,link:LINK.qs,d:"Watch the memory sections only — you already program; skip loops/if. This replaces learncpp.com as the main text. Done = you can explain pointer vs reference and where objects live without notes."},
+    {t:"Hello, allocator — print stack vs heap addresses; explain the difference in README",k:"build",xp:20,d:"Write a tiny program that prints addresses of stack and heap objects, then explain the difference in the README. Benchmark-or-it-didn't-happen starts with clear writing. Done = program runs and README explains stack vs heap in your words."},
+    {t:"POST · pin Asset 01 announcement before you code",k:"tweet",xp:15,d:"Post and pin the Asset 01 announcement before the first real code session. Building in public compounds; pin the thread. Done = posted, pinned, every later post replies to it."},
+    {t:"Commit every session this week (4+ commits)",k:"build",xp:10,d:"Hard rule: commit at the end of every session. Done = 4+ commits this week."},
   ]
 },
 {
-  n:2, dates:"Jul 20 – Jul 26", title:"Hooks + motion — start JUICE",
-  focus:"Learn hooks properly, then start Project 1: 'Juice', a game-feel interaction library for the web. First components: the XP count-up ticker (you literally shipped this in UMG) and a physics-driven toast stack. Framer Motion is your native language in new syntax.",
-  sessions:`A — Udemy React course: useEffect, useRef, custom hooks. Build a useInterval hook.
-B — Framer Motion docs: springs, variants, orchestration. Recreate one CPH-style banner as a sandbox.
-C — Build the XP count-up ticker: spring-driven number, overshoot, settle tick. Knobs for stiffness/damping.
-D — Build the toast/notification stack: stagger in, physics exit, queue logic in a custom hook.`,
+  n:2, dates:"Jul 27 – Aug 2", title:"RAII, moves, smart pointers",
+  focus:"Internalize RAII and move semantics — the foundation of safe, fast C++. Build a file-handle wrapper and a move-only buffer with tests.",
+  sessions:`A — Quick Start: classes, RAII (~1.5h). Start file-handle wrapper.
+B — Quick Start: rule of five, move semantics, smart pointers (~1.5h).
+C — Finish RAII wrapper + move-only buffer class with tests.
+D — Write "copy elision in your own words" in repo notes. Commit.`,
   tasks:[
-    {t:"Udemy · React Complete Guide — useEffect, useRef, custom hooks (~3h selective)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/",d:"Learn the hooks that power real interactivity: useEffect for lifecycle, useRef for direct element access, and how to extract custom hooks. Build a useInterval hook as your rep. Done = you understand when effects run and can factor reusable logic into your own hook."},
-    {t:"Framer Motion docs — springs, variants, gestures, layout animations (read + sandbox)",k:"learn",xp:10,d:"Framer Motion is your native motion language in new syntax — map your UMG spring/easing instincts onto springs, variants, and orchestration. Recreate one game-UI banner in a sandbox to prove the transfer. Done = a working sandbox animation you built from the docs, not copied."},
-    {t:"JUICE · XP count-up ticker component with overshoot + adjustable spring knobs",k:"build",xp:25,d:"Build the count-up ticker you've shipped a hundred times in UMG — spring-driven number with overshoot and a settle tick — now in React/TS with exposed stiffness/damping knobs. This is Component 1 of your motion-taste evidence. Done = a reusable, typed component with live-adjustable spring params."},
-    {t:"JUICE · toast stack with stagger, physics exit, and a useToastQueue() custom hook",k:"build",xp:25,d:"Build a notification stack that staggers in, exits with physics, and manages its queue in a custom hook. Queue logic in a hook is exactly the state-architecture thinking interviewers probe. Done = toasts stack/dismiss correctly and the queue lives in a clean useToastQueue()."},
-    {t:"AI-first rep: prompt Claude for 3 different spring implementations, critique each in writing, keep the best — save the critique as repo notes",k:"ai",xp:15,d:"Ask AI for three spring implementations, then critique each in writing and keep the best. This demonstrates taste-driven AI use: you're the director, the AI is the junior. Done = the three attempts plus your written critique committed as repo notes."},
-    {t:"POST · 15-sec clip of the XP ticker: 'Porting 10 years of game juice to the web, component 1.'",k:"tweet",xp:15,d:"Ship a 15-second screen capture of the ticker with the framing that reuses your game background as an asset, not a liability. Short motion clips are your highest-signal content. Done = posted as a reply to your pinned thread with a clean clip."},
+    {t:"Quick Start C++ — classes, RAII, rule of five, moves, smart pointers (~3h)",k:"learn",xp:15,link:LINK.qs,d:"Cover the ownership model of modern C++. RAII is the skill that separates hobby C++ from systems C++. Done = you can state the rule of five and when unique_ptr beats shared_ptr."},
+    {t:"Build RAII file-handle wrapper + move-only buffer class with tests",k:"build",xp:25,d:"Implement a tiny RAII file handle and a move-only buffer; add tests. Ownership bugs are the classic interview trap. Done = both types compile, tests pass, moves work and copies are deleted where they should be."},
+    {t:"Explain copy elision in your own words in repo notes",k:"learn",xp:10,d:"Write a short note on copy elision without copying a textbook. Done = a committed note a stranger could learn from."},
+    {t:"POST · RAII or move-semantics insight with a tiny code snippet",k:"tweet",xp:15,d:"Share one concrete ownership insight with a short snippet. Done = posted as a reply to your pinned thread."},
   ]
 },
 {
-  n:3, dates:"Jul 27 – Aug 2", title:"Finish + ship JUICE",
-  focus:"Round out 6–8 components, refactor once with proper types, deploy, and write the README as a design essay: what game UI knows about feedback that web UI forgot. Then market it for a week — distribution is half the job.",
-  sessions:`A — Build: hold-to-confirm charge button (state-driven color) + health bar w/ chip-damage ghost trail.
-B — Build: radial menu w/ keyboard (gamepad-style) focus navigation + useImpact() screen-shake hook.
-C — Refactor pass: shared hooks, strict types (no any), knobs panel on every demo page. Deploy to Vercel.
-D — Write the README essay + record clips of every component.`,
+  n:3, dates:"Aug 3 – Aug 9", title:"STL + ship ITCH parser",
+  focus:"Finish Quick Start (STL only — skip threading). Ship Project 1: an ITCH market-data parser with a messages/sec number at the top of the README.",
+  sessions:`A — Quick Start: containers + complexity (~1.5h).
+B — Quick Start: iterators, string_view (~1h). Mark course DONE; skip threading chapter.
+C — Build ITCH 5.0 (or Databento sample) parser: Add/Cancel/Execute → structs + msgs/sec.
+D — README leads with throughput. Launch post. Commit.`,
   tasks:[
-    {t:"JUICE · hold-to-confirm charge button + chip-damage health bar",k:"build",xp:25,d:"Two more signature game-feel components: a hold-to-confirm button whose color is state-driven, and a health bar with the chip-damage ghost-trail you know from fighting games. These read instantly as 'this person understands feedback'. Done = both components typed, reusable, with knobs."},
-    {t:"JUICE · radial menu with arrow-key/gamepad-style focus nav + useImpact() feedback hook",k:"build",xp:25,d:"Build a radial menu with gamepad-style focus navigation plus a useImpact() hook for screen-shake/impact feedback. Keyboard-first focus nav is your gamepad-UI expertise translating directly to web accessibility. Done = fully navigable by keyboard with tactile impact feedback."},
-    {t:"Refactor: extract shared hooks, eliminate every `any`, add a knobs panel per demo",k:"build",xp:15,d:"One disciplined refactor pass: pull shared logic into hooks, remove every 'any', and put a live knobs panel on each demo. Clean types and self-demoing components are what make this library interview-ready. Done = zero 'any' in the codebase and every component has adjustable knobs."},
-    {t:"Deploy Juice to Vercel with a landing page",k:"ship",xp:20,d:"Ship the library to a live Vercel URL with a landing page that shows every component. A real deployed link is worth more than any screenshot. Done = public URL loads fast and demos all components."},
-    {t:"Write README as design essay: 'What game UI knows about feedback that web UI forgot'",k:"build",xp:15,d:"Write the README as a short design essay arguing your thesis about feedback and game feel. This is where your taste becomes legible to engineers and shows you can think, not just build. Done = a README that reads like a point of view, with embedded clips."},
-    {t:"POST · launch thread: one clip per component, essay linked. Then one component clip per day for 5 days.",k:"tweet",xp:20,d:"Launch with a thread (one clip per component, essay linked), then drip one clip per day for five days to maximize reach. Distribution is half the job; milk your first shipped project. Done = launch thread posted plus five daily follow-ups scheduled."},
-    {t:"AI-first rep: use Claude to red-team your components (a11y, reduced-motion, perf) and fix 3 findings",k:"ai",xp:15,d:"Have AI stress-test your components for accessibility, reduced-motion support, and performance, then fix the three most important findings. This is defensive AI use plus the polish hiring managers check for. Done = 3 real issues found and fixed, respecting prefers-reduced-motion."},
+    {t:"Quick Start C++ — STL containers, complexity, iterators, string_view (~2.5h). Mark DONE; skip threading",k:"learn",xp:15,link:LINK.qs,d:"Finish the course through STL; skip multithreading (Phase 2 covers it better). Know vector vs map vs unordered_map complexity cold. Done = course marked complete through STL; threading chapter untouched."},
+    {t:"Ship Project 1: ITCH parser CLI — Add/Cancel/Execute → structs + msgs/sec throughput",k:"ship",xp:30,d:"CLI reads a NASDAQ ITCH 5.0 or Databento sample, parses Add/Cancel/Execute into structs, prints messages/sec. First real systems artifact. Done = clone-and-run prints a throughput number."},
+    {t:"README leads with the throughput number",k:"build",xp:15,d:"Rule 3: README opens with the measured msgs/sec. Done = number is the first thing a reader sees."},
+    {t:"POST · Project 1 launch with the throughput number in the first line",k:"tweet",xp:20,d:"Launch with the number in the first line. Numbers travel. Done = thread posted with msgs/sec up front."},
   ]
 },
 {
-  n:4, dates:"Aug 3 – Aug 9", title:"AGENT HUD — foundation + teardown",
-  focus:"Start Project 2: an AI chat interface where agent state (tool calls, thinking, background work) is visualized with game-HUD clarity — cast bars, status effects, a kill-feed activity log. This week: Next.js foundation, streaming hello-world, and a serious interaction teardown of Claude, Cursor, and Perplexity.",
-  sessions:`A — Udemy React course Next.js sections: App Router, server vs client components, API routes.
-B — Vercel AI SDK docs. Scaffold Next.js + Tailwind + shadcn. Wire basic streaming chat (Anthropic/OpenAI API).
-C — Interaction teardown: 90 min each in Claude, Cursor, Perplexity. Note streaming affordances, interruption, tool visibility, error recovery.
-D — Write the Agent HUD design spec: HUD metaphors mapped to agent states (cast bar = long tool run, status chips = active context, feed = actions).`,
+  n:4, dates:"Aug 10 – Aug 16", title:"Cache lines + data structure costs",
+  focus:"Learn why layout beats algorithms for real performance. Watch Carruth. Benchmark vector vs list vs map traversal.",
+  sessions:`A — Notes: stack/heap, alignment, cache lines, false sharing, why map is slow.
+B — Watch Carruth CppCon talk. Take notes.
+C — Google Benchmark: vector vs list vs map traversal.
+D — Write up results in README. Post one chart or table.`,
   tasks:[
-    {t:"Udemy · Next.js sections — App Router, server/client components, API routes (~3h)",k:"learn",xp:15,link:"https://www.udemy.com/course/react-the-complete-guide-incl-redux/",d:"Learn the Next.js App Router model: server vs client components and API routes — the framework every target company (Vercel, Linear, Notion) expects. This is the production stack, not toy React. Done = you can explain when code runs on the server vs client and stand up an API route."},
-    {t:"Scaffold Next.js + TS + Tailwind + shadcn/ui project, deploy skeleton to Vercel",k:"build",xp:15,d:"Scaffold Project 2's foundation — Next.js + TS + Tailwind + shadcn/ui — and deploy an empty skeleton immediately so deploy is never a last-minute risk. Deploy-early is a professional habit. Done = a live Vercel URL for the skeleton on day one."},
-    {t:"Wire basic streaming chat with the Vercel AI SDK (ugly is fine)",k:"build",xp:25,d:"Get tokens streaming from a real model via the Vercel AI SDK — ugly is fine, working is the point. Streaming is the core primitive of the AI paradigm you're proving you can design for. Done = messages stream token-by-token from a live API call."},
-    {t:"Interaction teardown of Claude / Cursor / Perplexity — written notes with screenshots",k:"learn",xp:15,d:"Spend ~90 min each dissecting Claude, Cursor, and Perplexity: streaming affordances, interruption, tool visibility, error recovery. This is how you build an informed point of view on AI UI — and material for your teardown post. Done = written notes with annotated screenshots per app."},
-    {t:"Write the Agent HUD spec: map game-HUD patterns to agent states (this doc goes in the case study later)",k:"ai",xp:20,d:"Write the spec that maps HUD metaphors to agent states: cast bar = long tool run, status chips = active context, kill feed = actions. This is the strategic core of your pivot — reframing 10 years of real-time state visualization as exactly what agent UIs need. Done = a spec doc you'll later fold into the case study."},
-    {t:"POST · teardown thread: '3 AI interfaces through a game-UI lens — what they get wrong about state visibility'",k:"tweet",xp:20,d:"Publish the teardown as a thread analyzing three AI interfaces through your game-UI lens. Opinionated analysis positions you as a thinker in the space before you've even shipped Project 2. Done = thread posted with screenshots and a clear thesis."},
+    {t:"Study memory layout: alignment, cache lines, false sharing, why std::map is slow",k:"learn",xp:15,d:"Internalize why pointer-chasing structures lose to contiguous memory. Done = written notes covering cache lines, false sharing, and map's cost."},
+    {t:"Watch Carruth — Efficiency with Algorithms, Performance with Data Structures",k:"learn",xp:10,link:LINK.carruth,d:"One hour that reframes 'clever code' vs data layout. Done = watched end-to-end with notes."},
+    {t:"Benchmark vector vs list vs map traversal with Google Benchmark; write up results",k:"build",xp:25,d:"Measure traversal costs and write them up. Done = bench runs and README has a comparison table with numbers."},
+    {t:"POST · one chart or table from the benchmark write-up",k:"tweet",xp:15,d:"Share the table. Done = posted with numbers visible."},
   ]
 },
 {
-  n:5, dates:"Aug 10 – Aug 16", title:"AGENT HUD — streaming done right",
-  focus:"The unglamorous details that separate design engineers from designers-who-code: streaming markdown rendering, autoscroll that respects the user's scroll position, and the full tool-call lifecycle (pending → running → success/error) with motion.",
-  sessions:`A — Streaming text rendering: cadence, markdown-as-it-streams, token buffering.
-B — Autoscroll: pin-to-bottom that releases when user scrolls up, returns on new message. (Famously fiddly — nail it.)
-C — Tool-call lifecycle UI: state machine for pending/running/success/error, cast-bar treatment for long runs.
-D — Interruption: stop generation, edit-and-resend, regenerate. Wire to real API behavior.`,
+  n:5, dates:"Aug 17 – Aug 23", title:"Threads, mutexes, condition variables",
+  focus:"Raynard multithreading course into a producer/consumer queue stress-tested under TSan.",
+  sessions:`A — Raynard: threads, mutexes (~2h).
+B — Raynard: condition variables, futures (~2h).
+C — Build producer/consumer queue (mutex + condvar).
+D — Stress test under TSan. Fix races. Commit.`,
   tasks:[
-    {t:"Streaming markdown rendering with clean cadence (no layout jank while tokens arrive)",k:"build",xp:25,d:"Render markdown as it streams without layout jank — token buffering and stable cadence as content arrives. Smooth streaming is a subtle craft signal that separates design engineers from designers-who-code. Done = long streamed responses render cleanly with no reflow jump."},
-    {t:"Autoscroll that respects user scroll position — document the logic in a code comment essay",k:"build",xp:20,d:"Implement pin-to-bottom that releases when the user scrolls up and returns on a new message. This is a famously fiddly detail that interviewers specifically probe — nailing it is disproportionate signal. Done = the behavior feels right during streaming, with the logic explained in a code-comment essay."},
-    {t:"Tool-call lifecycle UI: cast bar for long-running tools, distinct error/success states",k:"build",xp:25,d:"Build a state machine for the tool-call lifecycle (pending → running → success/error) with a cast-bar treatment for long runs — your literal HUD expertise applied to agents. This is the signature idea of the whole project. Done = every tool state is visually distinct and animated."},
-    {t:"Interruption controls: stop, edit-and-resend, regenerate",k:"build",xp:15,d:"Wire real interruption: stop generation, edit-and-resend, and regenerate, all tied to actual API behavior. Interruptibility is table-stakes UX that most portfolios fake. Done = all three controls work against a live stream."},
-    {t:"AI-first rep: use AI to generate 5 edge-case conversation scripts (huge code blocks, rapid tool calls, errors mid-stream) and harden against them",k:"ai",xp:15,d:"Have AI generate five nasty edge-case conversations (giant code blocks, rapid tool calls, mid-stream errors) and harden your UI against each. Using AI to find your own failure modes is a mature engineering workflow. Done = the UI survives all five scripts gracefully."},
-    {t:"POST · detail post on the autoscroll problem — before/after clip",k:"tweet",xp:15,d:"Post a focused before/after clip on the autoscroll problem. Deep-dives on hard details prove competence better than glossy demos. Done = posted with a clear before/after showing the fix."},
+    {t:"Raynard multithreading — threads, mutexes, condition variables, futures (~4h)",k:"learn",xp:15,link:LINK.ray,d:"Core concurrency primitives you'll use all Phase 2–3. Done = you can sketch a condvar wait loop correctly."},
+    {t:"Producer/consumer queue with mutex + condvar + TSan stress test",k:"build",xp:25,d:"Build the classic queue and hammer it under ThreadSanitizer. Done = stress test passes clean under TSan."},
+    {t:"POST · TSan finding you fixed (or why the design avoided one)",k:"tweet",xp:15,d:"Race stories are high-signal. Done = posted with a concrete race or prevention insight."},
   ]
 },
 {
-  n:6, dates:"Aug 17 – Aug 23", title:"AGENT HUD — the signature layer",
-  focus:"Add the layer nobody else's portfolio has: game feel. Impact ticks when tools complete, status-effect chips for active context, an activity feed with kill-feed readability. Plus the craft that hiring managers actually probe: empty states, error states, keyboard-first navigation.",
-  sessions:`A — Status-effect chips (files attached, memory on, tools armed) + impact feedback on tool completion (from Juice).
-B — Kill-feed activity log: compact, scannable, timestamped, filterable.
-C — Edge states: empty, error, loading skeletons, offline. Every state designed, not defaulted.
-D — Keyboard-first pass: full app navigable without a mouse (your gamepad-nav expertise, translated).`,
+  n:6, dates:"Aug 24 – Aug 30", title:"Lock-free + ship SPSC ring buffer",
+  focus:"Finish Raynard (atomics, lock-free, concurrent queue, thread pool). Watch Cook. Ship Project 2: SPSC ring buffer vs Week 5 mutex queue.",
+  sessions:`A — Raynard: atomics, lock-free (~2h).
+B — Raynard: concurrent queue + thread pool (~2h). Mark course DONE. Watch Cook talk.
+C — Optional: Concurrency in Depth memory-model/lock-free dip if needed. Build SPSC ring buffer.
+D — Bench vs Week 5 queue. README ops/sec table + why-faster paragraph. Launch.`,
   tasks:[
-    {t:"Status-effect chips for active context + impact feedback on tool completion (dogfood Juice)",k:"build",xp:25,d:"Add status-effect chips for active context (files attached, memory on, tools armed) and fire impact feedback on tool completion — reusing your own Juice library. Dogfooding your components proves they're real, not demoware. Done = chips reflect live state and completions land with tactile feedback."},
-    {t:"Kill-feed style activity log with filtering",k:"build",xp:20,d:"Build a compact, scannable, timestamped activity log with filtering — the kill-feed pattern from competitive games applied to agent actions. Dense-but-readable information design is a core game-UI strength. Done = the feed is filterable and stays readable under rapid activity."},
-    {t:"Design every edge state: empty, error, loading, offline",k:"build",xp:20,d:"Design every edge state deliberately — empty, error, loading skeletons, offline — none left to the framework default. Hiring managers actively look for whether you handled the unglamorous states. Done = each state is intentionally designed and demonstrable."},
-    {t:"Keyboard-first navigation across the whole app",k:"build",xp:15,d:"Make the entire app navigable without a mouse — your gamepad-navigation expertise translated to web accessibility. Keyboard-first is both an a11y win and a taste signal. Done = you can drive the whole app from the keyboard."},
-    {t:"AI-first rep: build one small feature entirely by prompting (spec → AI code → your review pass) and log the workflow honestly",k:"ai",xp:15,d:"Take one small feature fully through spec → AI-generated code → your review pass, and log the workflow honestly (including where AI failed). This is the AI-first engineering loop companies now hire for. Done = the feature ships and the honest workflow log is committed."},
-    {t:"POST · clip of the HUD layer: 'What if your AI agent had a real HUD?'",k:"tweet",xp:15,d:"Post a clip showing the game-feel HUD layer with a punchy framing. This is the visual hook nobody else's portfolio has. Done = posted with a clip that makes the HUD idea instantly obvious."},
+    {t:"Raynard — atomics, lock-free, concurrent queue + thread pool (~4h). Mark DONE",k:"learn",xp:15,link:LINK.ray,d:"Finish the course — it ends by building Project 2's warm-up. Done = course complete."},
+    {t:"Watch Carl Cook — When a Microsecond Is an Eternity",k:"learn",xp:10,link:LINK.cook,d:"Latency culture from HFT. Done = watched with notes on what 'a microsecond' costs."},
+    {t:"Optional dip: Concurrency in Depth — memory-model + lock-free sections only",k:"learn",xp:10,link:LINK.depth,d:"Only if Raynard wasn't enough for the ring buffer. Do NOT watch linearly. Done = checked off only if you actually needed the dip."},
+    {t:"Ship Project 2: SPSC lock-free ring buffer, bench vs Week 5 mutex queue",k:"ship",xp:30,d:"Head-to-head vs the mutex queue. Done = both benches run; ops/sec table in README."},
+    {t:"README: ops/sec comparison table + one paragraph on why it's faster",k:"build",xp:15,d:"Numbers plus a crisp why. Done = table + paragraph at the top of the README."},
+    {t:"POST · Project 2 launch with the ops/sec comparison",k:"tweet",xp:20,d:"Lead with the comparison. Done = thread posted with both numbers."},
   ]
 },
 {
-  n:7, dates:"Aug 24 – Aug 30", title:"AGENT HUD — polish, ship, write",
-  focus:"Performance pass, a demo mode with canned responses so visitors don't need API keys, deployment, and the case study. The case study is what gets interviews — budget real hours: problem → principles → three hard details you solved → what's next.",
-  sessions:`A — Perf: React DevTools profiler, memoize what matters, kill streaming jank.
-B — Demo mode (canned responses) + production deploy on Vercel.
-C — Write the case study (draft).
-D — Edit case study, record the hero demo video, launch thread.`,
+  n:7, dates:"Aug 31 – Sep 6", title:"Matchbox design + skeleton",
+  focus:"Design the limit order book (price-time priority, data-structure tradeoffs). Skeleton + unit tests for add/cancel.",
+  sessions:`A — Spec: ops, invariants, data-structure choices (document tradeoffs).
+B — Skeleton project + order types.
+C — Implement add/cancel with unit tests.
+D — Review Asset 02. Commit. Post design tradeoff.`,
   tasks:[
-    {t:"Performance pass with React DevTools profiler — before/after numbers in notes",k:"build",xp:20,d:"Profile with React DevTools, memoize what actually matters, and kill streaming jank — recording before/after numbers. Being able to talk about measured performance work is strong senior signal. Done = documented before/after metrics showing real improvement."},
-    {t:"Demo mode with canned responses; deploy production build to Vercel",k:"ship",xp:20,d:"Add a demo mode with canned responses so visitors need no API key, then deploy production. A frictionless live demo dramatically raises the odds someone actually experiences your work. Done = anyone can use the deployed app with zero setup."},
-    {t:"Write full case study: problem → interaction principles → 3 hard details → next",k:"build",xp:25,d:"Write the full case study: problem, interaction principles, three hard details you solved, and what's next. Case studies are what actually get interviews — budget real hours here. Done = a published case study a stranger can follow end to end."},
-    {t:"Record a 60–90 sec hero demo video",k:"build",xp:10,d:"Cut a tight 60–90 second hero video that sells the project's best moments. Video travels further than links and anchors your launch. Done = a clean, watchable clip embedded in the case study and launch post."},
-    {t:"POST · Agent HUD launch thread with demo video + case study link",k:"tweet",xp:20,d:"Launch Agent HUD with a thread pairing the hero video and the case study link. This is your strongest strategic artifact — give it a real launch. Done = thread posted, replying to your pinned journey thread."},
-    {t:"Milestone check: rebuild a Juice component from memory, no AI, under 1 hour. If you can't, schedule 2h/wk fundamentals drills.",k:"learn",xp:15,d:"Honest checkpoint: rebuild a Juice component from memory, no AI, in under an hour. This verifies you can back up your work in a live coding interview. Done = you succeed, or you book 2h/wk fundamentals drills to close the gap."},
+    {t:"Design limit order book: price-time priority, ops, data-structure tradeoffs (written)",k:"build",xp:20,d:"Document add/cancel/modify/execute and why you chose your structures. Done = committed design note with tradeoffs."},
+    {t:"Skeleton + unit tests for add/cancel",k:"build",xp:25,d:"Get the project compiling with real tests for the first two ops. Done = tests pass for add and cancel."},
+    {t:"POST · one data-structure tradeoff you rejected and why",k:"tweet",xp:15,d:"Tradeoff posts show judgment. Done = posted."},
   ]
 },
 {
-  n:8, dates:"Aug 31 – Sep 6", title:"SPRINGBOARD — plugin architecture",
-  focus:"Start Project 3: Springboard, a motion-handoff plugin for Figma. Designers pick frames or prototype transitions, dial real spring physics with live preview, and export production Framer Motion + CSS — with an AI mode that generates and explains the code. Learn the plugin sandbox model from Figma's official docs (skip Udemy here).",
-  sessions:`A — Figma plugin docs: sandbox vs UI iframe, message passing, manifest. Run 2 official samples.
-B — Skeleton: plugin reads current selection, displays node names + prototype transition data in the UI panel.
-C — Live preview pane: a proxy element animating with adjustable spring params (stiffness, damping, mass).
-D — Spec the export format: what a Framer Motion snippet and a CSS snippet should look like per transition type.`,
+  n:8, dates:"Sep 7 – Sep 13", title:"Matching logic + interview track starts",
+  focus:"Complete matching: market + limit, partial fills, trade reports. Replay via Week 3 ITCH parser. Start LeetCode + C++ flashcards.",
+  sessions:`A — Matching: market + limit orders.
+B — Partial fills + trade reports. Wire ITCH replay.
+C — End-to-end replay of a sample file.
+D — 3 LeetCode (C++) + 10 flashcards. Post a matching insight.`,
   tasks:[
-    {t:"Read Figma plugin docs + run 2 official samples; notes on sandbox/iframe message passing",k:"learn",xp:15,d:"Learn the Figma plugin architecture — sandbox vs UI iframe and the message-passing between them — by reading the docs and running two official samples. Understanding the constraint model up front prevents dead ends later. Done = two samples running locally plus notes on how sandbox/iframe messaging works."},
-    {t:"SPRINGBOARD · skeleton: read selection + prototype transitions, render in plugin UI",k:"build",xp:25,d:"Build the skeleton: read the current selection and its prototype transition data, and render it in your plugin panel. This proves you can operate inside a real third-party platform's API, not just a blank canvas. Done = selecting nodes in Figma reflects live in your plugin UI."},
-    {t:"SPRINGBOARD · live spring preview with stiffness/damping/mass knobs",k:"build",xp:25,d:"Build a live preview pane where a proxy element animates with adjustable stiffness, damping, and mass. This is the plugin's heart and a direct showcase of your motion taste. Done = dragging knobs updates a real-time spring preview."},
-    {t:"Write export-format spec for Framer Motion + CSS output",k:"build",xp:10,d:"Spec exactly what a Framer Motion snippet and a CSS snippet should look like for each transition type before you build the generator. A clear target spec makes the code-gen work far cleaner. Done = a written spec defining the output shape per transition."},
-    {t:"POST · announce Springboard: 'I'm building the motion handoff tool I always wished my engineers had.'",k:"tweet",xp:15,d:"Announce Springboard with framing rooted in your lived experience as a director who fought the designer-engineer handoff. Authentic origin stories land. Done = announcement posted to your thread."},
+    {t:"Matching complete: market + limit, partial fills, trade reports",k:"build",xp:30,d:"Core Matchbox logic. Done = market and limit orders match with partial fills and trade reports."},
+    {t:"Feed Matchbox with Week 3 ITCH parser as a replay source",k:"build",xp:20,d:"Reuse Project 1 — systems work compounds. Done = sample file replays through the book."},
+    {t:"Interview track: 3 LeetCode in C++ (arrays/hashing/heaps/two pointers) + 10 flashcards",k:"learn",xp:15,d:"Recurring Weeks 8–13. Trivia bank: virtual dispatch, vtable, move vs copy, unique_ptr vs shared_ptr, cache line size, ASan. Done = 3 problems + 10 cards this week."},
+    {t:"POST · matching or replay insight with a number if you have one",k:"tweet",xp:15,d:"Keep the public thread warm. Done = posted."},
   ]
 },
 {
-  n:9, dates:"Sep 7 – Sep 13", title:"SPRINGBOARD — code generation core",
-  focus:"The core value: turn a dialed-in motion spec into clean, copy-pasteable Framer Motion and CSS code. This is a compiler for your motion taste — and a fantastic code-walkthrough artifact for interviews.",
-  sessions:`A — Code generator v1: spring spec → Framer Motion transition snippet.
-B — Code generator v2: CSS keyframes/transition fallback output + copy-to-clipboard UX.
-C — Multi-element choreography: stagger + sequence support across selected layers.
-D — Dogfood: spec 3 real animations (use CPH-style patterns, abstracted) end-to-end; fix what hurts.`,
+  n:9, dates:"Sep 14 – Sep 20", title:"Measure baseline latency",
+  focus:"Establish p50/p99 per operation with Google Benchmark + perf. Numbers go in the README before you optimize.",
+  sessions:`A — Wire Google Benchmark for add/cancel/execute.
+B — Collect p50/p99. Run perf if available.
+C — Baseline table in README.
+D — 3 LeetCode + 10 flashcards. Post the baseline.`,
   tasks:[
-    {t:"Generator: motion spec → Framer Motion snippet (typed, formatted, copy-ready)",k:"build",xp:30,d:"Build the core: turn a dialed-in motion spec into clean, typed, copy-ready Framer Motion code. This is a compiler for your motion taste and a fantastic code-walkthrough artifact for interviews. Done = adjusting the spring produces correct, formatted, paste-ready code."},
-    {t:"Generator: CSS output path + one-click copy with confirmation feedback",k:"build",xp:20,d:"Add a CSS keyframes/transition fallback output plus one-click copy with confirmation feedback. Supporting both targets shows you understand real handoff needs. Done = CSS output is correct and copy gives satisfying confirmation."},
-    {t:"Stagger + sequence choreography across multiple selected layers",k:"build",xp:25,d:"Support multi-element choreography — stagger and sequence across selected layers. Orchestration is where motion taste really shows and where the tool earns its keep. Done = you can choreograph several layers and export the combined code."},
-    {t:"Dogfood 3 real animations end-to-end and fix the top 3 friction points",k:"build",xp:15,d:"Use your own tool to spec three real animations end-to-end, then fix the top three friction points you hit. Dogfooding surfaces the issues a demo never will. Done = three animations shipped through the tool and the worst friction removed."},
-    {t:"POST · clip: dial a spring in Figma → paste working code in a sandbox. The money shot.",k:"tweet",xp:15,d:"Post the money-shot clip: dial a spring in Figma, paste the generated code into a sandbox, watch it just work. This single loop makes the value undeniable. Done = posted with a seamless dial-to-working-code clip."},
+    {t:"Measure p50/p99 latency per operation with Google Benchmark + perf",k:"build",xp:25,d:"Measure before optimizing. Done = p50/p99 for add/cancel/execute recorded."},
+    {t:"Establish baseline numbers in README",k:"build",xp:15,d:"Baseline table is the start of the optimization log. Done = README has a clear baseline section."},
+    {t:"Interview track: 3 LeetCode in C++ + 10 flashcards",k:"learn",xp:15,d:"Keep the drill rhythm. Done = 3 + 10 done."},
+    {t:"POST · baseline p50/p99 table",k:"tweet",xp:15,d:"Publish the before numbers. Done = posted."},
   ]
 },
 {
-  n:10, dates:"Sep 14 – Sep 20", title:"SPRINGBOARD — AI mode + beta",
-  focus:"Add the AI-assist mode: Claude API takes the motion spec + node context and generates adapted code with a plain-language explanation of the choices ('critically damped so it settles without bounce'). Then harden and run a private beta with 5–10 designer friends.",
-  sessions:`A — Claude API integration: spec + context → generated code + explanation. Prompt-engineer the system prompt carefully.
-B — Settings persistence (figma.clientStorage), error handling, empty states, perf on large selections.
-C — Private beta: recruit 5–10 designers (SDS colleagues count). Watch 2 of them use it live.
-D — Fix top beta findings. Prepare listing assets: cover art, description, demo GIF.`,
+  n:10, dates:"Sep 21 – Sep 27", title:"Optimize hot path + rewrite resume",
+  focus:"Replace std::map with sorted vector/flat map, object pool, kill hot-path allocs. Document every before/after. Stretch only if ahead: TCP gateway. Rewrite resume.",
+  sessions:`A — Flat map / sorted vector swap. Bench before/after.
+B — Object pool. Kill hot-path allocations. Log every change.
+C — Stretch only if ahead: minimal TCP order-entry gateway. Else deepen the log.
+D — One-page resume rewrite. 3 LeetCode + 10 flashcards. Contingency check.`,
   tasks:[
-    {t:"AI mode: Claude API generates adapted code + plain-language rationale",k:"ai",xp:30,d:"Integrate the Claude API so it takes the motion spec plus node context and returns adapted code with a plain-language rationale ('critically damped so it settles without bounce'). Shipping a real AI feature — not just calling an API — is the #3 hiring bar made concrete. Done = AI mode produces usable code and an explanation, driven by a carefully engineered system prompt."},
-    {t:"clientStorage settings, error handling, empty states, large-selection perf",k:"build",xp:20,d:"Harden the plugin: persist settings via figma.clientStorage, handle errors, design empty states, and keep it fast on large selections. Robustness is what makes a plugin survive real use. Done = it degrades gracefully and stays responsive on big selections."},
-    {t:"Run private beta with 5–10 designers; watch 2 sessions live; log findings",k:"ship",xp:20,d:"Recruit 5–10 designers (SDS colleagues count) and watch at least two use it live without your help. Watching real users is the fastest way to find what's actually broken. Done = beta running and a findings log from live sessions."},
-    {t:"Fix top 5 beta findings",k:"build",xp:15,d:"Fix the five highest-impact issues from the beta. Acting on user feedback quickly is exactly what product teams want to see. Done = the top 5 findings resolved and verified."},
-    {t:"POST · beta learnings post: 3 things designers did that you didn't expect",k:"tweet",xp:15,d:"Post three surprising things real designers did with your tool. Beta-learning posts show humility and a product mindset. Done = posted with three concrete, specific observations."},
+    {t:"Optimize: sorted vector/flat map, object pool, no hot-path allocs — before/after for every change",k:"build",xp:30,d:"The optimization log is the centerpiece of the repo and your best posting content. Done = each change has before/after numbers in the log."},
+    {t:"Stretch only if ahead: minimal TCP order-entry gateway (skip if behind — Week 10 contingency)",k:"build",xp:15,d:"Optional. If behind, cut this and keep matching engine + benches; shift Tier 2 apps to November. Done = gateway works, or explicitly skipped with contingency noted."},
+    {t:"Rewrite resume (1 page): 10 yrs real-time UI → systems C++, three repos with numbers",k:"ship",xp:20,d:"Reframe as latency engineering. Done = one-page resume with three numbered repos."},
+    {t:"Interview track: 3 LeetCode in C++ + 10 flashcards",k:"learn",xp:15,d:"Keep drilling. Done = 3 + 10."},
+    {t:"POST · one optimization before/after from the log",k:"tweet",xp:20,d:"Best content of the campaign. Done = posted with both numbers."},
   ]
 },
 {
-  n:11, dates:"Sep 21 – Sep 27", title:"Ship SPRINGBOARD + start the machine",
-  focus:"Submit to Figma Community early in the week (review takes days). While it's in review, start the application machine: shortlist 20 NYC/remote/Seattle companies, identify the actual design engineers and design leads at each, and start engaging genuinely. Warm beats cold, always.",
-  sessions:`A — Final QA + submit to Figma Community with cover art, listing copy, demo GIF.
-B — Write the Springboard case study: concept → generator architecture → sandbox constraints you fought → beta learnings.
-C — Build the target sheet: 20 companies (Tier 1: Runway, Browser Co, Hume, ElevenLabs, Notion, Figma…), names of design engineers/leads, links.
-D — Engage: follow, reply substantively to 10 people's work. Zero asks. Just be visibly good.`,
+  n:11, dates:"Sep 28 – Oct 4", title:"Applications open — Tier 1",
+  focus:"APPLICATIONS OPEN. Apply to all Tier 1 + open Tier 2 early-career postings. Target: 15. Polish the 60fps-as-latency behavioral story.",
+  sessions:`A — Target sheet finalize. Polish behavioral story.
+B — 8 applications (Tier 1 first).
+C — 7 more applications. Track in a sheet.
+D — 3 LeetCode + 10 flashcards. Post that you're applying.`,
   tasks:[
-    {t:"Submit Springboard to Figma Community (cover art, copy, demo GIF)",k:"ship",xp:30,d:"Submit to the Figma Community early in the week — review takes days — with cover art, listing copy, and a demo GIF. A published plugin with install counts is rare, credible proof you ship real software. Done = submitted and in review with polished listing assets."},
-    {t:"Write Springboard case study",k:"build",xp:20,d:"Write the case study: concept → generator architecture → the sandbox constraints you fought → beta learnings. The architecture section doubles as interview code-walkthrough prep. Done = a published case study covering the technical story."},
-    {t:"Target sheet: 20 companies + named design engineers/leads (NYC / remote / Seattle weighted)",k:"build",xp:15,d:"Build a sheet of 20 target companies (Tier 1: Runway, Browser Co, Hume, ElevenLabs, Notion, Figma…) with the actual design engineers and leads named and linked. Specific humans beat a generic job board. Done = 20 companies with named people and links, weighted to NYC/remote/Seattle."},
-    {t:"Engage substantively with 10 target-company designers' public work — no asks",k:"tweet",xp:15,d:"Reply substantively to 10 target-company designers' public work with zero asks — just be visibly good. Warm familiarity before applying beats cold applications every time. Done = 10 genuine, substantive interactions logged."},
-    {t:"POST · Springboard launch thread the moment it's approved",k:"tweet",xp:20,d:"The instant Figma approves it, launch with a thread and the live install link. Riding the approval moment maximizes reach. Done = launch thread posted with the Community link."},
+    {t:"Apply to 15 roles: all Tier 1 + open Tier 2 early-career postings",k:"ship",xp:30,d:"Volume with targeting. Done = 15 tailored applications logged."},
+    {t:"Polish behavioral story: shipping 60fps UI under frame budget is latency engineering",k:"learn",xp:15,d:"Your unfair bridge from games to systems. Done = 2-minute story you can deliver cold."},
+    {t:"Interview track: 3 LeetCode in C++ + 10 flashcards",k:"learn",xp:15,d:"Applications don't pause drills. Done = 3 + 10."},
+    {t:"POST · applications-week update (no company names needed)",k:"tweet",xp:15,d:"Signal momentum. Done = posted."},
   ]
 },
 {
-  n:12, dates:"Sep 28 – Oct 4", title:"Portfolio + first applications",
-  focus:"Build the portfolio site in Next.js as a craft object — small, obsessively detailed, dogfooding your own Juice components. Positioning: 'Design engineer. 10 years directing and building game UI — now applying real-time interaction craft to AI interfaces.' You are a senior design leader who codes. Price and pitch accordingly. Then send the first 5 tailored applications.",
-  sessions:`A — Portfolio site: structure + the three project pages (live demo, case study, code link each).
-B — Detail pass: type, motion touches from Juice, reduced-motion respected, fast.
-C — Resume rewrite in design-engineer language (design systems, MVVM state architecture, motion systems, shipped software). Deploy portfolio.
-D — 5 tailored applications: short note referencing something specific in their product + one relevant project link. No cover letters.`,
+  n:12, dates:"Oct 5 – Oct 11", title:"More apps + mock interview",
+  focus:"15 more applications (Tier 2 + Tier 3). One hard mock: C++ trivia hour + one live-coded problem.",
+  sessions:`A — 8 applications (Tier 2/3).
+B — 7 more applications.
+C — Mock interview with AI: 1h trivia + 1 live problem. Treat as real.
+D — Debrief notes. 3 LeetCode + 10 flashcards.`,
   tasks:[
-    {t:"Build portfolio site in Next.js using your own Juice components",k:"build",xp:25,d:"Build the portfolio in Next.js as a small, obsessively detailed craft object that dogfoods your own Juice components. The site itself is a work sample — it must embody your taste, not just describe it. Done = a live site whose polish speaks before the copy does."},
-    {t:"Detail pass: typography, motion, reduced-motion support, performance",k:"build",xp:15,d:"One detail pass on type, motion touches from Juice, reduced-motion support, and speed. Sweating these details is the whole positioning. Done = the site feels fast and considered on every device, motion respected."},
-    {t:"Rewrite resume in design-engineer language; deploy portfolio",k:"ship",xp:20,d:"Rewrite the resume in design-engineer language — design systems, MVVM state architecture, motion systems, shipped software — and deploy the portfolio. You're a senior design leader who codes; the words must say so. Done = portfolio live and resume reframed for the target role."},
-    {t:"Send 5 tailored applications (Tier 1 first — HOLD ElevenLabs until Voice Director ships)",k:"ship",xp:25,d:"Send five tailored applications — Tier 1 first, each a short note referencing something specific in their product plus one relevant project link, no cover letters. Hold ElevenLabs until Voice Director ships in Week 14. Done = 5 specific, personalized applications out the door."},
-    {t:"POST · portfolio launch + '12 weeks in public' retrospective thread — your best-performing post, guaranteed",k:"tweet",xp:20,d:"Launch the portfolio with a '12 weeks in public' retrospective thread telling the whole arc. Retrospectives with receipts are almost always the best-performing content. Done = retrospective thread posted linking every shipped project."},
-    {t:"Set the ongoing rhythm: 2h/wk fundamentals drills + 5h/wk applications & take-homes + keep posting",k:"learn",xp:10,d:"Lock in the post-program rhythm: ~2h/wk fundamentals drills, ~5h/wk applications and take-homes, and keep posting. Time-to-offer is realistically 4–5 months, so the machine has to keep running. Done = a written weekly schedule you'll actually follow."},
+    {t:"Send 15 more applications (Tier 2 + Tier 3)",k:"ship",xp:25,d:"Keep the machine running. Done = 15 more logged."},
+    {t:"Mock interview: 1h C++ trivia + 1 live-coded problem — treat as real",k:"ai",xp:20,d:"Pressure-test before real loops. Done = full mock completed with written debrief."},
+    {t:"Interview track: 3 LeetCode in C++ + 10 flashcards",k:"learn",xp:15,d:"Keep the reps. Done = 3 + 10."},
+    {t:"POST · one mock-interview miss you fixed",k:"tweet",xp:15,d:"Honesty builds trust. Done = posted."},
   ]
 },
 {
-  n:13, dates:"Oct 5 – Oct 11", title:"VOICE DIRECTOR — built for ElevenLabs, pt. 1",
-  focus:"The targeted strike. Build a voice-direction studio for game dialogue on the ElevenLabs API — the workflow a VO director runs in a booth (cast, direct, take, review), translated to their product. You've sat in these sessions; nobody else applying can build this. This week: API foundation, script model, and casting.",
-  sessions:`A — ElevenLabs docs deep-read: TTS endpoints, voice library, voice settings (stability/similarity/style), streaming. Get a key, generate your first lines.
-B — Script model: paste/import a scene → parsed into characters + lines with per-line direction notes. Use a short original scene (military-toned — you write this flavor daily).
-C — Casting UI: browse/search their voice library per character, audition voices on a sample line, lock the cast.
-D — Per-line direction controls: their voice settings exposed as director language ('flatter read', 'more urgency') mapped to API params.`,
+  n:13, dates:"Oct 12 – Oct 18", title:"Follow-ups, referrals, sketch Fabric",
+  focus:"Follow up applications. Hunt referrals (Tier 1 engineers with game-dev pasts). Retro post. Read Asset 03 and sketch the simulator on paper.",
+  sessions:`A — Follow-ups on open apps.
+B — LinkedIn referral outreach (game-dev → finance C++).
+C — Read Asset 03. Paper sketch of Fabric architecture.
+D — Retro post closing Campaign 1. 3 LeetCode + 10 flashcards.`,
   tasks:[
-    {t:"Read ElevenLabs API docs end-to-end; working TTS call with streaming playback in a sandbox",k:"learn",xp:15,d:"Read the ElevenLabs docs end-to-end — TTS endpoints, voice library, voice settings (stability/similarity/style), streaming — and get a real streaming TTS call playing in a sandbox. Building on their actual API is the entire targeted-strike bet. Done = your first lines generate and play from a live call."},
-    {t:"Script import: scene → characters + lines data model (write an original 12-line scene)",k:"build",xp:20,d:"Model a scene: parse an imported script into characters and lines with per-line direction notes, using your own original 12-line military-toned scene (Asset 02 is pre-written below). This is content you write daily — lean on it. Done = a scene parses cleanly into a structured characters+lines model."},
-    {t:"Casting UI: voice library browse + audition per character",k:"build",xp:25,d:"Build casting: browse/search their voice library per character, audition voices on a sample line, and lock the cast. This is the VO-director booth workflow nobody else applying has sat through. Done = you can audition and assign a voice to each character."},
-    {t:"Direction controls: director-language presets mapped to voice settings params",k:"ai",xp:25,d:"Expose their voice settings as director language — 'flatter read', 'more urgency' — mapped to API params. Translating raw parameters into domain language is exactly the product insight they'd want on day one. Done = director-language presets audibly change delivery per line."},
-    {t:"POST · 'Building a VO direction booth on the ElevenLabs API' — clip of casting auditions",k:"tweet",xp:15,d:"Post a clip of the casting/audition flow with framing that signals you're building on ElevenLabs specifically. Public building on their platform gets noticed by their team. Done = posted with an auditions clip."},
+    {t:"Follow-ups + referral hunting (Tier 1 engineers with game-dev pasts)",k:"ship",xp:20,d:"Warm paths beat cold apps. Done = follow-ups sent + several referral conversations started."},
+    {t:"Read Flagship #2 spec (Asset 03) + sketch simulator architecture on paper",k:"learn",xp:15,d:"Prime Campaign 2. Done = paper/photo sketch of topology → events → router → telemetry."},
+    {t:"Interview track: 3 LeetCode in C++ + 10 flashcards",k:"learn",xp:15,d:"Last week of the recurring drill block. Done = 3 + 10."},
+    {t:"POST · Campaign 1 retro — 13 weeks, repos, numbers",k:"tweet",xp:20,d:"Close the first arc with receipts. Done = retro thread posted."},
   ]
 },
 {
-  n:14, dates:"Oct 12 – Oct 18", title:"VOICE DIRECTOR — ship it + the targeted application",
-  focus:"Batch generation, the review room (waveform timeline, approve/retake per line, take history), polish, deploy — then the payload: apply to ElevenLabs with the live project and a one-page '90 days at ElevenLabs' memo. This is what 'productive on day one' looks like as evidence instead of a claim.",
-  sessions:`A — Batch generate the scene: queue UI with per-line progress (cast-bar treatment from Agent HUD), error/retry handling.
-B — Review room: waveform per take, play-through of the full scene, approve/retake, take history per line.
-C — Polish + deploy with demo mode (pre-generated audio so visitors burn no credits). Case study write-up.
-D — The payload: 1-page memo 'What I'd build in my first 90 days at ElevenLabs' (game-studio workflows, gaps you hit in their API/UX, 3 concrete proposals). Send the application with project + memo. Launch thread.`,
+  n:14, dates:"Oct 19 – Oct 25", title:"Networking concepts + topology generator",
+  focus:"Crash course: Clos/fat-tree, ECMP, incast, RDMA verbs. Only code: N-node fat-tree topology generator. Finance interviews take priority when they conflict.",
+  sessions:`A — Notes: Clos/fat-tree, ECMP hashing, incast, RDMA verbs.
+B — Design topology generator API.
+C — Emit N-node fat-tree graph with configurable bandwidth/latency.
+D — Document. Answer recruiter callbacks first if they land.`,
   tasks:[
-    {t:"Batch generation queue with per-line progress, cancel, and retry",k:"build",xp:25,d:"Build the batch-generate queue with per-line progress (reuse the cast-bar treatment from Agent HUD), plus cancel and retry. Reusing your own patterns across projects shows a coherent system. Done = a full scene generates as a queue with progress, cancel, and retry."},
-    {t:"Review room: waveform timeline, scene play-through, approve/retake, take history",k:"build",xp:30,d:"Build the review room: waveform per take, full-scene play-through, approve/retake per line, and take history — the actual booth review loop. This is the deepest proof you understand the domain. Done = you can review, approve/retake, and browse take history for every line."},
-    {t:"Deploy with demo mode (pre-generated audio); write the case study",k:"ship",xp:20,d:"Deploy with a demo mode using pre-generated audio so visitors burn no credits, and write the case study. Frictionless demo plus a written story is the package that converts. Done = live demo runs credit-free and the case study is published."},
-    {t:"Write the '90 days at ElevenLabs' memo — honest API/UX gaps + 3 proposals",k:"ai",xp:20,d:"Write a one-page memo on what you'd build in your first 90 days there: game-studio workflows, honest gaps you hit in their API/UX, and three concrete proposals. This converts the project from 'I could help' into day-one-value evidence. Done = a tight one-pager with real gaps and three actionable proposals."},
-    {t:"Send the ElevenLabs application: role + project link + memo. Also DM/email it to a designer or PM there.",k:"ship",xp:30,d:"Send the application — role + live project link + memo — and also get it directly to a designer or PM there. The payload is undeniable; make sure a human actually sees it. Done = application submitted and a warm direct message/email sent."},
-    {t:"POST · Voice Director launch thread; tag it so their team sees it",k:"tweet",xp:20,d:"Launch Voice Director with a thread tagged so ElevenLabs' team encounters it. Public proof of building on their product is the loudest possible signal. Done = launch thread posted and visible to their team."},
+    {t:"Networking crash course notes: Clos/fat-tree, ECMP, incast, RDMA verbs",k:"learn",xp:15,d:"New material is networking, not C++. Done = notes covering all four topics."},
+    {t:"Topology generator: N-node fat-tree graph with configurable link bandwidth/latency",k:"build",xp:25,d:"Only code this week. Done = generator emits a configurable fat-tree."},
+    {t:"Priority rule: finance recruiter callbacks > Fabric work when they conflict",k:"learn",xp:10,d:"Campaign 2 yields to October interview loops. Done = you followed the priority rule this week."},
+    {t:"POST · fat-tree / incast intuition in plain language",k:"tweet",xp:15,d:"Teach the concept. Done = posted."},
+  ]
+},
+{
+  n:15, dates:"Oct 26 – Nov 1", title:"Discrete-event simulation core",
+  focus:"Event queue, flows, link queues with depth/drop telemetry. Reuse Matchbox patterns (object pools, no hot-path alloc).",
+  sessions:`A — Event queue design.
+B — Flows + link queues + telemetry fields.
+C — Unit tests for the event loop.
+D — Wire object pool. Commit.`,
+  tasks:[
+    {t:"Discrete-event core: event queue, flows, link queues with depth/drop telemetry",k:"build",xp:30,d:"Simulator heart. Done = events advance sim time; links report depth/drops."},
+    {t:"Reuse Matchbox patterns: object pools, no hot-path allocation",k:"build",xp:15,d:"Dogfood your systems habits. Done = hot path allocates nothing after warmup."},
+    {t:"Unit tests for the event loop",k:"build",xp:15,d:"Protect the core. Done = tests cover ordering and basic telemetry."},
+    {t:"POST · sim-core progress with one telemetry screenshot or number",k:"tweet",xp:15,d:"Keep Campaign 2 visible. Done = posted."},
+  ]
+},
+{
+  n:16, dates:"Nov 2 – Nov 8", title:"ECMP baseline + all-reduce replay",
+  focus:"Static ECMP routing + all-reduce traffic. First end-to-end run: p50/p99 flow completion time and link utilization.",
+  sessions:`A — Static ECMP routing.
+B — All-reduce traffic replay.
+C — End-to-end run. Measure p50/p99 FCT + link util.
+D — Publish baseline numbers in README.`,
+  tasks:[
+    {t:"Static ECMP routing baseline + all-reduce traffic replay",k:"build",xp:25,d:"The baseline you'll beat in Week 17. Done = all-reduce traffic runs over ECMP."},
+    {t:"First end-to-end run: p50/p99 flow completion time + link utilization",k:"build",xp:25,d:"Measure the money metrics. Done = p50/p99 FCT and util recorded."},
+    {t:"Publish baseline numbers in README",k:"ship",xp:15,d:"Numbers first. Done = baseline section published."},
+    {t:"POST · baseline FCT numbers",k:"tweet",xp:15,d:"Plant the before. Done = posted."},
+  ]
+},
+{
+  n:17, dates:"Nov 9 – Nov 15", title:"Congestion-aware router",
+  focus:"Consume per-link telemetry, detect hotspots, re-route mid-flight. Bench vs ECMP. Land the money sentence with an X%.",
+  sessions:`A — Hotspot detection from telemetry.
+B — Mid-flight re-route logic.
+C — Head-to-head vs ECMP. Capture X%.
+D — Write the claim into the README.`,
+  tasks:[
+    {t:"Congestion-aware router: telemetry → hotspots → mid-flight re-route",k:"build",xp:30,d:"The adaptive router is Flagship #2's brain. Done = flows re-route when links congest."},
+    {t:"Benchmark head-to-head vs ECMP — land the X% p99 FCT claim",k:"ship",xp:25,d:"Target: \"my router cut p99 flow completion time by X% on an all-reduce workload.\" Done = comparison table with a real X%."},
+    {t:"POST · the money sentence with the X%",k:"tweet",xp:20,d:"One sentence, one number. Done = posted."},
+  ]
+},
+{
+  n:18, dates:"Nov 16 – Nov 22", title:"Live fabric heatmap — the differentiator",
+  focus:"Real-time hotspot viz in your design language (black/off-white/#D26601), streamed from telemetry. Record a 30s capture — the most shareable artifact of the operation.",
+  sessions:`A — Telemetry stream (WebSocket or lightweight native viz).
+B — Heatmap rendering: hotspots forming/draining.
+C — Polish to shipped-product feel (not matplotlib).
+D — Record 30s capture. Post it.`,
+  tasks:[
+    {t:"Live fabric heatmap: real-time hotspot formation/drain in personal design language",k:"build",xp:30,d:"Where 10 years of game UI becomes unfair advantage. Flat, physical, brand-true. Done = live viz shows hotspots forming and draining."},
+    {t:"Stream telemetry into the viz (WebSocket front-end or lightweight native)",k:"build",xp:20,d:"Live, not a post-hoc plot. Done = viz updates from the running sim."},
+    {t:"Record a 30-second capture for posting",k:"ship",xp:15,d:"Most shareable artifact of the entire operation. Done = clean 30s clip exported."},
+    {t:"POST · 30s heatmap clip",k:"tweet",xp:20,d:"Lead with the motion. Done = clip posted."},
+  ]
+},
+{
+  n:19, dates:"Nov 23 – Nov 29", title:"Polish, Tier 4 apps, close the thread",
+  focus:"README: heatmap GIF → claim → architecture → optimization log. Apply to all Tier 4. Retro post closing the 19-week thread.",
+  sessions:`A — README polish + GIF at top.
+B — Tier 4 applications (xAI, NVIDIA networking, CoreWeave, etc.).
+C — Remaining Tier 4 apps + follow-ups.
+D — Final retro post. Close the thread.`,
+  tasks:[
+    {t:"Polish README: heatmap GIF → claim with numbers → architecture → optimization log",k:"ship",xp:20,d:"Asset 03 README order. Done = stranger can scan top-to-bottom and get the story."},
+    {t:"Apply to all Tier 4 AI-infrastructure networking targets",k:"ship",xp:30,d:"November cycle — roles that want Fabric. Done = all Tier 4 targets applied or logged as closed."},
+    {t:"POST · 19-week retro closing the thread",k:"tweet",xp:20,d:"End with receipts: two flagships, numbers, heatmap. Done = closing retro posted."},
   ]
 },
 ];
 
-/* ================= LEVELS + FACTIONS ================= */
+/* ================= LEVELS ================= */
 const RANK_AT = [0, 120, 300, 520, 760, 1000, 1200, 1450];
-
-const FACTIONS = {
-  corps:{
-    name:"Design Corps",
-    ranks:["Recruit","Operator","Component Smith","Motion Specialist","Interface Veteran","Ship Captain","Design Engineer","Day-One Hire"],
-    msgs:["Shipped.","Momentum.","Commit it.","Frame-perfect.","Juice acquired.","Clean input.","On track.","Post it."]
-  },
-  mechanicus:{
-    name:"Adeptus Mechanicus",
-    ranks:["Servitor","Lexmechanic","Tech-Adept","Enginseer","Magos","Magos Dominus","Tech-Priest Ascendant","Fabricator-General"],
-    msgs:["The Omnissiah provides.","Flesh is weak.","Knowledge is power.","Praise the Machine God.","The litany compiles.","Blessed be the code.","The Motive Force flows.","01001000."]
-  },
-  astartes:{
-    name:"Adeptus Astartes",
-    ranks:["Aspirant","Neophyte","Scout","Battle-Brother","Sergeant","Veteran","Captain","Chapter Master"],
-    msgs:["For the Emperor.","Knowledge is power.","Suffer not the unclean.","The Codex guides you.","Purge the weakness.","Duty eternal.","No mercy, no respite.","Ship it in His name."]
-  },
-  orks:{
-    name:"Da Orkz",
-    ranks:["Grot","Boy","Nob","Boss","Warboss","Big Mek","Warlord","Da Big Boss"],
-    msgs:["WAAAGH!","Bigger iz better.","Needs more dakka.","It works 'cos we sez so.","Red wunz go fasta.","Krump it!","Zoggin' brilliant.","MORE DAKKA."]
-  },
-  aeldari:{
-    name:"Aeldari",
-    ranks:["Youngling","Guardian","Dire Avenger","Exarch","Warlock","Farseer","Autarch","Phoenix Lord"],
-    msgs:["Walk the Path.","The skein reveals all.","Elegance over force.","Foreseen and fulfilled.","Swift as the wind.","Mind over matter.","The webway opens.","Perfection, at last."]
-  },
-  chaos:{
-    name:"Chaos Undivided",
-    ranks:["Cultist","Renegade","Chaos Marine","Aspiring Champion","Chosen","Dark Lord","Daemon Prince","Warmaster"],
-    msgs:["Blood for the Blood God!","Death to the False Emperor.","Chaos rewards the bold.","Skulls for the throne.","The gods are watching.","Ascension awaits.","Burn it all down.","Glory to Chaos."]
-  },
-};
-
-function currentFaction(){ return FACTIONS[state.faction] || FACTIONS.corps; }
+const RANKS = ["Userland","Stack Frame","Cache-Aware","RAII Adept","Lock-Free","Hot Path","p99 Hunter","Ring 0"];
+const MSGS = ["Benchmark it.","No allocs.","Measure twice.","Hot path clean.","Cache-friendly.","Ship the number.","p99 or bust.","Commit it."];
 
 /* ================= STATE ================= */
-const KEY = "de-roadmap-v2";
-let state = { checked:{}, faction:"mechanicus" };
+const KEY = "opll-v1";
+let state = { checked:{} };
 let TOTAL_XP = 0, TOTAL_TASKS = 0;
 
-function taskId(w,i){ return "w"+w+"t"+i; }
+function taskId(w,i){ return "opll-w"+w+"t"+i; }
 
 async function loadState(){
   try{
@@ -702,7 +700,7 @@ async function loadState(){
       const raw = localStorage.getItem(KEY);
       if(raw) state = JSON.parse(raw);
     }
-  }catch(e){ /* first run — defaults */ }
+  }catch(e){ /* first run */ }
 }
 let saveTimer=null;
 function saveState(){
@@ -723,10 +721,10 @@ function setHint(msg){ document.getElementById("saveHint").textContent = msg; }
 
 /* ================= RENDER ================= */
 function currentWeekIndex(){
-  const start = new Date("2026-07-13T00:00:00");
+  const start = new Date("2026-07-20T00:00:00");
   const now = new Date();
   const diff = Math.floor((now-start)/(7*24*3600*1000));
-  return Math.min(Math.max(diff,0),13);
+  return Math.min(Math.max(diff,0),18);
 }
 
 function render(){
@@ -738,16 +736,19 @@ function render(){
   document.getElementById("nowDates").textContent = cw.dates+" · 2026";
   let html = "";
   for(const ph of PHASES){
-    html += `<div class="phase-label"><span>${ph.label}</span> ${ph.title}</div>`;
+    if(ph.weeks[0]===14){
+      html += `<div class="campaign-divider"><span>Campaign 2</span> · The Fabric</div>`;
+    }
+    html += `<div class="phase-label">${ph.label} — ${ph.title}</div>`;
+    if(ph.note) html += `<p class="phase-note">${ph.note}</p>`;
     for(const wn of ph.weeks){
       const w = WEEKS[wn-1];
       const isCur = wn===curW;
-      html += `<details class="week" id="week${wn}" ${isCur?"open":""}>
-        <div class="stamp"><b>MISSION COMPLETE</b></div>
+      html += `<details class="week${isCur?" current":""}" id="week${wn}" ${isCur?"open":""}>
         <summary>
-          <div class="wk-num">W${String(wn).padStart(2,"0")}<small>WEEK</small></div>
+          <div class="wk-num">W${String(wn).padStart(2,"0")}</div>
           <div class="wk-head">
-            <div class="wk-title">${w.title} ${isCur?'<span class="active-badge">Active</span>':""}</div>
+            <div class="wk-title">${w.title}${isCur?'<span class="active-badge">current</span>':""}</div>
             <div class="wk-dates">${w.dates} · 2026</div>
           </div>
           <div class="wk-meter">
@@ -763,7 +764,7 @@ function render(){
             ${w.tasks.map((t,i)=>{
               const id = taskId(wn,i);
               const kLabel = {build:"Build",learn:"Learn",ai:"AI-First",tweet:"Post",ship:"Ship"}[t.k];
-              const link = t.link?` <a class="task-link" href="${t.link}" target="_blank" rel="noopener" title="Open course">course&nbsp;↗</a>`:"";
+              const link = t.link?` <a class="task-link" href="${t.link}" target="_blank" rel="noopener" title="Open resource">link&nbsp;↗</a>`:"";
               const done = state.checked[id] ? " done" : "";
               return `<li class="task${done}">
                 <div class="task-row">
@@ -778,7 +779,7 @@ function render(){
                   </div>
                   <span class="task-xp">+${t.xp}</span>
                 </div>
-                <div class="task-desc" id="desc-${id}"><div class="task-desc-inner"><p>${t.d||"Details coming soon."}</p></div></div>
+                <div class="task-desc" id="desc-${id}"><div class="task-desc-inner"><p>${t.d||""}</p></div></div>
               </li>`;
             }).join("")}
           </ul>
@@ -793,17 +794,15 @@ function render(){
   document.getElementById("xpMax").textContent = TOTAL_XP;
   document.getElementById("taskMax").textContent = TOTAL_TASKS;
 
-  // hydrate
   document.querySelectorAll('input[type=checkbox]').forEach(cb=>{
     cb.checked = !!state.checked[cb.dataset.id];
     cb.closest(".task").classList.toggle("done", cb.checked);
     cb.addEventListener("change", onToggle);
   });
 
-  // expandable descriptions
   document.querySelectorAll(".task-text").forEach(tt=>{
     tt.addEventListener("click", e=>{
-      if(e.target.closest(".task-link")) return; // let course links open
+      if(e.target.closest(".task-link")) return;
       toggleDesc(tt);
     });
     tt.addEventListener("keydown", e=>{
@@ -834,7 +833,7 @@ function onToggle(e){
 
 function updateHUD(animate, gained=0, weekN=null){
   let xp=0, tasks=0;
-  const weekDone={}, weekTotal={}, weekChecked={};
+  const weekTotal={}, weekChecked={};
   WEEKS.forEach(w=>{ weekTotal[w.n]=w.tasks.length; weekChecked[w.n]=0; });
   WEEKS.forEach(w=>w.tasks.forEach((t,i)=>{
     if(state.checked[taskId(w.n,i)]){ xp+=t.xp; tasks++; weekChecked[w.n]++; }
@@ -842,14 +841,13 @@ function updateHUD(animate, gained=0, weekN=null){
 
   document.getElementById("xpNow").textContent = xp;
   document.getElementById("taskNow").textContent = tasks;
-  document.getElementById("xpFill").style.width = (xp/TOTAL_XP*100)+"%";
+  const fill = document.getElementById("xpFill");
+  if(fill) fill.style.width = (TOTAL_XP?xp/TOTAL_XP*100:0)+"%";
 
-  // rank (faction-flavored)
   let rankIdx = 0;
   for(let i=0;i<RANK_AT.length;i++) if(xp>=RANK_AT[i]) rankIdx=i;
-  document.getElementById("levelName").textContent = currentFaction().ranks[rankIdx];
+  document.getElementById("levelName").textContent = RANKS[rankIdx];
 
-  // post streak: consecutive weeks from W1 with ALL tweet tasks done
   let streak=0;
   for(const w of WEEKS){
     const tweetIdx = w.tasks.map((t,i)=>t.k==="tweet"?i:-1).filter(i=>i>=0);
@@ -858,15 +856,14 @@ function updateHUD(animate, gained=0, weekN=null){
   }
   document.getElementById("streak").textContent = streak;
 
-  // week progress + stamps
   WEEKS.forEach(w=>{
-    const pct = weekChecked[w.n]/weekTotal[w.n]*100;
+    const pct = weekTotal[w.n] ? weekChecked[w.n]/weekTotal[w.n]*100 : 0;
     const prog = document.getElementById("prog"+w.n);
     const count = document.getElementById("count"+w.n);
     if(prog) prog.style.width = pct+"%";
     if(count) count.textContent = weekChecked[w.n]+"/"+weekTotal[w.n];
     const card = document.getElementById("week"+w.n);
-    if(card) card.classList.toggle("done", weekChecked[w.n]===weekTotal[w.n]);
+    if(card) card.classList.toggle("done", weekChecked[w.n]===weekTotal[w.n] && weekTotal[w.n]>0);
   });
 
   const cn = currentWeekIndex()+1;
@@ -875,12 +872,10 @@ function updateHUD(animate, gained=0, weekN=null){
 
   if(animate && gained>0){
     const done = weekN && weekChecked[weekN]===weekTotal[weekN];
-    showToast(gained, done ? "MISSION COMPLETE — WEEK "+weekN : pickMsg());
-    if(done) confetti();
+    showToast(gained, done ? "Week "+weekN+" complete" : pickMsg());
   }
 }
 
-/* ================= DAILY CHECK-IN STREAK ================= */
 function dateKey(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function tickDayStreak(){
   const today = new Date();
@@ -894,37 +889,7 @@ function tickDayStreak(){
   document.getElementById("dayStreak").textContent = state.dayStreak||0;
 }
 
-/* ================= CONFETTI ================= */
-function confetti(){
-  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const c = document.createElement("canvas");
-  c.style.cssText = "position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:60";
-  c.width = innerWidth; c.height = innerHeight;
-  document.body.appendChild(c);
-  const ctx = c.getContext("2d");
-  const colors = ["#D26601","#0E0E0E","#1F6E43","#F2EFE9"];
-  const parts = Array.from({length:130},()=>({
-    x: c.width/2 + (Math.random()-.5)*c.width*.4,
-    y: c.height*.35,
-    vx:(Math.random()-.5)*14, vy:-(Math.random()*13+5),
-    w: Math.random()*8+4, h: Math.random()*5+3,
-    rot: Math.random()*Math.PI, vr:(Math.random()-.5)*.3,
-    col: colors[Math.floor(Math.random()*colors.length)],
-  }));
-  const t0 = performance.now();
-  (function frame(t){
-    const dt = (t-t0)/1000;
-    ctx.clearRect(0,0,c.width,c.height);
-    for(const p of parts){
-      p.x+=p.vx; p.y+=p.vy; p.vy+=0.45; p.rot+=p.vr;
-      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
-      ctx.fillStyle=p.col; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
-    }
-    if(dt < 2.2) requestAnimationFrame(frame); else c.remove();
-  })(t0);
-}
-
-function pickMsg(){ const m = currentFaction().msgs; return m[Math.floor(Math.random()*m.length)]; }
+function pickMsg(){ return MSGS[Math.floor(Math.random()*MSGS.length)]; }
 
 let toastTimer=null;
 function showToast(xp,msg){
@@ -936,7 +901,7 @@ function showToast(xp,msg){
   t.classList.remove("show"); void t.offsetWidth;
   t.classList.add("show");
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove("show"),1800);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),1600);
 }
 
 document.getElementById("jumpBtn").addEventListener("click", ()=>{
@@ -944,7 +909,6 @@ document.getElementById("jumpBtn").addEventListener("click", ()=>{
   if(el){ el.open = true; el.scrollIntoView({behavior:"smooth", block:"start"}); }
 });
 
-/* ================= THEME (DARK MODE) ================= */
 function applyTheme(){
   const dark = state.theme === "dark";
   document.documentElement.dataset.theme = dark ? "dark" : "light";
@@ -965,24 +929,9 @@ function setupTheme(){
   });
 }
 
-/* ================= FACTION SELECTOR ================= */
-function setupFaction(){
-  const sel = document.getElementById("factionSel");
-  sel.innerHTML = Object.entries(FACTIONS)
-    .map(([id,f])=>`<option value="${id}">${f.name}</option>`).join("");
-  if(!FACTIONS[state.faction]) state.faction = "corps";
-  sel.value = state.faction;
-  sel.addEventListener("change", ()=>{
-    state.faction = sel.value;
-    saveState();
-    updateHUD(false);
-    showToast(0, currentFaction().name.toUpperCase()+" — flavor updated");
-  });
-}
-
 document.getElementById("resetBtn").addEventListener("click", async ()=>{
   if(!confirm("Reset all progress? This clears every checkbox.")) return;
-  state = {checked:{}, lastVisit:state.lastVisit, dayStreak:state.dayStreak, faction:state.faction, theme:state.theme};
+  state = {checked:{}, lastVisit:state.lastVisit, dayStreak:state.dayStreak, theme:state.theme};
   try{
     if(window.storage && window.storage.set){ await window.storage.set(KEY, JSON.stringify(state)); }
     else{ localStorage.removeItem(KEY); }
@@ -994,11 +943,9 @@ document.getElementById("resetBtn").addEventListener("click", async ()=>{
   updateHUD(false);
 });
 
-/* ================= INIT ================= */
 (async ()=>{
   await loadState();
   setupTheme();
-  setupFaction();
   render();
   tickDayStreak();
 })();
